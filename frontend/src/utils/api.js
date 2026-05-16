@@ -1,0 +1,46 @@
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:5000/api';
+
+const api = axios.create({
+  baseURL: API_BASE_URL
+});
+
+api.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+export const authAPI = {
+  login: (email, password) => api.post('/auth/login', { email, password }),
+  register: (data) => api.post('/auth/register', data),
+  getProfile: () => api.get('/auth/profile'),
+};
+
+export const productAPI = {
+  getAll: () => api.get('/products'),
+  getById: (id) => api.get(`/products/${id}`),
+  getByCategory: (category) => api.get(`/products/category/${category}`),
+  search: (keyword) => api.get(`/products/search?keyword=${keyword}`),
+  create: (data) => api.post('/products', data),
+  update: (id, data) => api.put(`/products/${id}`, data),
+  delete: (id) => api.delete(`/products/${id}`),
+};
+
+export const orderAPI = {
+  create: (data) => api.post('/orders', data),
+  getAll: () => api.get('/orders'),
+  getUserOrders: () => api.get('/orders/user'),
+  getById: (id) => api.get(`/orders/details/${id}`),
+  updateStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
+};
+
+export default api;

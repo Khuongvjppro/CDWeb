@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(255, 247, 237, 0.9), transparent 32%),
+    radial-gradient(circle at right top, rgba(180, 83, 9, 0.14), transparent 24%),
+    linear-gradient(180deg, #fcf8f3 0%, #f5ebdd 48%, #efe0cf 100%);
+  color: #2d221b;
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+::selection {
+  background: #d97706;
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #8b4513;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b3410;
+}
+
+@layer components {
+  .page-shell {
+    @apply relative overflow-hidden;
+  }
+
+  .page-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.75), transparent 0 18%),
+      radial-gradient(circle at 85% 12%, rgba(180, 83, 9, 0.12), transparent 0 16%),
+      radial-gradient(circle at 75% 85%, rgba(120, 53, 15, 0.08), transparent 0 18%);
+    opacity: 0.8;
+  }
+
+  .page-content {
+    @apply relative z-10;
+  }
+
+  .section-wrap {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14 sm:py-16;
+  }
+
+  .section-heading {
+    @apply mb-10 max-w-3xl;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-amber-200/80 bg-white/70 px-4 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-amber-900 shadow-sm backdrop-blur;
+  }
+
+  .title-xl {
+    @apply mt-4 text-4xl font-extrabold tracking-tight text-stone-900 sm:text-5xl;
+  }
+
+  .title-lg {
+    @apply text-3xl font-extrabold tracking-tight text-stone-900 sm:text-4xl;
+  }
+
+  .muted-copy {
+    @apply mt-4 text-base leading-7 text-stone-600 sm:text-lg;
+  }
+
+  .surface-card {
+    @apply rounded-3xl border border-white/60 bg-white/80 shadow-[0_20px_80px_rgba(88,46,18,0.12)] backdrop-blur-xl;
+  }
+
+  .surface-card-soft {
+    @apply rounded-3xl border border-amber-100 bg-white/85 shadow-[0_18px_60px_rgba(88,46,18,0.1)] backdrop-blur;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-amber-700 to-amber-600 px-6 py-3 font-semibold text-white shadow-lg shadow-amber-900/20 transition duration-300 hover:-translate-y-0.5 hover:from-amber-600 hover:to-amber-500;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-amber-200 bg-white/80 px-6 py-3 font-semibold text-amber-950 shadow-sm transition duration-300 hover:-translate-y-0.5 hover:border-amber-300 hover:bg-white;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/10 px-5 py-2.5 font-semibold text-white transition duration-300 hover:bg-white/20;
+  }
+
+  .input-field {
+    @apply w-full rounded-2xl border border-stone-200 bg-white/90 px-4 py-3 text-stone-900 outline-none transition placeholder:text-stone-400 focus:border-amber-400 focus:ring-4 focus:ring-amber-200/70;
+  }
+
+  .input-field-dark {
+    @apply w-full rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-white outline-none transition placeholder:text-amber-100/70 focus:border-amber-300 focus:ring-4 focus:ring-white/10;
+  }
+
+  .filter-chip {
+    @apply rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-amber-300 hover:text-amber-900;
+  }
+
+  .filter-chip-active {
+    @apply rounded-full border border-amber-600 bg-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-amber-900/10;
+  }
+}
