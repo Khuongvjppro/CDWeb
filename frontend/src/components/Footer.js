@@ -12,8 +12,8 @@ export default function Footer() {
   return (
     <footer className="mt-10 border-t border-white/10 bg-[linear-gradient(180deg,#7b1e2b,#5a3e36)] text-white">
       <div className="section-wrap py-6 sm:py-8">
-        <div className="grid gap-4 lg:grid-cols-[1.1fr_0.8fr_1fr]">
-          <div className="rounded-[1.5rem] bg-white/8 p-4 text-white shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+        <div className="grid gap-4 lg:grid-cols-3">
+          <div className="p-4">
             <div className="brand-badge-soft w-fit bg-white/10 text-white">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e7d8c9] text-[#7b1e2b]">
                 ☕
@@ -42,7 +42,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
+          <div className="p-4">
             <h3 className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-100/70">
               Liên Kết
             </h3>
@@ -54,7 +54,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
+          <div className="p-4">
             <h3 className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-100/70">
               Liên Hệ
             </h3>

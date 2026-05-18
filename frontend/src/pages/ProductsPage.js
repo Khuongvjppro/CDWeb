@@ -15,10 +15,9 @@ export default function ProductsPage() {
 
   const categories = [
     { id: "all", name: "Tất Cả" },
-    { id: "Ca phe sua", name: "Cà Phê Sữa" },
-    { id: "Espresso", name: "Espresso" },
-    { id: "Latte", name: "Latte" },
-    { id: "Cold Brew", name: "Cold Brew" },
+    { id: "Cà phê", name: "Cà Phê" },
+    { id: "Trà", name: "Trà" },
+    { id: "Freeze", name: "Freeze" },
   ];
 
   useEffect(() => {
@@ -72,13 +71,12 @@ export default function ProductsPage() {
   return (
     <div className="page-shell">
       <div className="page-content section-wrap">
-        <div className="hero-panel-soft p-6 sm:p-8">
+        <div className="mb-8">
           <div className="section-heading mb-0">
             <span className="section-kicker">Collections</span>
-            <h1 className="title-xl">Cửa hàng cà phê</h1>
+            <h1 className="title-xl">Khám phá bộ sưu tập cà phê</h1>
             <p className="muted-copy">
-              Danh sách sản phẩm được trình bày theo cảm hứng Highlands: ấm,
-              sạch, nhiều khoảng thở và dễ duyệt trên mọi thiết bị.
+              Những loại cà phê được lựa chọn kỹ càng từ những vùng cà phê tốt nhất thế giới, mang đến cho bạn hương vị độc đáo và chất lượng cao nhất.
             </p>
           </div>
         </div>

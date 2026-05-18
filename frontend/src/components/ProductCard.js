@@ -1,10 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Star } from "lucide-react";
 
 export default function ProductCard({ product, onAddToCart }) {
-  const handleAddToCart = () => {
+  const navigate = useNavigate();
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
     onAddToCart(product);
+  };
+
+  const handleCardClick = () => {
+    navigate(`/product/${product.id}`);
   };
 
   const displayDescription =
@@ -15,7 +22,10 @@ export default function ProductCard({ product, onAddToCart }) {
   );
 
   return (
-    <div className="group surface-card overflow-hidden transition duration-300 hover:-translate-y-2 hover:shadow-[0_28px_90px_rgba(88,46,18,0.18)]">
+    <div 
+      onClick={handleCardClick}
+      className="group surface-card cursor-pointer overflow-hidden transition duration-300 hover:-translate-y-2 hover:shadow-[0_28px_90px_rgba(88,46,18,0.18)]"
+    >
       <div className="relative flex h-56 items-center justify-center overflow-hidden bg-[linear-gradient(160deg,rgba(255,250,244,0.98),rgba(251,191,36,0.2),rgba(120,53,15,0.12))]">
         <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-amber-900 shadow-sm">
           {product.is_new ? "New" : "Best Seller"}
@@ -62,9 +72,6 @@ export default function ProductCard({ product, onAddToCart }) {
 
         <div className="flex items-end justify-between gap-3">
           <div>
-            <div className="text-xs font-medium uppercase tracking-[0.2em] text-stone-400">
-              Giá
-            </div>
             <div className="mt-1 flex items-center gap-2">
               <span className="text-2xl font-extrabold text-stone-900">
                 {displayPrice}₫
@@ -82,18 +89,6 @@ export default function ProductCard({ product, onAddToCart }) {
           >
             <ShoppingCart size={18} />
           </button>
-        </div>
-
-        <div className="mt-4 flex items-center justify-between gap-3 border-t border-stone-100 pt-4">
-          <Link
-            to={`/product/${product.id}`}
-            className="text-sm font-semibold text-amber-800 transition hover:text-amber-900"
-          >
-            Xem chi tiết
-          </Link>
-          <span className="rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-stone-500">
-            {product.category}
-          </span>
         </div>
       </div>
     </div>

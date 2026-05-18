@@ -107,23 +107,6 @@ export default function AuthPage() {
             </div>
 
             <div className="p-6 sm:p-8 lg:p-10">
-              <div className="mb-6 flex items-center justify-center gap-4 lg:justify-start">
-                <button
-                  className={`rounded-full px-6 py-2 font-semibold transition ${tab === "login" ? "bg-amber-800 text-white shadow-md" : "bg-stone-100 text-stone-700"}`}
-                  onClick={() => setTab("login")}
-                  type="button"
-                >
-                  Đăng nhập
-                </button>
-                <button
-                  className={`rounded-full px-6 py-2 font-semibold transition ${tab === "register" ? "bg-amber-800 text-white shadow-md" : "bg-stone-100 text-stone-700"}`}
-                  onClick={() => setTab("register")}
-                  type="button"
-                >
-                  Đăng ký
-                </button>
-              </div>
-
               {error && (
                 <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-red-700">
                   {error}
@@ -132,10 +115,7 @@ export default function AuthPage() {
 
               <div className="premium-panel">
                 <div className="mb-5">
-                  <span className="section-kicker">
-                    {tab === "login" ? "Đăng nhập" : "Đăng ký"}
-                  </span>
-                  <h1 className="mt-4 text-3xl font-black text-stone-950">
+                  <h1 className="text-3xl font-black text-stone-950">
                     {tab === "login"
                       ? "Chào mừng bạn quay lại"
                       : "Tạo tài khoản CoffeeShop"}
