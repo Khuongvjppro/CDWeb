@@ -197,4 +197,67 @@ h6 {
   .premium-dark {
     @apply rounded-[1.75rem] border border-white/10 bg-[#5a3e36] p-6 text-white shadow-[0_24px_80px_rgba(20,12,8,0.32)];
   }
+
+  .admin-shell {
+    @apply relative overflow-hidden;
+  }
+
+  .admin-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 12% 14%, rgba(107, 61, 245, 0.12), transparent 0 16%),
+      radial-gradient(circle at 86% 10%, rgba(17, 180, 74, 0.12), transparent 0 15%),
+      radial-gradient(circle at 82% 84%, rgba(239, 90, 0, 0.10), transparent 0 16%);
+  }
+
+  .admin-surface {
+    @apply rounded-[2rem] border border-white/70 bg-white/80 shadow-[0_20px_70px_rgba(32,20,14,0.12)] backdrop-blur-xl;
+  }
+
+  .admin-surface-strong {
+    @apply rounded-[2rem] border border-stone-200 bg-white shadow-[0_22px_70px_rgba(32,20,14,0.10)];
+  }
+
+  .admin-chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-amber-300 hover:text-amber-900;
+  }
+
+  .admin-chip-active {
+    @apply inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-900;
+  }
+
+  .admin-stat-card {
+    @apply rounded-[2rem] border border-stone-200 bg-white px-6 py-5 shadow-[0_12px_30px_rgba(32,20,14,0.08)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(32,20,14,0.12)];
+  }
+
+  .admin-icon-badge {
+    @apply flex h-16 w-16 items-center justify-center rounded-[1.3rem] shadow-lg shadow-black/10;
+  }
+
+  .admin-panel {
+    @apply rounded-[2rem] border border-stone-200 bg-white shadow-[0_20px_60px_rgba(32,20,14,0.10)];
+  }
+
+  .admin-panel-soft {
+    @apply rounded-[2rem] border border-white/70 bg-white/90 shadow-[0_16px_50px_rgba(32,20,14,0.08)] backdrop-blur-xl;
+  }
+
+  .admin-stat-label {
+    @apply text-xs font-semibold uppercase tracking-[0.24em] text-stone-500;
+  }
+
+  .admin-stat-value {
+    @apply mt-2 text-[34px] font-black leading-none tracking-tight text-stone-950;
+  }
+
+  .admin-card-link {
+    @apply block rounded-[2rem] transition duration-300 hover:-translate-y-0.5;
+  }
+
+  .admin-chip-soft {
+    @apply inline-flex items-center gap-2 rounded-full border border-stone-200 bg-white/90 px-4 py-2 text-sm font-semibold text-stone-700 shadow-sm transition hover:border-amber-300 hover:text-amber-900;
+  }
 }

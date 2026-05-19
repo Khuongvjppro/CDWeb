@@ -12,13 +12,14 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = useState("newest");
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
 
   const categories = [
     { id: "all", name: "Tất Cả" },
-    { id: "Ca phe sua", name: "Cà Phê Sữa" },
-    { id: "Espresso", name: "Espresso" },
-    { id: "Latte", name: "Latte" },
-    { id: "Cold Brew", name: "Cold Brew" },
+    { id: "Cà phê", name: "Cà Phê" },
+    { id: "Trà", name: "Trà" },
+    { id: "Freeze", name: "Freeze" },
   ];
 
   useEffect(() => {
@@ -67,18 +68,18 @@ export default function ProductsPage() {
     }
 
     setFilteredProducts(filtered);
+    setCurrentPage(1);
   }, [products, selectedCategory, searchTerm, sortBy]);
 
   return (
     <div className="page-shell">
       <div className="page-content section-wrap">
-        <div className="hero-panel-soft p-6 sm:p-8">
+        <div className="mb-8">
           <div className="section-heading mb-0">
             <span className="section-kicker">Collections</span>
-            <h1 className="title-xl">Cửa hàng cà phê</h1>
+            <h1 className="title-xl">Khám phá bộ sưu tập cà phê</h1>
             <p className="muted-copy">
-              Danh sách sản phẩm được trình bày theo cảm hứng Highlands: ấm,
-              sạch, nhiều khoảng thở và dễ duyệt trên mọi thiết bị.
+              Những loại cà phê được lựa chọn kỹ càng từ những vùng cà phê tốt nhất thế giới, mang đến cho bạn hương vị độc đáo và chất lượng cao nhất.
             </p>
           </div>
         </div>
@@ -143,15 +144,61 @@ export default function ProductsPage() {
                 <p className="text-stone-600">Đang tải sản phẩm...</p>
               </div>
             ) : filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-                {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onAddToCart={addToCart}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                  {(() => {
+                    const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+                    const start = (currentPage - 1) * itemsPerPage;
+                    const pageItems = filteredProducts.slice(start, start + itemsPerPage);
+                    return pageItems.map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        onAddToCart={addToCart}
+                      />
+                    ));
+                  })()}
+                </div>
+
+                <div className="mt-6 flex items-center justify-center gap-2">
+                  {(() => {
+                    const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+                    const pages = [];
+                    for (let i = 1; i <= totalPages; i++) pages.push(i);
+                    return (
+                      <div className="inline-flex items-center gap-2">
+                        <button
+                          className="btn-secondary px-3 py-1"
+                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                          disabled={currentPage === 1}
+                        >
+                          Prev
+                        </button>
+
+                        {pages.map((p) => (
+                          <button
+                            key={p}
+                            onClick={() => setCurrentPage(p)}
+                            className={
+                              p === currentPage ? "btn-primary px-3 py-1" : "btn-outline px-3 py-1"
+                            }
+                          >
+                            {p}
+                          </button>
+                        ))}
+
+                        <button
+                          className="btn-secondary px-3 py-1"
+                          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                          disabled={currentPage === totalPages}
+                        >
+                          Next
+                        </button>
+                      </div>
+                    );
+                  })()}
+                </div>
+              </>
             ) : (
               <div className="premium-panel flex flex-col items-center justify-center py-20 text-center">
                 <div className="text-5xl">☕</div>
