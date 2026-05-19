@@ -2,6 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { authAPI, orderAPI, productAPI } from "../utils/api";
 
+const currencyFormatter = new Intl.NumberFormat("vi-VN");
+
+const formatCurrency = (value) => `${currencyFormatter.format(Number(value) || 0)}₫`;
+
+const formatDate = (value) =>
+  new Date(value || Date.now()).toLocaleDateString("vi-VN");
+
+const getOrderDate = (order) =>
+  order.createdAt || order.created_at || order.date || Date.now();
+
 export default function AdminDashboardPage() {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
@@ -47,7 +57,7 @@ export default function AdminDashboardPage() {
 
   const latestOrders = [...orders]
     .sort(
-      (a, b) => new Date(b.createdAt || b.created_at || 0) - new Date(a.createdAt || a.created_at || 0),
+      (a, b) => new Date(getOrderDate(b)) - new Date(getOrderDate(a)),
     )
     .slice(0, 4);
 
@@ -55,7 +65,7 @@ export default function AdminDashboardPage() {
     const monthIndex = new Date().getMonth() - (5 - index);
     const normalizedMonth = (monthIndex + 12) % 12;
     const monthOrders = orders.filter((order) => {
-      const date = new Date(order.createdAt || order.created_at || order.date || Date.now());
+      const date = new Date(getOrderDate(order));
       return date.getMonth() === normalizedMonth;
     });
 
@@ -72,8 +82,11 @@ export default function AdminDashboardPage() {
   const chartStep = chartWidth / (monthlyRevenue.length - 1 || 1);
   const chartPoints = monthlyRevenue.map((value, index) => {
     const x = chartPadding + index * chartStep;
-    const y = chartHeight - chartPadding - ((value / chartMax) * (chartHeight - chartPadding * 2));
-    return { x, y, value };
+    const y =
+      chartHeight -
+      chartPadding -
+      (value / chartMax) * (chartHeight - chartPadding * 2);
+    return { x, y };
   });
 
   const chartLinePath = chartPoints
@@ -127,11 +140,11 @@ export default function AdminDashboardPage() {
           <>
             <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
               <StatCard label="Đơn Hàng" value={orders.length} accent="#6b3df5" hint="Tổng số đơn trong hệ thống" />
-              <StatCard label="Doanh Thu" value={`${(totalRevenue / 1000000).toFixed(1)}M₫`} accent="#11b44a" hint="Tổng doanh thu đã ghi nhận" />
+              <StatCard label="Doanh Thu" value={formatCurrency(totalRevenue)} accent="#11b44a" hint="Tổng doanh thu đã ghi nhận" />
               <StatCard label="Quản Lý Sản Phẩm" value={products.length} accent="#4b4641" to="/admin/products" hint="Đi tới danh sách sản phẩm" />
               <StatCard label="Khách Hàng" value={users.length} accent="#ef5a00" hint="Tài khoản đã có trong DB" />
               <StatCard label="Xử Lý Đơn Hàng" value={pendingOrders} accent="#e11212" to="/admin/orders" hint="Đơn đang chờ xử lý" />
-              <StatCard label="Trung Bình/Đơn" value={orders.length ? `${Math.round(totalRevenue / orders.length / 1000)}K₫` : "0K₫"} accent="#d59a00" hint="Giá trị trung bình mỗi đơn" />
+              <StatCard label="Trung Bình/Đơn" value={orders.length ? formatCurrency(totalRevenue / orders.length) : "0₫"} accent="#d59a00" hint="Giá trị trung bình mỗi đơn" />
             </div>
 
             <div className="mt-8 grid gap-6 lg:grid-cols-2">
@@ -190,17 +203,11 @@ export default function AdminDashboardPage() {
                       >
                         <div>
                           <p className="font-semibold text-stone-950">Đơn hàng #{order.id}</p>
-                          <p className="text-sm text-stone-500">
-                            {new Date(order.createdAt || order.created_at || Date.now()).toLocaleDateString("vi-VN")}
-                          </p>
+                          <p className="text-sm text-stone-500">{formatDate(getOrderDate(order))}</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-semibold text-stone-950">
-                            {(Number(order.totalAmount) || 0).toLocaleString("vi-VN")}₫
-                          </p>
-                          <p className="text-sm font-medium text-amber-800">
-                            {order.status}
-                          </p>
+                          <p className="font-semibold text-stone-950">{formatCurrency(order.totalAmount)}</p>
+                          <p className="text-sm font-medium text-amber-800">{order.status}</p>
                         </div>
                       </div>
                     ))

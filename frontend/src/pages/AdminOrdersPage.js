@@ -3,6 +3,15 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, ChevronDown, RefreshCw, Package, Truck, CheckCircle } from "lucide-react";
 import { authAPI, orderAPI } from "../utils/api";
 
+const formatCurrency = (value) =>
+  `${new Intl.NumberFormat("vi-VN").format(Number(value) || 0)}₫`;
+
+const formatDate = (value) =>
+  new Date(value || Date.now()).toLocaleDateString("vi-VN");
+
+const getOrderDate = (order) =>
+  order.createdAt || order.created_at || order.date || Date.now();
+
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
@@ -187,9 +196,7 @@ export default function AdminOrdersPage() {
                       </div>
 
                       <div className="text-right">
-                        <p className="text-xl font-black text-stone-950">
-                          {(Number(order.totalAmount) || 0).toLocaleString("vi-VN")}₫
-                        </p>
+                        <p className="text-xl font-black text-stone-950">{formatCurrency(order.totalAmount)}</p>
                         <span className={`mt-2 ${getStatusClassName(order.status)}`}>
                           {getStatusLabel(order.status)}
                         </span>
@@ -206,7 +213,9 @@ export default function AdminOrdersPage() {
                             <p className="mt-2 text-sm text-stone-600">
                               {customer ? customer.fullName : "Không xác định"}
                             </p>
-                            <p className="text-sm text-stone-500">{customer ? customer.email : `User ID: ${order.userId}`}</p>
+                            <p className="text-sm text-stone-500">
+                              {customer ? customer.email : `User ID: ${order.userId}`}
+                            </p>
                           </div>
                           <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
                             <h3 className="font-bold text-stone-900">Địa chỉ giao hàng</h3>
@@ -233,22 +242,21 @@ export default function AdminOrdersPage() {
                         <div className="mt-4 rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
                           <div className="mb-3 flex items-center justify-between">
                             <h3 className="font-bold text-stone-900">Sản phẩm trong đơn</h3>
-                            <p className="text-sm text-stone-500">
-                              {new Date(order.createdAt || order.created_at || Date.now()).toLocaleDateString("vi-VN")}
-                            </p>
+                            <p className="text-sm text-stone-500">{formatDate(getOrderDate(order))}</p>
                           </div>
 
                           {detail?.items?.length ? (
                             <div className="space-y-2">
                               {detail.items.map((item) => (
-                                <div key={item.id} className="flex items-center justify-between rounded-2xl bg-stone-50 px-4 py-3 text-sm">
+                                <div
+                                  key={item.id}
+                                  className="flex items-center justify-between rounded-2xl bg-stone-50 px-4 py-3 text-sm"
+                                >
                                   <div>
                                     <p className="font-semibold text-stone-950">{item.name}</p>
                                     <p className="text-stone-500">Số lượng: {item.quantity}</p>
                                   </div>
-                                  <p className="font-semibold text-stone-950">
-                                    {(Number(item.price) || 0).toLocaleString("vi-VN")}₫
-                                  </p>
+                                  <p className="font-semibold text-stone-950">{formatCurrency(item.price)}</p>
                                 </div>
                               ))}
                             </div>

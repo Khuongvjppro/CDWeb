@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { Plus, Edit, Trash2, Search, ArrowLeft, RefreshCw } from "lucide-react";
 import { productAPI } from "../utils/api";
 
+const formatCurrency = (value) =>
+  `${new Intl.NumberFormat("vi-VN").format(Number(value) || 0)}₫`;
+
 const initialForm = {
   name: "",
   description: "",
@@ -334,7 +337,7 @@ export default function AdminProductsPage() {
           </div>
         )}
 
-          <div className="admin-panel overflow-hidden">
+        <div className="admin-panel overflow-hidden">
           {loading ? (
             <div className="py-16 text-center text-stone-600">
               Đang tải sản phẩm...
@@ -358,17 +361,22 @@ export default function AdminProductsPage() {
                 </thead>
                 <tbody>
                   {filteredProducts.map((product) => (
-                    <tr key={product.id} className="border-b border-stone-100 transition hover:bg-amber-50/50 last:border-0">
+                    <tr
+                      key={product.id}
+                      className="border-b border-stone-100 transition hover:bg-amber-50/50 last:border-0"
+                    >
                       <td className="px-5 py-4">
                         <div className="font-semibold text-stone-950">{product.name}</div>
-                        <div className="text-sm text-stone-500">{product.product_type || product.description || "-"}</div>
+                        <div className="text-sm text-stone-500">
+                          {product.product_type || product.description || "-"}
+                        </div>
                       </td>
                       <td className="px-5 py-4 text-sm text-stone-600">{product.category || "-"}</td>
                       <td className="px-5 py-4 text-sm font-semibold text-stone-950">
-                        {(Number(product.sale_price) || Number(product.price) || 0).toLocaleString("vi-VN")}₫
+                        {formatCurrency(product.sale_price || product.price)}
                         {product.sale_price ? (
                           <div className="text-xs font-normal text-stone-500 line-through">
-                            {Number(product.price || 0).toLocaleString("vi-VN")}₫
+                            {formatCurrency(product.price)}
                           </div>
                         ) : null}
                       </td>
