@@ -43,7 +43,14 @@ export default function AuthPage() {
     setError("");
     setLoading(true);
     try {
-      await login(loginData.email, loginData.password);
+      const response = await login(loginData.email, loginData.password);
+      const user = response?.user;
+
+      if (user?.role === "admin") {
+        navigate("/admin/dashboard");
+        return;
+      }
+
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.error || "Lỗi đăng nhập");

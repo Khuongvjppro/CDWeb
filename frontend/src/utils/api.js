@@ -23,6 +23,7 @@ export const authAPI = {
   login: (email, password) => api.post("/auth/login", { email, password }),
   register: (data) => api.post("/auth/register", data),
   getProfile: () => api.get("/auth/profile"),
+  getUsers: () => api.get("/auth/users"),
 };
 
 export const productAPI = {

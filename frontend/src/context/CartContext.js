@@ -1,16 +1,48 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem("cart");
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+  const { user } = useAuth();
+  const storageKey = useMemo(() => {
+    if (user?.id) {
+      return `cart_user_${user.id}`;
+    }
+
+    if (user?.email) {
+      return `cart_user_${user.email}`;
+    }
+
+    return "cart_guest";
+  }, [user?.id, user?.email]);
+
+  const isInitialLoad = useRef(true);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+    const savedCart = localStorage.getItem(storageKey);
+    const nextCart = savedCart ? JSON.parse(savedCart) : [];
+
+    isInitialLoad.current = true;
+    setCart(nextCart);
+  }, [storageKey]);
+
+  useEffect(() => {
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false;
+      return;
+    }
+
+    localStorage.setItem(storageKey, JSON.stringify(cart));
+  }, [cart, storageKey]);
 
   const addToCart = (product) => {
     const existingItem = cart.find((item) => item.id === product.id);
