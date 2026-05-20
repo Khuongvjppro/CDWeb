@@ -2,7 +2,7 @@
 
 ## Yêu Cầu Hệ Thống
 
-- **Node.js**: v14+ 
+- **Node.js**: v14+
 - **npm**: v6+
 - **XAMPP**: Chứa MySQL
 - **VS Code**: Recommended
@@ -172,6 +172,7 @@ Nếu tất cả chạy thành công, sẽ thấy:
 ## 🎯 Tính Năng Để Test
 
 ### Frontend (User)
+
 - [ ] Xem trang chủ
 - [ ] Xem danh sách sản phẩm
 - [ ] Tìm kiếm sản phẩm
@@ -184,6 +185,7 @@ Nếu tất cả chạy thành công, sẽ thấy:
 - [ ] Xem lịch sử đơn hàng
 
 ### Admin
+
 - [ ] Xem bảng điều khiển (Dashboard)
 - [ ] Xem danh sách sản phẩm
 - [ ] Thêm sản phẩm mới
@@ -197,6 +199,7 @@ Nếu tất cả chạy thành công, sẽ thấy:
 ## 🐛 Khắc Phục Lỗi
 
 ### Lỗi: "Cannot connect to MySQL"
+
 ```bash
 # Kiểm tra:
 1. XAMPP MySQL đã bật?
@@ -209,6 +212,7 @@ Nếu tất cả chạy thành công, sẽ thấy:
 ```
 
 ### Lỗi: "Port 3000/3001 đã được sử dụng"
+
 ```bash
 # Tìm process
 lsof -i :3000
@@ -218,6 +222,7 @@ PORT=3002 npm start
 ```
 
 ### Lỗi: "Module not found"
+
 ```bash
 # Xóa node_modules và cài lại
 rm -rf node_modules package-lock.json
@@ -225,6 +230,7 @@ npm install
 ```
 
 ### Lỗi: CORS Error
+
 ```
 # Backend config đã cho phép CORS
 # Kiểm tra backend chạy đúng port 5000
@@ -235,6 +241,7 @@ npm install
 ## 📚 Cấu Trúc Code
 
 ### Backend (Node.js)
+
 ```
 src/
 ├── server.js           # Main entry point
@@ -257,6 +264,7 @@ src/
 ```
 
 ### Frontend (React)
+
 ```
 src/
 ├── pages/
@@ -280,6 +288,7 @@ src/
 ```
 
 ### Admin (React)
+
 ```
 src/
 ├── pages/
@@ -299,12 +308,14 @@ src/
 ## 🚀 Lệnh Hữu Ích
 
 ### Backend
+
 ```bash
 npm run dev      # Chạy với nodemon (auto-reload)
 npm start        # Chạy production
 ```
 
 ### Frontend
+
 ```bash
 npm start        # Chạy dev server
 npm run build    # Build production
@@ -325,6 +336,7 @@ npm test         # Chạy test
 ## 📞 Support
 
 Nếu gặp vấn đề:
+
 1. Kiểm tra lại từng bước
 2. Xem console/terminal có lỗi gì
 3. Đảm bảo port không bị trùng

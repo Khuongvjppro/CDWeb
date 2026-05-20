@@ -1,5 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { BarChart3, ShoppingCart, Users, TrendingUp, DollarSign, Box } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import {
+  BarChart3,
+  ShoppingCart,
+  Users,
+  TrendingUp,
+  DollarSign,
+  Box,
+} from "lucide-react";
 
 export default function DashboardPage() {
   const [stats, setStats] = useState({
@@ -8,7 +15,7 @@ export default function DashboardPage() {
     totalProducts: 12,
     totalUsers: 38,
     pendingOrders: 8,
-    monthlyRevenue: [1200000, 1450000, 1350000, 1600000, 1800000, 2100000]
+    monthlyRevenue: [1200000, 1450000, 1350000, 1600000, 1800000, 2100000],
   });
 
   const StatCard = ({ icon: Icon, label, value, color }) => (
@@ -83,8 +90,8 @@ export default function DashboardPage() {
                 <div
                   className="bg-amber-600 rounded-t-lg"
                   style={{
-                    width: '30px',
-                    height: `${(value / Math.max(...stats.monthlyRevenue)) * 200}px`
+                    width: "30px",
+                    height: `${(value / Math.max(...stats.monthlyRevenue)) * 200}px`,
                   }}
                 />
                 <p className="text-xs text-gray-600 mt-2">T{index + 1}</p>
@@ -95,18 +102,47 @@ export default function DashboardPage() {
 
         {/* Recent Orders */}
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Đơn Hàng Gần Đây</h2>
+          <h2 className="text-lg font-bold text-gray-900 mb-4">
+            Đơn Hàng Gần Đây
+          </h2>
           <div className="space-y-3">
             {[
-              { id: 1, customer: 'Nguyễn Văn A', amount: 450000, status: 'Đã Giao' },
-              { id: 2, customer: 'Trần Thị B', amount: 350000, status: 'Đang Gửi' },
-              { id: 3, customer: 'Lê Văn C', amount: 250000, status: 'Đang Xử Lý' },
-              { id: 4, customer: 'Phạm Thị D', amount: 520000, status: 'Chờ Xử Lý' },
-            ].map(order => (
-              <div key={order.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              {
+                id: 1,
+                customer: "Nguyễn Văn A",
+                amount: 450000,
+                status: "Đã Giao",
+              },
+              {
+                id: 2,
+                customer: "Trần Thị B",
+                amount: 350000,
+                status: "Đang Gửi",
+              },
+              {
+                id: 3,
+                customer: "Lê Văn C",
+                amount: 250000,
+                status: "Đang Xử Lý",
+              },
+              {
+                id: 4,
+                customer: "Phạm Thị D",
+                amount: 520000,
+                status: "Chờ Xử Lý",
+              },
+            ].map((order) => (
+              <div
+                key={order.id}
+                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+              >
                 <div>
-                  <p className="font-semibold text-gray-900">{order.customer}</p>
-                  <p className="text-sm text-gray-600">{order.amount.toLocaleString('vi-VN')}₫</p>
+                  <p className="font-semibold text-gray-900">
+                    {order.customer}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {order.amount.toLocaleString("vi-VN")}₫
+                  </p>
                 </div>
                 <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-900">
                   {order.status}

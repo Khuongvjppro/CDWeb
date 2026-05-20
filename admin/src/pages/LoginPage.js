@@ -1,43 +1,54 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAdminAuth } from '../context/AuthContext';
-import { Mail, Lock } from 'lucide-react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAdminAuth } from "../context/AuthContext";
+import axios from "axios";
+import { Mail, Lock } from "lucide-react";
 
 export default function LoginPage({ onLoginSuccess }) {
   const navigate = useNavigate();
   const { login } = useAdminAuth();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
 
     try {
-      // Hardcoded admin credentials for demo
-      if (formData.email === 'admin@coffeeshop.com' && formData.password === 'admin123') {
-        const token = 'admin-token-demo';
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        formData,
+      );
+
+      const { token, user } = response.data;
+
+      if (user?.role !== "admin") {
+        setError("Tài khoản này không có quyền admin");
+        return;
+      }
+
+      if (token) {
         login(token);
         onLoginSuccess();
-        navigate('/dashboard');
+        navigate("/dashboard");
       } else {
-        setError('Email hoặc mật khẩu không chính xác');
+        setError("Email hoặc mật khẩu không chính xác");
       }
     } catch (error) {
-      setError('Lỗi đăng nhập');
+      setError("Lỗi đăng nhập");
     } finally {
       setLoading(false);
     }
@@ -61,7 +72,9 @@ export default function LoginPage({ onLoginSuccess }) {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">Email</label>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Email
+              </label>
               <div className="flex items-center border border-gray-300 rounded-lg px-4 py-2">
                 <Mail size={18} className="text-gray-400" />
                 <input
@@ -77,7 +90,9 @@ export default function LoginPage({ onLoginSuccess }) {
             </div>
 
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">Mật Khẩu</label>
+              <label className="block text-gray-700 font-semibold mb-2">
+                Mật Khẩu
+              </label>
               <div className="flex items-center border border-gray-300 rounded-lg px-4 py-2">
                 <Lock size={18} className="text-gray-400" />
                 <input
@@ -97,14 +112,17 @@ export default function LoginPage({ onLoginSuccess }) {
               disabled={loading}
               className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-gray-400 text-white font-bold py-3 rounded-lg transition"
             >
-              {loading ? 'Đang Xử Lý...' : 'Đăng Nhập'}
+              {loading ? "Đang Xử Lý..." : "Đăng Nhập"}
             </button>
           </form>
 
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <p className="text-xs text-gray-600 text-center mb-3">Tài khoản Demo:</p>
+            <p className="text-xs text-gray-600 text-center mb-3">
+              Tài khoản Demo:
+            </p>
             <p className="text-xs text-gray-600 text-center">
-              Email: admin@coffeeshop.com<br/>
+              Email: admin@coffeeshop.com
+              <br />
               Mật Khẩu: admin123
             </p>
           </div>

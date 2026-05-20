@@ -3,22 +3,27 @@
 ## Cấu trúc CSDL
 
 ### 1. Bảng Users
+
 - Lưu thông tin người dùng và admin
 - Các trường: id, email, password, fullName, phone, address, role, timestamps
 
 ### 2. Bảng Categories
+
 - Lưu các danh mục cà phê
 - Các loại: Cà Phê Đen, Cà Phê Sữa, Espresso, Cappuccino, Latte, Mocha
 
 ### 3. Bảng Products
+
 - Lưu thông tin sản phẩm cà phê
 - Các trường: id, name, description, price, image, category, stock, deleted
 
 ### 4. Bảng Orders
+
 - Lưu thông tin đơn hàng
 - Trạng thái: pending, processing, shipped, delivered, cancelled
 
 ### 5. Bảng Order Items
+
 - Lưu chi tiết sản phẩm trong mỗi đơn hàng
 - Liên kết order và product
 

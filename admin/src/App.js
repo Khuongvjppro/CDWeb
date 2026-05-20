@@ -1,16 +1,29 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import Sidebar from './components/Sidebar';
-import DashboardPage from './pages/DashboardPage';
-import ProductsPage from './pages/ProductsPage';
-import OrdersPage from './pages/OrdersPage';
-import UsersPage from './pages/UsersPage';
-import LoginPage from './pages/LoginPage';
+import React, { useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import Sidebar from "./components/Sidebar";
+import DashboardPage from "./pages/DashboardPage";
+import ProductsPage from "./pages/ProductsPage";
+import OrdersPage from "./pages/OrdersPage";
+import UsersPage from "./pages/UsersPage";
+import LoginPage from "./pages/LoginPage";
+
+const searchParams = new URLSearchParams(window.location.search);
+const tokenFromQuery = searchParams.get("token");
+
+if (tokenFromQuery) {
+  localStorage.setItem("adminToken", tokenFromQuery);
+  window.history.replaceState({}, document.title, window.location.pathname);
+}
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem('adminToken')
+    !!localStorage.getItem("adminToken"),
   );
 
   return (
@@ -26,25 +39,35 @@ function App() {
                   isAuthenticated ? (
                     <Navigate to="/dashboard" />
                   ) : (
-                    <LoginPage onLoginSuccess={() => setIsAuthenticated(true)} />
+                    <LoginPage
+                      onLoginSuccess={() => setIsAuthenticated(true)}
+                    />
                   )
                 }
               />
               <Route
                 path="/dashboard"
-                element={isAuthenticated ? <DashboardPage /> : <Navigate to="/login" />}
+                element={
+                  isAuthenticated ? <DashboardPage /> : <Navigate to="/login" />
+                }
               />
               <Route
                 path="/products"
-                element={isAuthenticated ? <ProductsPage /> : <Navigate to="/login" />}
+                element={
+                  isAuthenticated ? <ProductsPage /> : <Navigate to="/login" />
+                }
               />
               <Route
                 path="/orders"
-                element={isAuthenticated ? <OrdersPage /> : <Navigate to="/login" />}
+                element={
+                  isAuthenticated ? <OrdersPage /> : <Navigate to="/login" />
+                }
               />
               <Route
                 path="/users"
-                element={isAuthenticated ? <UsersPage /> : <Navigate to="/login" />}
+                element={
+                  isAuthenticated ? <UsersPage /> : <Navigate to="/login" />
+                }
               />
               <Route path="/" element={<Navigate to="/dashboard" />} />
             </Routes>
