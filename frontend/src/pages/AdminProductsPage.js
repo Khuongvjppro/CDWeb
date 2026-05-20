@@ -40,7 +40,9 @@ export default function AdminProductsPage() {
       const response = await productAPI.getAll();
       setProducts(response.data || []);
     } catch (fetchError) {
-      setError(fetchError.response?.data?.error || "Không thể tải danh sách sản phẩm");
+      setError(
+        fetchError.response?.data?.error || "Không thể tải danh sách sản phẩm",
+      );
     } finally {
       setLoading(false);
     }
@@ -80,7 +82,10 @@ export default function AdminProductsPage() {
       description: product.description || "",
       category: product.category || "Cà phê",
       price: String(product.price ?? ""),
-      sale_price: product.sale_price !== null && product.sale_price !== undefined ? String(product.sale_price) : "",
+      sale_price:
+        product.sale_price !== null && product.sale_price !== undefined
+          ? String(product.sale_price)
+          : "",
       image_url: product.image || "",
       stock: String(product.stock ?? 0),
       brand: product.brand || "Coffee Shop",
@@ -109,7 +114,8 @@ export default function AdminProductsPage() {
       const payload = {
         ...formData,
         price: Number(formData.price),
-        sale_price: formData.sale_price === "" ? null : Number(formData.sale_price),
+        sale_price:
+          formData.sale_price === "" ? null : Number(formData.sale_price),
         stock: Number(formData.stock),
       };
 
@@ -158,7 +164,9 @@ export default function AdminProductsPage() {
               </div>
               <span className="section-kicker">Admin</span>
               <h1 className="title-xl">Quản lý sản phẩm</h1>
-              <p className="muted-copy mt-2 max-w-2xl">Thêm, sửa, xóa sản phẩm trực tiếp từ database.</p>
+              <p className="muted-copy mt-2 max-w-2xl">
+                Thêm, sửa, xóa sản phẩm trực tiếp từ database.
+              </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <button
@@ -240,7 +248,12 @@ export default function AdminProductsPage() {
                 placeholder="Mô tả"
                 className="input-field md:col-span-2"
               />
-              <select name="category" value={formData.category} onChange={handleChange} className="input-field">
+              <select
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="input-field"
+              >
                 {categories.map((category) => (
                   <option key={category} value={category}>
                     {category}
@@ -305,11 +318,21 @@ export default function AdminProductsPage() {
               />
 
               <label className="flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700">
-                <input name="is_featured" type="checkbox" checked={formData.is_featured} onChange={handleChange} />
+                <input
+                  name="is_featured"
+                  type="checkbox"
+                  checked={formData.is_featured}
+                  onChange={handleChange}
+                />
                 Nổi bật
               </label>
               <label className="flex items-center gap-2 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-700">
-                <input name="is_new" type="checkbox" checked={formData.is_new} onChange={handleChange} />
+                <input
+                  name="is_new"
+                  type="checkbox"
+                  checked={formData.is_new}
+                  onChange={handleChange}
+                />
                 Sản phẩm mới
               </label>
 
@@ -351,12 +374,24 @@ export default function AdminProductsPage() {
               <table className="min-w-full border-separate border-spacing-0">
                 <thead className="sticky top-0 z-10 border-b border-stone-200 bg-white/95 backdrop-blur">
                   <tr>
-                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Tên</th>
-                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Danh mục</th>
-                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Giá</th>
-                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Kho</th>
-                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Trạng thái</th>
-                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">Hành động</th>
+                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">
+                      Tên
+                    </th>
+                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">
+                      Danh mục
+                    </th>
+                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">
+                      Giá
+                    </th>
+                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">
+                      Kho
+                    </th>
+                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">
+                      Trạng thái
+                    </th>
+                    <th className="px-5 py-4 text-left text-sm font-semibold uppercase tracking-[0.18em] text-stone-500">
+                      Hành động
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -366,12 +401,16 @@ export default function AdminProductsPage() {
                       className="border-b border-stone-100 transition hover:bg-amber-50/50 last:border-0"
                     >
                       <td className="px-5 py-4">
-                        <div className="font-semibold text-stone-950">{product.name}</div>
+                        <div className="font-semibold text-stone-950">
+                          {product.name}
+                        </div>
                         <div className="text-sm text-stone-500">
                           {product.product_type || product.description || "-"}
                         </div>
                       </td>
-                      <td className="px-5 py-4 text-sm text-stone-600">{product.category || "-"}</td>
+                      <td className="px-5 py-4 text-sm text-stone-600">
+                        {product.category || "-"}
+                      </td>
                       <td className="px-5 py-4 text-sm font-semibold text-stone-950">
                         {formatCurrency(product.sale_price || product.price)}
                         {product.sale_price ? (
@@ -380,13 +419,23 @@ export default function AdminProductsPage() {
                           </div>
                         ) : null}
                       </td>
-                      <td className="px-5 py-4 text-sm text-stone-600">{product.stock ?? 0}</td>
+                      <td className="px-5 py-4 text-sm text-stone-600">
+                        {product.stock ?? 0}
+                      </td>
                       <td className="px-5 py-4 text-sm text-stone-600">
                         <div className="flex flex-wrap gap-2">
-                          <span className={product.is_featured ? "admin-chip-active" : "admin-chip"}>
+                          <span
+                            className={
+                              product.is_featured
+                                ? "admin-chip-active"
+                                : "admin-chip"
+                            }
+                          >
                             {product.is_featured ? "Nổi bật" : "Thường"}
                           </span>
-                          {product.is_new ? <span className="admin-chip-active">Mới</span> : null}
+                          {product.is_new ? (
+                            <span className="admin-chip-active">Mới</span>
+                          ) : null}
                         </div>
                       </td>
                       <td className="px-5 py-4">

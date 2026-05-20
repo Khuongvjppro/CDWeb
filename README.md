@@ -77,16 +77,19 @@ npm start
 ## 🔐 Tài Khoản Demo
 
 ### Frontend
+
 - Email: user@example.com
 - Password: 123456
 
 ### Admin
+
 - Email: admin@coffeeshop.com
 - Password: admin123
 
 ## 📊 Tính Năng Chính
 
 ### Frontend (User)
+
 - ☕ Trang chủ với sản phẩm nổi bật
 - 🛍️ Danh sách sản phẩm với bộ lọc & tìm kiếm
 - 📝 Chi tiết sản phẩm
@@ -96,6 +99,7 @@ npm start
 - 🔐 Đăng nhập/Đăng ký
 
 ### Admin
+
 - 📊 Bảng điều khiển với thống kê
 - 📦 Quản lý sản phẩm (CRUD)
 - 📋 Quản lý đơn hàng
@@ -112,12 +116,14 @@ npm start
 ## 🔧 Công Nghệ Sử Dụng
 
 **Backend**
+
 - Node.js + Express.js
 - MySQL (XAMPP)
 - JWT Authentication
 - bcryptjs (Password hashing)
 
 **Frontend**
+
 - React 18
 - React Router v6
 - Axios (API calls)
@@ -126,23 +132,27 @@ npm start
 - Context API (State management)
 
 **Database**
+
 - MySQL
 - XAMPP
 
 ## 📝 API Endpoints
 
 ### Authentication
+
 - `POST /api/auth/register` - Đăng ký
 - `POST /api/auth/login` - Đăng nhập
 - `GET /api/auth/profile` - Lấy profile
 
 ### Products
+
 - `GET /api/products` - Danh sách sản phẩm
 - `GET /api/products/:id` - Chi tiết sản phẩm
 - `GET /api/products/category/:category` - Theo danh mục
 - `GET /api/products/search?keyword=` - Tìm kiếm
 
 ### Orders
+
 - `POST /api/orders` - Tạo đơn hàng
 - `GET /api/orders/user` - Đơn hàng của user
 - `GET /api/orders/:id` - Chi tiết đơn hàng

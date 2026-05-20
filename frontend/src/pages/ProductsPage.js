@@ -79,7 +79,9 @@ export default function ProductsPage() {
             <span className="section-kicker">Collections</span>
             <h1 className="title-xl">Khám phá bộ sưu tập cà phê</h1>
             <p className="muted-copy">
-              Những loại cà phê được lựa chọn kỹ càng từ những vùng cà phê tốt nhất thế giới, mang đến cho bạn hương vị độc đáo và chất lượng cao nhất.
+              Những loại cà phê được lựa chọn kỹ càng từ những vùng cà phê tốt
+              nhất thế giới, mang đến cho bạn hương vị độc đáo và chất lượng cao
+              nhất.
             </p>
           </div>
         </div>
@@ -147,9 +149,15 @@ export default function ProductsPage() {
               <>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
                   {(() => {
-                    const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+                    const totalPages = Math.max(
+                      1,
+                      Math.ceil(filteredProducts.length / itemsPerPage),
+                    );
                     const start = (currentPage - 1) * itemsPerPage;
-                    const pageItems = filteredProducts.slice(start, start + itemsPerPage);
+                    const pageItems = filteredProducts.slice(
+                      start,
+                      start + itemsPerPage,
+                    );
                     return pageItems.map((product) => (
                       <ProductCard
                         key={product.id}
@@ -162,14 +170,19 @@ export default function ProductsPage() {
 
                 <div className="mt-6 flex items-center justify-center gap-2">
                   {(() => {
-                    const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+                    const totalPages = Math.max(
+                      1,
+                      Math.ceil(filteredProducts.length / itemsPerPage),
+                    );
                     const pages = [];
                     for (let i = 1; i <= totalPages; i++) pages.push(i);
                     return (
                       <div className="inline-flex items-center gap-2">
                         <button
                           className="btn-secondary px-3 py-1"
-                          onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                          onClick={() =>
+                            setCurrentPage((p) => Math.max(1, p - 1))
+                          }
                           disabled={currentPage === 1}
                         >
                           Prev
@@ -180,7 +193,9 @@ export default function ProductsPage() {
                             key={p}
                             onClick={() => setCurrentPage(p)}
                             className={
-                              p === currentPage ? "btn-primary px-3 py-1" : "btn-outline px-3 py-1"
+                              p === currentPage
+                                ? "btn-primary px-3 py-1"
+                                : "btn-outline px-3 py-1"
                             }
                           >
                             {p}
@@ -189,7 +204,9 @@ export default function ProductsPage() {
 
                         <button
                           className="btn-secondary px-3 py-1"
-                          onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                          onClick={() =>
+                            setCurrentPage((p) => Math.min(totalPages, p + 1))
+                          }
                           disabled={currentPage === totalPages}
                         >
                           Next
