@@ -123,13 +123,13 @@ export default function Navbar() {
               Thực đơn
             </Link>
             <Link
-              to="/"
+              to="/about-highlands"
               className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
             >
               Về Highlands
             </Link>
             <Link
-              to="/products"
+              to="/news"
               className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
             >
               Tin tức
