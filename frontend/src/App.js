@@ -22,6 +22,7 @@ import AdminProductsPage from "./pages/AdminProductsPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AboutHighlandsPage from "./pages/AboutHighlandsPage";
 import NewsPage from "./pages/NewsPage";
+import SupportPage from "./pages/SupportPage";
 
 function AppContent() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function AppContent() {
             <Route path="/" element={<HomePage />} />
             <Route path="/about-highlands" element={<AboutHighlandsPage />} />
             <Route path="/news" element={<NewsPage />} />
+            <Route path="/support" element={<SupportPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/cart" element={<CartPage />} />
