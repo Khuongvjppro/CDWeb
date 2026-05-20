@@ -1,19 +1,37 @@
-import React, { useState } from 'react';
-import { Plus, Edit, Trash2, Search } from 'lucide-react';
+import React, { useState } from "react";
+import { Plus, Edit, Trash2, Search } from "lucide-react";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([
-    { id: 1, name: 'Cà Phê Đen Đắng', category: 'Cà Phê Đen', price: 35000, stock: 50 },
-    { id: 2, name: 'Cà Phê Sữa Tươi', category: 'Cà Phê Sữa', price: 45000, stock: 40 },
-    { id: 3, name: 'Espresso Chuẩn Ý', category: 'Espresso', price: 55000, stock: 35 },
+    {
+      id: 1,
+      name: "Cà Phê Đen Đắng",
+      category: "Cà Phê Đen",
+      price: 35000,
+      stock: 50,
+    },
+    {
+      id: 2,
+      name: "Cà Phê Sữa Tươi",
+      category: "Cà Phê Sữa",
+      price: 45000,
+      stock: 40,
+    },
+    {
+      id: 3,
+      name: "Espresso Chuẩn Ý",
+      category: "Espresso",
+      price: 55000,
+      stock: 35,
+    },
   ]);
   const [showForm, setShowForm] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    price: '',
-    stock: ''
+    name: "",
+    category: "",
+    price: "",
+    stock: "",
   });
 
   const handleAddProduct = (e) => {
@@ -22,19 +40,19 @@ export default function ProductsPage() {
       id: products.length + 1,
       ...formData,
       price: parseInt(formData.price),
-      stock: parseInt(formData.stock)
+      stock: parseInt(formData.stock),
     };
     setProducts([...products, newProduct]);
-    setFormData({ name: '', category: '', price: '', stock: '' });
+    setFormData({ name: "", category: "", price: "", stock: "" });
     setShowForm(false);
   };
 
   const handleDelete = (id) => {
-    setProducts(products.filter(p => p.id !== id));
+    setProducts(products.filter((p) => p.id !== id));
   };
 
-  const filteredProducts = products.filter(p =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter((p) =>
+    p.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -73,13 +91,17 @@ export default function ProductsPage() {
               type="text"
               placeholder="Tên sản phẩm"
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               required
               className="col-span-2 px-4 py-2 border border-gray-300 rounded-lg"
             />
             <select
               value={formData.category}
-              onChange={(e) => setFormData({...formData, category: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, category: e.target.value })
+              }
               required
               className="px-4 py-2 border border-gray-300 rounded-lg"
             >
@@ -92,7 +114,9 @@ export default function ProductsPage() {
               type="number"
               placeholder="Giá"
               value={formData.price}
-              onChange={(e) => setFormData({...formData, price: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, price: e.target.value })
+              }
               required
               className="px-4 py-2 border border-gray-300 rounded-lg"
             />
@@ -100,7 +124,9 @@ export default function ProductsPage() {
               type="number"
               placeholder="Kho hàng"
               value={formData.stock}
-              onChange={(e) => setFormData({...formData, stock: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, stock: e.target.value })
+              }
               required
               className="px-4 py-2 border border-gray-300 rounded-lg"
             />
@@ -128,22 +154,41 @@ export default function ProductsPage() {
         <table className="w-full">
           <thead className="bg-gray-100 border-b border-gray-200">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Tên</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Danh Mục</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Giá</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Kho</th>
-              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Hành Động</th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                Tên
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                Danh Mục
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                Giá
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                Kho
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                Hành Động
+              </th>
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map(product => (
-              <tr key={product.id} className="border-b border-gray-200 hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm text-gray-900">{product.name}</td>
-                <td className="px-6 py-4 text-sm text-gray-600">{product.category}</td>
-                <td className="px-6 py-4 text-sm text-gray-900 font-semibold">
-                  {product.price.toLocaleString('vi-VN')}₫
+            {filteredProducts.map((product) => (
+              <tr
+                key={product.id}
+                className="border-b border-gray-200 hover:bg-gray-50"
+              >
+                <td className="px-6 py-4 text-sm text-gray-900">
+                  {product.name}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-900">{product.stock}</td>
+                <td className="px-6 py-4 text-sm text-gray-600">
+                  {product.category}
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-900 font-semibold">
+                  {product.price.toLocaleString("vi-VN")}₫
+                </td>
+                <td className="px-6 py-4 text-sm text-gray-900">
+                  {product.stock}
+                </td>
                 <td className="px-6 py-4 text-sm space-x-3">
                   <button className="text-blue-600 hover:text-blue-700">
                     <Edit size={18} />

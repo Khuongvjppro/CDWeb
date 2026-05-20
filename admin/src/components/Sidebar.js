@@ -1,7 +1,13 @@
-import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Box, ShoppingCart, Users, LogOut } from 'lucide-react';
-import { useAdminAuth } from '../context/AuthContext';
+import React from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Box,
+  ShoppingCart,
+  Users,
+  LogOut,
+} from "lucide-react";
+import { useAdminAuth } from "../context/AuthContext";
 
 export default function Sidebar() {
   const location = useLocation();
@@ -9,15 +15,15 @@ export default function Sidebar() {
   const { logout } = useAdminAuth();
 
   const menuItems = [
-    { path: '/dashboard', icon: LayoutDashboard, label: 'Bảng Điều Khiển' },
-    { path: '/products', icon: Box, label: 'Sản Phẩm' },
-    { path: '/orders', icon: ShoppingCart, label: 'Đơn Hàng' },
-    { path: '/users', icon: Users, label: 'Khách Hàng' },
+    { path: "/dashboard", icon: LayoutDashboard, label: "Bảng Điều Khiển" },
+    { path: "/products", icon: Box, label: "Sản Phẩm" },
+    { path: "/orders", icon: ShoppingCart, label: "Đơn Hàng" },
+    { path: "/users", icon: Users, label: "Khách Hàng" },
   ];
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -30,7 +36,7 @@ export default function Sidebar() {
 
       {/* Menu */}
       <nav className="flex-1 p-4">
-        {menuItems.map(item => {
+        {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = location.pathname === item.path;
           return (
@@ -39,8 +45,8 @@ export default function Sidebar() {
               to={item.path}
               className={`flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition ${
                 isActive
-                  ? 'bg-amber-700 text-white'
-                  : 'text-amber-100 hover:bg-amber-800'
+                  ? "bg-amber-700 text-white"
+                  : "text-amber-100 hover:bg-amber-800"
               }`}
             >
               <Icon size={20} />
