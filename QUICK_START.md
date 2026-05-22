@@ -18,6 +18,14 @@ npm run dev
 # ✓ http://localhost:5000
 ```
 
+### 2.1️⃣ VNPay Sandbox
+
+```bash
+# Copy backend/.env.example to backend/.env
+# Fill VNPAY_HASH_SECRET with your sandbox secret key
+# Set FRONTEND_URL if you deploy frontend elsewhere
+```
+
 ### 3️⃣ Frontend (Terminal mới)
 
 ```bash
@@ -96,6 +104,7 @@ User (Frontend)
     → Xem sản phẩm
     → Thêm giỏ hàng
     → Thanh toán
+    → Chuyển sang VNPay sandbox nếu chọn online payment
     → Xem đơn hàng
     ↓
 API (Backend)

@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { orderAPI } from "../utils/api";
 import { ChevronDown, Package, Truck, CheckCircle } from "lucide-react";
 
 export default function OrdersPage() {
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
   const [orders, setOrders] = useState([]);
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const queryParams = new URLSearchParams(location.search);
+  const paymentState = queryParams.get("payment");
+  const paymentOrderId = queryParams.get("orderId");
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -64,6 +68,15 @@ export default function OrdersPage() {
         <div className="hero-panel-soft p-6 sm:p-8">
           <span className="section-kicker">Orders</span>
           <h1 className="title-xl">Đơn hàng của tôi</h1>
+          {paymentState && (
+            <div
+              className={`mt-5 rounded-2xl px-4 py-3 text-sm font-medium ${paymentState === "success" ? "bg-emerald-50 text-emerald-800" : "bg-red-50 text-red-700"}`}
+            >
+              {paymentState === "success"
+                ? `Thanh toán VNPay thành công${paymentOrderId ? ` cho đơn #${paymentOrderId}` : ""}.`
+                : "Thanh toán VNPay chưa thành công hoặc đã bị hủy."}
+            </div>
+          )}
         </div>
 
         {loading ? (

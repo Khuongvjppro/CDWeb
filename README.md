@@ -156,6 +156,8 @@ npm start
 - `POST /api/orders` - Tạo đơn hàng
 - `GET /api/orders/user` - Đơn hàng của user
 - `GET /api/orders/:id` - Chi tiết đơn hàng
+- `GET /api/orders/vnpay/return` - VNPay return URL
+- `GET /api/orders/vnpay/ipn` - VNPay IPN callback
 
 ## 📱 Mobile Responsive
 
@@ -167,6 +169,7 @@ npm start
 ## 🎯 Hướng Phát Triển
 
 - [ ] Payment gateway (Stripe, Momo)
+- [x] Payment gateway (VNPay sandbox)
 - [ ] Email notifications
 - [ ] Product reviews & ratings
 - [ ] Promotion codes
