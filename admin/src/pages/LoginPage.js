@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAdminAuth } from "../context/AuthContext";
-import axios from "axios";
 import { Mail, Lock } from "lucide-react";
+import { authAPI } from "../utils/api";
 
 export default function LoginPage({ onLoginSuccess }) {
   const navigate = useNavigate();
@@ -28,10 +28,7 @@ export default function LoginPage({ onLoginSuccess }) {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
-        formData,
-      );
+      const response = await authAPI.login(formData.email, formData.password);
 
       const { token, user } = response.data;
 
