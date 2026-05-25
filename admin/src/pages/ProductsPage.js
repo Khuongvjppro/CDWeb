@@ -24,8 +24,12 @@ export default function ProductsPage() {
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [stockFilter, setStockFilter] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(initialForm);
+  const itemsPerPage = 8;
 
   const categories = ["Cà phê", "Trà", "Freeze"];
 
@@ -48,16 +52,32 @@ export default function ProductsPage() {
 
   const filteredProducts = useMemo(() => {
     const keyword = searchTerm.trim().toLowerCase();
-    if (!keyword) {
-      return products;
-    }
+    return products.filter((product) => {
+      const matchesKeyword =
+        !keyword ||
+        [product.name, product.category, product.description, product.product_type]
+          .filter(Boolean)
+          .some((field) => String(field).toLowerCase().includes(keyword));
+      const matchesCategory =
+        categoryFilter === "all" || product.category === categoryFilter;
+      const matchesStock =
+        stockFilter === "all" ||
+        (stockFilter === "inStock" && Number(product.stock) > 0) ||
+        (stockFilter === "outOfStock" && Number(product.stock) === 0);
 
-    return products.filter((product) =>
-      [product.name, product.category, product.description, product.product_type]
-        .filter(Boolean)
-        .some((field) => String(field).toLowerCase().includes(keyword)),
-    );
-  }, [products, searchTerm]);
+      return matchesKeyword && matchesCategory && matchesStock;
+    });
+  }, [products, searchTerm, categoryFilter, stockFilter]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, categoryFilter, stockFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   const openCreateForm = () => {
     setEditingId(null);
@@ -138,11 +158,48 @@ export default function ProductsPage() {
 
   return (
     <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="mb-8 rounded-2xl bg-gradient-to-r from-amber-900 to-amber-700 p-6 text-white shadow-lg">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Quản Lý Sản Phẩm</h1>
-          <p className="text-gray-600 mt-2">Dữ liệu được lấy trực tiếp từ database qua API.</p>
+          <h1 className="text-3xl font-bold">Quản Lý Sản Phẩm</h1>
+          <p className="mt-2 text-amber-100">Dữ liệu được lấy trực tiếp từ database qua API.</p>
         </div>
+      </div>
+
+      <div className="mb-6 grid gap-3 lg:grid-cols-[1.5fr_repeat(2,0.75fr)_auto]">
+        <div className="relative">
+          <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+          <input
+            type="text"
+            placeholder="Tìm theo tên, danh mục, mô tả..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full rounded-lg border border-gray-300 bg-white pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-600"
+          />
+        </div>
+
+        <select
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+          className="rounded-lg border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-600"
+        >
+          <option value="all">Tất cả danh mục</option>
+          {categories.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={stockFilter}
+          onChange={(e) => setStockFilter(e.target.value)}
+          className="rounded-lg border border-gray-300 bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-600"
+        >
+          <option value="all">Tất cả kho</option>
+          <option value="inStock">Còn hàng</option>
+          <option value="outOfStock">Hết hàng</option>
+        </select>
+
         <div className="flex gap-3">
           <button
             onClick={fetchProducts}
@@ -156,21 +213,8 @@ export default function ProductsPage() {
             className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition"
           >
             <Plus size={20} />
-            <span>Thêm Sản Phẩm</span>
+            <span>Thêm</span>
           </button>
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <div className="relative">
-          <Search className="absolute left-3 top-3 text-gray-400" size={20} />
-          <input
-            type="text"
-            placeholder="Tìm kiếm sản phẩm..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-600"
-          />
         </div>
       </div>
 
@@ -211,6 +255,14 @@ export default function ProductsPage() {
         </div>
       )}
 
+      <div className="mb-4 flex items-center justify-between text-sm text-gray-600">
+        <span>
+          Hiển thị {filteredProducts.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1}
+          -{Math.min(currentPage * itemsPerPage, filteredProducts.length)} / {filteredProducts.length}
+        </span>
+        <span>Trang {currentPage} / {totalPages}</span>
+      </div>
+
       <div className="bg-white rounded-lg shadow overflow-hidden">
         {loading ? (
           <div className="p-6 text-center text-gray-600">Đang tải sản phẩm...</div>
@@ -226,7 +278,7 @@ export default function ProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {filteredProducts.map((product) => (
+              {paginatedProducts.map((product) => (
                 <tr key={product.id} className="border-b border-gray-200 hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-900">
                     <div className="font-semibold">{product.name}</div>
@@ -245,7 +297,7 @@ export default function ProductsPage() {
                   </td>
                 </tr>
               ))}
-              {filteredProducts.length === 0 && (
+              {paginatedProducts.length === 0 && (
                 <tr>
                   <td colSpan="5" className="px-6 py-10 text-center text-gray-500">Không có sản phẩm phù hợp.</td>
                 </tr>
@@ -253,6 +305,37 @@ export default function ProductsPage() {
             </tbody>
           </table>
         )}
+      </div>
+
+      <div className="mt-4 flex items-center justify-between">
+        <button
+          type="button"
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+          className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Trang trước
+        </button>
+        <div className="flex items-center gap-2">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
+            <button
+              key={page}
+              type="button"
+              onClick={() => setCurrentPage(page)}
+              className={`h-9 min-w-9 rounded-lg px-3 text-sm font-semibold ${page === currentPage ? "bg-amber-600 text-white" : "border border-gray-200 bg-white text-gray-700"}`}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+          className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Trang sau
+        </button>
       </div>
     </div>
   );

@@ -119,19 +119,13 @@ export default function AdminDashboardPage() {
         <div className="admin-panel-soft mb-8 p-6 sm:p-8">
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <span className="section-kicker">Admin</span>
-              <h1 className="title-xl">admin</h1>
+              <span className="section-kicker">Coffee Shop Admin</span>
+              <h1 className="title-xl">The Coffee Shop</h1>
               <p className="muted-copy mt-2 max-w-2xl">
-                Toàn bộ số liệu dưới đây được lấy trực tiếp từ dữ liệu trong
-                database qua API backend.
+                Số liệu vận hành được lấy trực tiếp từ database
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <span className="admin-chip-soft">Dữ liệu thật từ DB</span>
-              <span className="admin-chip-soft">
-                Cập nhật theo thời gian thực
-              </span>
-            </div>
+            <div className="flex flex-wrap gap-3"></div>
           </div>
         </div>
 
@@ -149,53 +143,54 @@ export default function AdminDashboardPage() {
           <>
             <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
               <StatCard
-                label="Đơn Hàng"
+                label="Đơn cà phê"
                 value={orders.length}
                 accent="#6b3df5"
-                hint="Tổng số đơn trong hệ thống"
+                hint="Tổng số ly/đơn đang ghi nhận"
               />
               <StatCard
-                label="Doanh Thu"
+                label="Doanh thu quán"
                 value={formatCurrency(totalRevenue)}
                 accent="#11b44a"
-                hint="Tổng doanh thu đã ghi nhận"
+                hint="Dòng tiền từ các món đồ uống"
               />
               <StatCard
-                label="Quản Lý Sản Phẩm"
+                label="Thực đơn cà phê"
                 value={products.length}
                 accent="#4b4641"
                 to="/admin/products"
-                hint="Đi tới danh sách sản phẩm"
+                hint="Đồ uống, món mới và bán chạy"
               />
               <StatCard
-                label="Khách Hàng"
+                label="Khách hàng thân thiết"
                 value={users.length}
                 accent="#ef5a00"
-                hint="Tài khoản đã có trong DB"
+                to="/admin/users"
+                hint="Người dùng đã ghé quán"
               />
               <StatCard
-                label="Xử Lý Đơn Hàng"
+                label="Đơn chờ pha chế"
                 value={pendingOrders}
                 accent="#e11212"
                 to="/admin/orders"
-                hint="Đơn đang chờ xử lý"
+                hint="Cần được barista xử lý"
               />
               <StatCard
-                label="Trung Bình/Đơn"
+                label="Giá trị mỗi hóa đơn"
                 value={
                   orders.length
                     ? formatCurrency(totalRevenue / orders.length)
                     : "0₫"
                 }
                 accent="#d59a00"
-                hint="Giá trị trung bình mỗi đơn"
+                hint="Mức chi tiêu trung bình của một order"
               />
             </div>
 
             <div className="mt-8 grid gap-6 lg:grid-cols-2">
               <div className="admin-panel p-6">
                 <h2 className="mb-4 text-lg font-bold text-stone-950">
-                  Doanh thu 6 tháng gần nhất
+                  Doanh thu cà phê 6 tháng gần nhất
                 </h2>
                 <div className="rounded-[1.5rem] border border-amber-100 bg-gradient-to-b from-amber-50/80 to-white p-4">
                   <svg
@@ -281,12 +276,12 @@ export default function AdminDashboardPage() {
 
               <div className="admin-panel p-6">
                 <h2 className="mb-4 text-lg font-bold text-stone-950">
-                  Đơn hàng gần đây
+                  Đơn order gần đây
                 </h2>
                 <div className="space-y-3">
                   {latestOrders.length === 0 ? (
                     <p className="text-sm text-stone-500">
-                      Chưa có đơn hàng nào trong database.
+                      Chưa có đơn order nào trong database.
                     </p>
                   ) : (
                     latestOrders.map((order) => (

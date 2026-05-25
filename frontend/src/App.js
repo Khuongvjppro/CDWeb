@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation,
+  Navigate,
 } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -20,12 +20,11 @@ import CheckoutPage from "./pages/CheckoutPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import AdminProductsPage from "./pages/AdminProductsPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
+import AdminUsersPage from "./pages/AdminUsersPage";
 
 function AppContent() {
-  const location = useLocation();
   const { user, isAuthenticated } = useAuth();
   const isAdmin = isAuthenticated() && user?.role === "admin";
-  const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <CartProvider>
@@ -33,7 +32,14 @@ function AppContent() {
         <Navbar />
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route
+              path="/admin"
+              element={isAdmin ? <Navigate to="/admin/dashboard" replace /> : <AuthPage />}
+            />
+            <Route
+              path="/"
+              element={isAdmin ? <Navigate to="/admin/dashboard" replace /> : <HomePage />}
+            />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/cart" element={<CartPage />} />
@@ -52,6 +58,10 @@ function AppContent() {
             <Route
               path="/admin/orders"
               element={isAdmin ? <AdminOrdersPage /> : <AuthPage />}
+            />
+            <Route
+              path="/admin/users"
+              element={isAdmin ? <AdminUsersPage /> : <AuthPage />}
             />
           </Routes>
         </main>

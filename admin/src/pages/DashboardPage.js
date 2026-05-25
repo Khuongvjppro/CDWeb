@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { BarChart3, ShoppingCart, Users, TrendingUp, DollarSign, Box } from "lucide-react";
+import { Link } from "react-router-dom";
 import { authAPI, orderAPI, productAPI } from "../utils/api";
 
 const currencyFormatter = new Intl.NumberFormat("vi-VN");
@@ -69,8 +70,11 @@ export default function DashboardPage() {
 
   const chartMax = Math.max(...monthlyRevenue, 1);
 
-  const StatCard = ({ icon: Icon, label, value, color }) => (
-    <div className="bg-white rounded-lg shadow p-6">
+  const StatCard = ({ icon: Icon, label, value, color, to }) => (
+    <Link
+      to={to}
+      className="block w-full h-full bg-white rounded-lg shadow p-6 text-left transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-600 cursor-pointer"
+    >
       <div className="flex items-center justify-between gap-4">
         <div>
           <p className="text-gray-600 text-sm mb-1">{label}</p>
@@ -80,7 +84,7 @@ export default function DashboardPage() {
           <Icon size={24} className="text-white" />
         </div>
       </div>
-    </div>
+    </Link>
   );
 
   return (
@@ -94,12 +98,12 @@ export default function DashboardPage() {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-            <StatCard icon={ShoppingCart} label="Đơn Hàng" value={orders.length} color="bg-blue-600" />
-            <StatCard icon={TrendingUp} label="Doanh Thu" value={formatCurrency(totalRevenue)} color="bg-green-600" />
-            <StatCard icon={Box} label="Sản Phẩm" value={products.length} color="bg-purple-600" />
-            <StatCard icon={Users} label="Khách Hàng" value={users.length} color="bg-orange-600" />
-            <StatCard icon={ShoppingCart} label="Chờ Xử Lý" value={pendingOrders} color="bg-red-600" />
-            <StatCard icon={DollarSign} label="Trung Bình/Đơn" value={orders.length ? formatCurrency(totalRevenue / orders.length) : "0₫"} color="bg-yellow-600" />
+            <StatCard icon={ShoppingCart} label="Đơn Hàng" value={orders.length} color="bg-blue-600" to="/orders" />
+            <StatCard icon={TrendingUp} label="Doanh Thu" value={formatCurrency(totalRevenue)} color="bg-green-600" to="/orders" />
+            <StatCard icon={Box} label="Sản Phẩm" value={products.length} color="bg-purple-600" to="/products" />
+            <StatCard icon={Users} label="Khách Hàng" value={users.length} color="bg-orange-600" to="/users" />
+            <StatCard icon={ShoppingCart} label="Chờ Xử Lý" value={pendingOrders} color="bg-red-600" to="/orders" />
+            <StatCard icon={DollarSign} label="Trung Bình/Đơn" value={orders.length ? formatCurrency(totalRevenue / orders.length) : "0₫"} color="bg-yellow-600" to="/orders" />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
