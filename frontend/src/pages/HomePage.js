@@ -17,7 +17,7 @@ export default function HomePage() {
       title: "Matcha Dâu",
       subtitle:
         "Vị ngọt nhẹ, lớp kem mượt và cảm giác chill theo kiểu café Nhật/Hàn.",
-      image: "/images/matcha_dau.png",
+      image: "/Image/matcha_dau.png",
       accent: "from-[#e7d8c9] via-[#f2e4d8] to-[#b55239]",
       cupLeft: "bg-gradient-to-b from-[#e7d8c9] to-[#b55239]",
       cupRight: "bg-gradient-to-b from-[#fff8f2] to-[#e7d8c9]",
@@ -30,7 +30,7 @@ export default function HomePage() {
       title: "Hạnh Nhân",
       subtitle:
         "Hương hạt rang dịu, lớp kem đậm và phong vị cân bằng đầy nghệ.",
-      image: "/images/coffee_hanhnhan.png",
+      image: "/Image/coffee_hanhnhan.png",
       accent: "from-[#f3e6d9] via-[#e7d8c9] to-[#5a3e36]",
       cupLeft: "bg-gradient-to-b from-[#e7d8c9] to-[#5a3e36]",
       cupRight: "bg-gradient-to-b from-[#5a3e36] to-[#b55239]",
@@ -43,7 +43,7 @@ export default function HomePage() {
       title: "Phin Đậm",
       subtitle:
         "Một ly cà phê đậm vị, ấm và rõ hậu vị — đúng vibe Instagram aesthetic.",
-      image: "/images/bo.png",
+      image: "/Image/bo.png",
       accent: "from-[#fff8f2] via-[#e7d8c9] to-[#b55239]",
       cupLeft: "bg-gradient-to-b from-[#fff8f2] to-[#b55239]",
       cupRight: "bg-gradient-to-b from-[#5a3e36] to-[#e7d8c9]",
