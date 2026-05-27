@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation,
+  Navigate,
 } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
@@ -20,15 +20,14 @@ import CheckoutPage from "./pages/CheckoutPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
 import AdminProductsPage from "./pages/AdminProductsPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
+import AdminUsersPage from "./pages/AdminUsersPage";
 import AboutHighlandsPage from "./pages/AboutHighlandsPage";
 import NewsPage from "./pages/NewsPage";
 import SupportPage from "./pages/SupportPage";
 
 function AppContent() {
-  const location = useLocation();
   const { user, isAuthenticated } = useAuth();
   const isAdmin = isAuthenticated() && user?.role === "admin";
-  const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <CartProvider>
@@ -36,6 +35,26 @@ function AppContent() {
         <Navbar />
         <main className="flex-grow">
           <Routes>
+            <Route
+              path="/admin"
+              element={
+                isAdmin ? (
+                  <Navigate to="/admin/dashboard" replace />
+                ) : (
+                  <AuthPage />
+                )
+              }
+            />
+            <Route
+              path="/"
+              element={
+                isAdmin ? (
+                  <Navigate to="/admin/dashboard" replace />
+                ) : (
+                  <HomePage />
+                )
+              }
+            />
             <Route path="/" element={<HomePage />} />
             <Route path="/about-highlands" element={<AboutHighlandsPage />} />
             <Route path="/news" element={<NewsPage />} />
@@ -58,6 +77,10 @@ function AppContent() {
             <Route
               path="/admin/orders"
               element={isAdmin ? <AdminOrdersPage /> : <AuthPage />}
+            />
+            <Route
+              path="/admin/users"
+              element={isAdmin ? <AdminUsersPage /> : <AuthPage />}
             />
           </Routes>
         </main>

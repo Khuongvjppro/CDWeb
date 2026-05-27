@@ -214,17 +214,17 @@ h6 {
     background:
       radial-gradient(
         circle at 12% 14%,
-        rgba(107, 61, 245, 0.12),
+        rgba(181, 82, 57, 0.14),
         transparent 0 16%
       ),
       radial-gradient(
         circle at 86% 10%,
-        rgba(17, 180, 74, 0.12),
+        rgba(213, 154, 0, 0.14),
         transparent 0 15%
       ),
       radial-gradient(
         circle at 82% 84%,
-        rgba(239, 90, 0, 0.1),
+        rgba(90, 62, 54, 0.12),
         transparent 0 16%
       );
   }

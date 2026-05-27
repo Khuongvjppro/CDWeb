@@ -2,14 +2,31 @@ const pool = require("../config/database");
 
 class Order {
   static async createOrder(orderData) {
-    const { userId, totalAmount, status, shippingAddress } = orderData;
+    const {
+      userId,
+      totalAmount,
+      status,
+      shippingAddress,
+      paymentMethod,
+      paymentStatus,
+      vnpTxnRef,
+      vnpTransactionNo,
+      vnpResponseCode,
+      vnpPayDate,
+    } = orderData;
     const query =
-      "INSERT INTO orders (userId, totalAmount, status, shippingAddress, createdAt) VALUES (?, ?, ?, ?, NOW())";
+      "INSERT INTO orders (userId, totalAmount, status, shippingAddress, paymentMethod, paymentStatus, vnpTxnRef, vnpTransactionNo, vnpResponseCode, vnpPayDate, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
     const result = await pool.execute(query, [
       userId,
       totalAmount,
       status,
       shippingAddress,
+      paymentMethod || "vnpay",
+      paymentStatus || "pending",
+      vnpTxnRef || null,
+      vnpTransactionNo || null,
+      vnpResponseCode || null,
+      vnpPayDate || null,
     ]);
     return result[0];
   }
@@ -36,6 +53,29 @@ class Order {
   static async updateOrderStatus(id, status) {
     const query = "UPDATE orders SET status = ? WHERE id = ?";
     const result = await pool.execute(query, [status, id]);
+    return result[0];
+  }
+
+  static async updatePaymentInfo(id, paymentInfo) {
+    const {
+      status,
+      paymentStatus,
+      vnpTxnRef,
+      vnpTransactionNo,
+      vnpResponseCode,
+      vnpPayDate,
+    } = paymentInfo;
+    const query =
+      "UPDATE orders SET status = ?, paymentStatus = ?, vnpTxnRef = ?, vnpTransactionNo = ?, vnpResponseCode = ?, vnpPayDate = ? WHERE id = ?";
+    const result = await pool.execute(query, [
+      status,
+      paymentStatus,
+      vnpTxnRef || null,
+      vnpTransactionNo || null,
+      vnpResponseCode || null,
+      vnpPayDate || null,
+      id,
+    ]);
     return result[0];
   }
 

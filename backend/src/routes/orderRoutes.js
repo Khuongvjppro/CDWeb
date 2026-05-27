@@ -3,6 +3,9 @@ const router = express.Router();
 const orderController = require("../controllers/orderController");
 const { authenticateToken, authorizeAdmin } = require("../middleware/auth");
 
+router.get("/vnpay/return", orderController.vnpayReturn);
+router.get("/vnpay/ipn", orderController.vnpayIpn);
+
 // User routes
 router.post("/", authenticateToken, orderController.createOrder);
 router.get("/user", authenticateToken, orderController.getUserOrders);
