@@ -21,6 +21,9 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 import AdminProductsPage from "./pages/AdminProductsPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
+import AboutHighlandsPage from "./pages/AboutHighlandsPage";
+import NewsPage from "./pages/NewsPage";
+import SupportPage from "./pages/SupportPage";
 
 function AppContent() {
   const { user, isAuthenticated } = useAuth();
@@ -52,6 +55,10 @@ function AppContent() {
                 )
               }
             />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about-highlands" element={<AboutHighlandsPage />} />
+            <Route path="/news" element={<NewsPage />} />
+            <Route path="/support" element={<SupportPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
             <Route path="/cart" element={<CartPage />} />

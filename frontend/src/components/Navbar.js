@@ -123,19 +123,19 @@ export default function Navbar() {
               Thực đơn
             </Link>
             <Link
-              to="/"
+              to="/about-highlands"
               className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
             >
               Về Highlands
             </Link>
             <Link
-              to="/products"
+              to="/news"
               className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
             >
               Tin tức
             </Link>
             <Link
-              to="/orders"
+              to="/support"
               className="rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
             >
               Hỗ trợ
@@ -204,21 +204,21 @@ export default function Navbar() {
                 Thực đơn
               </Link>
               <Link
-                to="/"
+                to="/about-highlands"
                 className="block rounded-2xl px-4 py-3 text-white transition hover:bg-white/10"
                 onClick={() => setIsOpen(false)}
               >
                 Về Highlands
               </Link>
               <Link
-                to="/products"
+                to="/news"
                 className="block rounded-2xl px-4 py-3 text-white transition hover:bg-white/10"
                 onClick={() => setIsOpen(false)}
               >
                 Tin tức
               </Link>
               <Link
-                to="/orders"
+                to="/support"
                 className="block rounded-2xl px-4 py-3 text-white transition hover:bg-white/10"
                 onClick={() => setIsOpen(false)}
               >
