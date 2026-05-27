@@ -40,7 +40,9 @@ export default function ProductsPage() {
       const response = await productAPI.getAll();
       setProducts(response.data || []);
     } catch (fetchError) {
-      setError(fetchError.response?.data?.error || "Không thể tải danh sách sản phẩm");
+      setError(
+        fetchError.response?.data?.error || "Không thể tải danh sách sản phẩm",
+      );
     } finally {
       setLoading(false);
     }
@@ -55,7 +57,12 @@ export default function ProductsPage() {
     return products.filter((product) => {
       const matchesKeyword =
         !keyword ||
-        [product.name, product.category, product.description, product.product_type]
+        [
+          product.name,
+          product.category,
+          product.description,
+          product.product_type,
+        ]
           .filter(Boolean)
           .some((field) => String(field).toLowerCase().includes(keyword));
       const matchesCategory =
@@ -73,7 +80,10 @@ export default function ProductsPage() {
     setCurrentPage(1);
   }, [searchTerm, categoryFilter, stockFilter]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / itemsPerPage),
+  );
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
@@ -92,7 +102,10 @@ export default function ProductsPage() {
       description: product.description || "",
       category: product.category || "Cà phê",
       price: String(product.price ?? ""),
-      sale_price: product.sale_price !== null && product.sale_price !== undefined ? String(product.sale_price) : "",
+      sale_price:
+        product.sale_price !== null && product.sale_price !== undefined
+          ? String(product.sale_price)
+          : "",
       image_url: product.image || "",
       stock: String(product.stock ?? 0),
       brand: product.brand || "Coffee Shop",
@@ -121,7 +134,8 @@ export default function ProductsPage() {
       const payload = {
         ...formData,
         price: Number(formData.price),
-        sale_price: formData.sale_price === "" ? null : Number(formData.sale_price),
+        sale_price:
+          formData.sale_price === "" ? null : Number(formData.sale_price),
         stock: Number(formData.stock),
       };
 
@@ -161,7 +175,9 @@ export default function ProductsPage() {
       <div className="mb-8 rounded-2xl bg-gradient-to-r from-amber-900 to-amber-700 p-6 text-white shadow-lg">
         <div>
           <h1 className="text-3xl font-bold">Quản Lý Sản Phẩm</h1>
-          <p className="mt-2 text-amber-100">Dữ liệu được lấy trực tiếp từ database qua API.</p>
+          <p className="mt-2 text-amber-100">
+            Dữ liệu được lấy trực tiếp từ database qua API.
+          </p>
         </div>
       </div>
 
@@ -218,38 +234,157 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {error && <div className="mb-6 bg-red-50 border border-red-200 text-red-700 rounded-lg p-4">{error}</div>}
+      {error && (
+        <div className="mb-6 bg-red-50 border border-red-200 text-red-700 rounded-lg p-4">
+          {error}
+        </div>
+      )}
 
       {showForm && (
         <div className="bg-white rounded-lg shadow p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold">{editingId ? "Sửa Sản Phẩm" : "Thêm Sản Phẩm Mới"}</h2>
-            <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setFormData(initialForm); }} className="text-gray-500 hover:text-gray-900">Đóng</button>
+            <h2 className="text-xl font-bold">
+              {editingId ? "Sửa Sản Phẩm" : "Thêm Sản Phẩm Mới"}
+            </h2>
+            <button
+              type="button"
+              onClick={() => {
+                setShowForm(false);
+                setEditingId(null);
+                setFormData(initialForm);
+              }}
+              className="text-gray-500 hover:text-gray-900"
+            >
+              Đóng
+            </button>
           </div>
           <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-            <input name="name" type="text" placeholder="Tên sản phẩm" value={formData.name} onChange={handleChange} required className="col-span-2 px-4 py-2 border border-gray-300 rounded-lg" />
-            <input name="description" type="text" placeholder="Mô tả" value={formData.description} onChange={handleChange} className="col-span-2 px-4 py-2 border border-gray-300 rounded-lg" />
-            <select name="category" value={formData.category} onChange={handleChange} className="px-4 py-2 border border-gray-300 rounded-lg">
-              {categories.map((category) => <option key={category} value={category}>{category}</option>)}
+            <input
+              name="name"
+              type="text"
+              placeholder="Tên sản phẩm"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              className="col-span-2 px-4 py-2 border border-gray-300 rounded-lg"
+            />
+            <input
+              name="description"
+              type="text"
+              placeholder="Mô tả"
+              value={formData.description}
+              onChange={handleChange}
+              className="col-span-2 px-4 py-2 border border-gray-300 rounded-lg"
+            />
+            <select
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              className="px-4 py-2 border border-gray-300 rounded-lg"
+            >
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
-            <input name="product_type" type="text" placeholder="Loại sản phẩm" value={formData.product_type} onChange={handleChange} className="px-4 py-2 border border-gray-300 rounded-lg" />
-            <input name="price" type="number" min="0" placeholder="Giá" value={formData.price} onChange={handleChange} required className="px-4 py-2 border border-gray-300 rounded-lg" />
-            <input name="sale_price" type="number" min="0" placeholder="Giá khuyến mãi" value={formData.sale_price} onChange={handleChange} className="px-4 py-2 border border-gray-300 rounded-lg" />
-            <input name="image_url" type="text" placeholder="Ảnh / URL" value={formData.image_url} onChange={handleChange} className="col-span-2 px-4 py-2 border border-gray-300 rounded-lg" />
-            <input name="stock" type="number" min="0" placeholder="Kho hàng" value={formData.stock} onChange={handleChange} className="px-4 py-2 border border-gray-300 rounded-lg" />
-            <input name="brand" type="text" placeholder="Thương hiệu" value={formData.brand} onChange={handleChange} className="px-4 py-2 border border-gray-300 rounded-lg" />
-            <input name="size" type="text" placeholder="Size" value={formData.size} onChange={handleChange} className="px-4 py-2 border border-gray-300 rounded-lg" />
+            <input
+              name="product_type"
+              type="text"
+              placeholder="Loại sản phẩm"
+              value={formData.product_type}
+              onChange={handleChange}
+              className="px-4 py-2 border border-gray-300 rounded-lg"
+            />
+            <input
+              name="price"
+              type="number"
+              min="0"
+              placeholder="Giá"
+              value={formData.price}
+              onChange={handleChange}
+              required
+              className="px-4 py-2 border border-gray-300 rounded-lg"
+            />
+            <input
+              name="sale_price"
+              type="number"
+              min="0"
+              placeholder="Giá khuyến mãi"
+              value={formData.sale_price}
+              onChange={handleChange}
+              className="px-4 py-2 border border-gray-300 rounded-lg"
+            />
+            <input
+              name="image_url"
+              type="text"
+              placeholder="Ảnh / URL"
+              value={formData.image_url}
+              onChange={handleChange}
+              className="col-span-2 px-4 py-2 border border-gray-300 rounded-lg"
+            />
+            <input
+              name="stock"
+              type="number"
+              min="0"
+              placeholder="Kho hàng"
+              value={formData.stock}
+              onChange={handleChange}
+              className="px-4 py-2 border border-gray-300 rounded-lg"
+            />
+            <input
+              name="brand"
+              type="text"
+              placeholder="Thương hiệu"
+              value={formData.brand}
+              onChange={handleChange}
+              className="px-4 py-2 border border-gray-300 rounded-lg"
+            />
+            <input
+              name="size"
+              type="text"
+              placeholder="Size"
+              value={formData.size}
+              onChange={handleChange}
+              className="px-4 py-2 border border-gray-300 rounded-lg"
+            />
             <label className="flex items-center gap-2 text-sm text-gray-700">
-              <input name="is_featured" type="checkbox" checked={formData.is_featured} onChange={handleChange} />
+              <input
+                name="is_featured"
+                type="checkbox"
+                checked={formData.is_featured}
+                onChange={handleChange}
+              />
               Nổi bật
             </label>
             <label className="flex items-center gap-2 text-sm text-gray-700">
-              <input name="is_new" type="checkbox" checked={formData.is_new} onChange={handleChange} />
+              <input
+                name="is_new"
+                type="checkbox"
+                checked={formData.is_new}
+                onChange={handleChange}
+              />
               Mới
             </label>
             <div className="col-span-2 flex space-x-4">
-              <button type="submit" disabled={saving} className="flex-1 bg-green-600 disabled:bg-gray-400 text-white py-2 rounded-lg transition">{saving ? "Đang lưu..." : "Lưu"}</button>
-              <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setFormData(initialForm); }} className="flex-1 bg-gray-400 text-white py-2 rounded-lg transition">Hủy</button>
+              <button
+                type="submit"
+                disabled={saving}
+                className="flex-1 bg-green-600 disabled:bg-gray-400 text-white py-2 rounded-lg transition"
+              >
+                {saving ? "Đang lưu..." : "Lưu"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowForm(false);
+                  setEditingId(null);
+                  setFormData(initialForm);
+                }}
+                className="flex-1 bg-gray-400 text-white py-2 rounded-lg transition"
+              >
+                Hủy
+              </button>
             </div>
           </form>
         </div>
@@ -257,41 +392,78 @@ export default function ProductsPage() {
 
       <div className="mb-4 flex items-center justify-between text-sm text-gray-600">
         <span>
-          Hiển thị {filteredProducts.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1}
-          -{Math.min(currentPage * itemsPerPage, filteredProducts.length)} / {filteredProducts.length}
+          Hiển thị{" "}
+          {filteredProducts.length === 0
+            ? 0
+            : (currentPage - 1) * itemsPerPage + 1}
+          -{Math.min(currentPage * itemsPerPage, filteredProducts.length)} /{" "}
+          {filteredProducts.length}
         </span>
-        <span>Trang {currentPage} / {totalPages}</span>
+        <span>
+          Trang {currentPage} / {totalPages}
+        </span>
       </div>
 
       <div className="bg-white rounded-lg shadow overflow-hidden">
         {loading ? (
-          <div className="p-6 text-center text-gray-600">Đang tải sản phẩm...</div>
+          <div className="p-6 text-center text-gray-600">
+            Đang tải sản phẩm...
+          </div>
         ) : (
           <table className="w-full">
             <thead className="bg-gray-100 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Tên</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Danh Mục</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Giá</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Kho</th>
-                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">Hành Động</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                  Tên
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                  Danh Mục
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                  Giá
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                  Kho
+                </th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                  Hành Động
+                </th>
               </tr>
             </thead>
             <tbody>
               {paginatedProducts.map((product) => (
-                <tr key={product.id} className="border-b border-gray-200 hover:bg-gray-50">
+                <tr
+                  key={product.id}
+                  className="border-b border-gray-200 hover:bg-gray-50"
+                >
                   <td className="px-6 py-4 text-sm text-gray-900">
                     <div className="font-semibold">{product.name}</div>
-                    <div className="text-xs text-gray-500">{product.product_type || product.description || ""}</div>
+                    <div className="text-xs text-gray-500">
+                      {product.product_type || product.description || ""}
+                    </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{product.category || "-"}</td>
-                  <td className="px-6 py-4 text-sm text-gray-900 font-semibold">{Number(product.price || 0).toLocaleString("vi-VN")}₫</td>
-                  <td className="px-6 py-4 text-sm text-gray-900">{product.stock}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {product.category || "-"}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 font-semibold">
+                    {Number(product.price || 0).toLocaleString("vi-VN")}₫
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    {product.stock}
+                  </td>
                   <td className="px-6 py-4 text-sm space-x-3">
-                    <button onClick={() => openEditForm(product)} className="text-blue-600 hover:text-blue-700" title="Sửa">
+                    <button
+                      onClick={() => openEditForm(product)}
+                      className="text-blue-600 hover:text-blue-700"
+                      title="Sửa"
+                    >
                       <Edit size={18} />
                     </button>
-                    <button onClick={() => handleDelete(product.id)} className="text-red-600 hover:text-red-700" title="Xóa">
+                    <button
+                      onClick={() => handleDelete(product.id)}
+                      className="text-red-600 hover:text-red-700"
+                      title="Xóa"
+                    >
                       <Trash2 size={18} />
                     </button>
                   </td>
@@ -299,7 +471,12 @@ export default function ProductsPage() {
               ))}
               {paginatedProducts.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="px-6 py-10 text-center text-gray-500">Không có sản phẩm phù hợp.</td>
+                  <td
+                    colSpan="5"
+                    className="px-6 py-10 text-center text-gray-500"
+                  >
+                    Không có sản phẩm phù hợp.
+                  </td>
                 </tr>
               )}
             </tbody>
@@ -317,21 +494,25 @@ export default function ProductsPage() {
           Trang trước
         </button>
         <div className="flex items-center gap-2">
-          {Array.from({ length: totalPages }, (_, index) => index + 1).map((page) => (
-            <button
-              key={page}
-              type="button"
-              onClick={() => setCurrentPage(page)}
-              className={`h-9 min-w-9 rounded-lg px-3 text-sm font-semibold ${page === currentPage ? "bg-amber-600 text-white" : "border border-gray-200 bg-white text-gray-700"}`}
-            >
-              {page}
-            </button>
-          ))}
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+            (page) => (
+              <button
+                key={page}
+                type="button"
+                onClick={() => setCurrentPage(page)}
+                className={`h-9 min-w-9 rounded-lg px-3 text-sm font-semibold ${page === currentPage ? "bg-amber-600 text-white" : "border border-gray-200 bg-white text-gray-700"}`}
+              >
+                {page}
+              </button>
+            ),
+          )}
         </div>
         <button
           type="button"
           disabled={currentPage === totalPages}
-          onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+          onClick={() =>
+            setCurrentPage((page) => Math.min(totalPages, page + 1))
+          }
           className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50"
         >
           Trang sau

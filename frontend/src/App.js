@@ -34,11 +34,23 @@ function AppContent() {
           <Routes>
             <Route
               path="/admin"
-              element={isAdmin ? <Navigate to="/admin/dashboard" replace /> : <AuthPage />}
+              element={
+                isAdmin ? (
+                  <Navigate to="/admin/dashboard" replace />
+                ) : (
+                  <AuthPage />
+                )
+              }
             />
             <Route
               path="/"
-              element={isAdmin ? <Navigate to="/admin/dashboard" replace /> : <HomePage />}
+              element={
+                isAdmin ? (
+                  <Navigate to="/admin/dashboard" replace />
+                ) : (
+                  <HomePage />
+                )
+              }
             />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />

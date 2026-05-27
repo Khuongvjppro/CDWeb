@@ -1,13 +1,22 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { BarChart3, ShoppingCart, Users, TrendingUp, DollarSign, Box } from "lucide-react";
+import {
+  BarChart3,
+  ShoppingCart,
+  Users,
+  TrendingUp,
+  DollarSign,
+  Box,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { authAPI, orderAPI, productAPI } from "../utils/api";
 
 const currencyFormatter = new Intl.NumberFormat("vi-VN");
 
-const formatCurrency = (value) => `${currencyFormatter.format(Number(value) || 0)}₫`;
+const formatCurrency = (value) =>
+  `${currencyFormatter.format(Number(value) || 0)}₫`;
 
-const getOrderDate = (order) => order.createdAt || order.created_at || order.date || Date.now();
+const getOrderDate = (order) =>
+  order.createdAt || order.created_at || order.date || Date.now();
 
 export default function DashboardPage() {
   const [products, setProducts] = useState([]);
@@ -22,17 +31,21 @@ export default function DashboardPage() {
         setLoading(true);
         setError("");
 
-        const [productsResponse, ordersResponse, usersResponse] = await Promise.all([
-          productAPI.getAll(),
-          orderAPI.getAll(),
-          authAPI.getUsers(),
-        ]);
+        const [productsResponse, ordersResponse, usersResponse] =
+          await Promise.all([
+            productAPI.getAll(),
+            orderAPI.getAll(),
+            authAPI.getUsers(),
+          ]);
 
         setProducts(productsResponse.data || []);
         setOrders(ordersResponse.data || []);
         setUsers(usersResponse.data || []);
       } catch (fetchError) {
-        setError(fetchError.response?.data?.error || "Không thể tải dữ liệu quản trị từ database");
+        setError(
+          fetchError.response?.data?.error ||
+            "Không thể tải dữ liệu quản trị từ database",
+        );
       } finally {
         setLoading(false);
       }
@@ -42,7 +55,8 @@ export default function DashboardPage() {
   }, []);
 
   const totalRevenue = useMemo(
-    () => orders.reduce((sum, order) => sum + (Number(order.totalAmount) || 0), 0),
+    () =>
+      orders.reduce((sum, order) => sum + (Number(order.totalAmount) || 0), 0),
     [orders],
   );
 
@@ -52,7 +66,10 @@ export default function DashboardPage() {
   );
 
   const latestOrders = useMemo(
-    () => [...orders].sort((a, b) => new Date(getOrderDate(b)) - new Date(getOrderDate(a))).slice(0, 4),
+    () =>
+      [...orders]
+        .sort((a, b) => new Date(getOrderDate(b)) - new Date(getOrderDate(a)))
+        .slice(0, 4),
     [orders],
   );
 
@@ -62,7 +79,10 @@ export default function DashboardPage() {
         const monthIndex = new Date().getMonth() - (5 - index);
         const normalizedMonth = (monthIndex + 12) % 12;
         return orders
-          .filter((order) => new Date(getOrderDate(order)).getMonth() === normalizedMonth)
+          .filter(
+            (order) =>
+              new Date(getOrderDate(order)).getMonth() === normalizedMonth,
+          )
           .reduce((sum, order) => sum + (Number(order.totalAmount) || 0), 0);
       }),
     [orders],
@@ -92,18 +112,62 @@ export default function DashboardPage() {
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Bảng Điều Khiển</h1>
 
       {loading ? (
-        <div className="bg-white rounded-lg shadow p-8 text-center text-gray-600">Đang tải dữ liệu...</div>
+        <div className="bg-white rounded-lg shadow p-8 text-center text-gray-600">
+          Đang tải dữ liệu...
+        </div>
       ) : error ? (
-        <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4">{error}</div>
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg p-4">
+          {error}
+        </div>
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-            <StatCard icon={ShoppingCart} label="Đơn Hàng" value={orders.length} color="bg-blue-600" to="/orders" />
-            <StatCard icon={TrendingUp} label="Doanh Thu" value={formatCurrency(totalRevenue)} color="bg-green-600" to="/orders" />
-            <StatCard icon={Box} label="Sản Phẩm" value={products.length} color="bg-purple-600" to="/products" />
-            <StatCard icon={Users} label="Khách Hàng" value={users.length} color="bg-orange-600" to="/users" />
-            <StatCard icon={ShoppingCart} label="Chờ Xử Lý" value={pendingOrders} color="bg-red-600" to="/orders" />
-            <StatCard icon={DollarSign} label="Trung Bình/Đơn" value={orders.length ? formatCurrency(totalRevenue / orders.length) : "0₫"} color="bg-yellow-600" to="/orders" />
+            <StatCard
+              icon={ShoppingCart}
+              label="Đơn Hàng"
+              value={orders.length}
+              color="bg-blue-600"
+              to="/orders"
+            />
+            <StatCard
+              icon={TrendingUp}
+              label="Doanh Thu"
+              value={formatCurrency(totalRevenue)}
+              color="bg-green-600"
+              to="/orders"
+            />
+            <StatCard
+              icon={Box}
+              label="Sản Phẩm"
+              value={products.length}
+              color="bg-purple-600"
+              to="/products"
+            />
+            <StatCard
+              icon={Users}
+              label="Khách Hàng"
+              value={users.length}
+              color="bg-orange-600"
+              to="/users"
+            />
+            <StatCard
+              icon={ShoppingCart}
+              label="Chờ Xử Lý"
+              value={pendingOrders}
+              color="bg-red-600"
+              to="/orders"
+            />
+            <StatCard
+              icon={DollarSign}
+              label="Trung Bình/Đơn"
+              value={
+                orders.length
+                  ? formatCurrency(totalRevenue / orders.length)
+                  : "0₫"
+              }
+              color="bg-yellow-600"
+              to="/orders"
+            />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -129,16 +193,27 @@ export default function DashboardPage() {
             </div>
 
             <div className="bg-white rounded-lg shadow p-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Đơn Hàng Gần Đây</h2>
+              <h2 className="text-lg font-bold text-gray-900 mb-4">
+                Đơn Hàng Gần Đây
+              </h2>
               <div className="space-y-3">
                 {latestOrders.length === 0 ? (
-                  <p className="text-sm text-gray-600">Chưa có đơn hàng nào trong database.</p>
+                  <p className="text-sm text-gray-600">
+                    Chưa có đơn hàng nào trong database.
+                  </p>
                 ) : (
                   latestOrders.map((order) => (
-                    <div key={order.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div
+                      key={order.id}
+                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                    >
                       <div>
-                        <p className="font-semibold text-gray-900">Đơn hàng #{order.id}</p>
-                        <p className="text-sm text-gray-600">{formatCurrency(order.totalAmount)}</p>
+                        <p className="font-semibold text-gray-900">
+                          Đơn hàng #{order.id}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {formatCurrency(order.totalAmount)}
+                        </p>
                       </div>
                       <span className="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-900">
                         {order.status}

@@ -53,7 +53,10 @@ export default function AdminUsersPage() {
     setCurrentPage(1);
   }, [searchTerm, roleFilter]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / itemsPerPage));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredUsers.length / itemsPerPage),
+  );
   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
@@ -85,7 +88,10 @@ export default function AdminUsersPage() {
               }}
               className="btn-primary inline-flex items-center gap-2 px-5 py-3"
             >
-              <RefreshCw size={16} className={refreshing ? "animate-spin" : ""} />
+              <RefreshCw
+                size={16}
+                className={refreshing ? "animate-spin" : ""}
+              />
               Làm mới
             </button>
           </div>
@@ -124,8 +130,12 @@ export default function AdminUsersPage() {
 
         <div className="mb-4 flex items-center justify-between text-sm text-stone-500">
           <span>
-            Hiển thị {filteredUsers.length === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1}
-            -{Math.min(currentPage * itemsPerPage, filteredUsers.length)} / {filteredUsers.length}
+            Hiển thị{" "}
+            {filteredUsers.length === 0
+              ? 0
+              : (currentPage - 1) * itemsPerPage + 1}
+            -{Math.min(currentPage * itemsPerPage, filteredUsers.length)} /{" "}
+            {filteredUsers.length}
           </span>
           <span>
             Trang {currentPage} / {totalPages}
@@ -227,7 +237,9 @@ export default function AdminUsersPage() {
           <button
             type="button"
             disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+            onClick={() =>
+              setCurrentPage((page) => Math.min(totalPages, page + 1))
+            }
             className="rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 transition hover:border-stone-300 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Trang sau
