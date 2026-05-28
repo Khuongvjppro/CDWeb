@@ -146,6 +146,7 @@ export default function AdminDashboardPage() {
                 label="Đơn cà phê"
                 value={orders.length}
                 accent="#6b3df5"
+                to="/admin/orders"
                 hint="Tổng số ly/đơn đang ghi nhận"
               />
               <StatCard
