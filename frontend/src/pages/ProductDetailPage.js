@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ShoppingCart, Star, ArrowLeft, Minus, Plus } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { productAPI } from "../utils/api";
+import { getDefaultImageSrc, getProductImageSrc } from "../utils/productImage";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -19,7 +20,7 @@ export default function ProductDetailPage() {
     "Cold Brew": "Cold Brew",
   };
 
-  const defaultImage = `${process.env.PUBLIC_URL || ''}/Image%20product/C%C3%A0%20Ph%C3%AA%20%C4%90en.png`;
+  const imageSrc = getProductImageSrc(product);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -107,7 +108,7 @@ export default function ProductDetailPage() {
                 {categoryLabels[product.category] || product.category}
               </div>
               <img
-                src={imgError ? defaultImage : (product.image || defaultImage)}
+                src={imgError ? getDefaultImageSrc() : imageSrc}
                 alt={product.name}
                 onError={() => setImgError(true)}
                 className="max-w-[90%] max-h-[300px] object-contain drop-shadow-[0_18px_40px_rgba(88,46,18,0.2)]"

@@ -2,13 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Trash2, Plus, Minus, ArrowLeft } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import { getDefaultImageSrc, getProductImageSrc } from "../utils/productImage";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, getTotalAmount, clearCart } =
     useCart();
   const [imgErrors, setImgErrors] = React.useState({});
 
-  const defaultImage = `${process.env.PUBLIC_URL || ''}/Image%20product/C%C3%A0%20Ph%C3%AA%20%C4%90en.png`;
+  const defaultImage = getDefaultImageSrc();
 
   const handleImageError = (itemId) => {
     setImgErrors((prev) => ({ ...prev, [itemId]: true }));
@@ -60,7 +61,11 @@ export default function CartPage() {
                 <div className="flex items-center gap-4">
                   <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-[radial-gradient(circle_at_top,_rgba(255,247,237,0.95),_rgba(251,191,36,0.16),_rgba(120,53,15,0.08))] shadow-inner">
                     <img
-                      src={imgErrors[item.id] ? defaultImage : (item.image || defaultImage)}
+                      src={
+                        imgErrors[item.id]
+                          ? defaultImage
+                          : getProductImageSrc(item)
+                      }
                       alt={item.name}
                       onError={() => handleImageError(item.id)}
                       className="h-full w-full object-contain p-1"

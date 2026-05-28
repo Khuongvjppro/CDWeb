@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Star } from "lucide-react";
+import { getDefaultImageSrc, getProductImageSrc } from "../utils/productImage";
 
 export default function ProductCard({ product, onAddToCart }) {
   const navigate = useNavigate();
@@ -15,9 +16,8 @@ export default function ProductCard({ product, onAddToCart }) {
     navigate(`/product/${product.id}`);
   };
 
-  const defaultImage = `${process.env.PUBLIC_URL || ''}/Image%20product/C%C3%A0%20Ph%C3%AA%20%C4%90en.png`;
-  const imageSrc = (product.image || defaultImage);
-  const displayImageSrc = imgError ? defaultImage : imageSrc;
+  const imageSrc = getProductImageSrc(product);
+  const displayImageSrc = imgError ? getDefaultImageSrc() : imageSrc;
 
   const displayDescription =
     product.description ||
