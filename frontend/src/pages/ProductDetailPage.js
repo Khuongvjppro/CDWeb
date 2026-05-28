@@ -11,12 +11,15 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [imgError, setImgError] = useState(false);
   const categoryLabels = {
     "Ca phe sua": "Cà Phê Sữa",
     Espresso: "Espresso",
     Latte: "Latte",
     "Cold Brew": "Cold Brew",
   };
+
+  const defaultImage = `${process.env.PUBLIC_URL || ''}/Image%20product/C%C3%A0%20Ph%C3%AA%20%C4%90en.png`;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -33,6 +36,10 @@ export default function ProductDetailPage() {
 
     fetchProduct();
   }, [id]);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [product]);
 
   const handleAddToCart = () => {
     if (product) {
@@ -99,9 +106,12 @@ export default function ProductDetailPage() {
               <div className="absolute left-6 top-6 rounded-full bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-amber-900 shadow-sm">
                 {categoryLabels[product.category] || product.category}
               </div>
-              <div className="relative text-[8rem] drop-shadow-[0_18px_40px_rgba(88,46,18,0.2)]">
-                ☕
-              </div>
+              <img
+                src={imgError ? defaultImage : (product.image || defaultImage)}
+                alt={product.name}
+                onError={() => setImgError(true)}
+                className="max-w-[90%] max-h-[300px] object-contain drop-shadow-[0_18px_40px_rgba(88,46,18,0.2)]"
+              />
             </div>
 
             <div className="p-6 sm:p-8 lg:p-10">

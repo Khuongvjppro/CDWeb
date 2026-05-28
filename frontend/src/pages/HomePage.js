@@ -140,11 +140,11 @@ export default function HomePage() {
           <div className="section-heading">
             <span className="eyebrow">Why us</span>
             <h2 className="title-xl">
-              Thiết kế tập trung vào cảm giác cao cấp
+              Tụ điểm cà phê dành cho người yêu vị đậm
             </h2>
             <p className="muted-copy">
-              Mỗi khối UI đều có khoảng thở, độ tương phản tốt và viền mềm để
-              tạo cảm giác hiện đại, sang và dễ đọc trên desktop lẫn mobile.
+              Hạt rang mới mỗi ngày, công thức cân chỉnh thủ công, và trải nghiệm
+              mượt mà từ lần chạm đầu tiên.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
@@ -153,11 +153,10 @@ export default function HomePage() {
                 <Zap size={28} />
               </div>
               <h3 className="mt-4 text-xl font-bold text-stone-900">
-                Tươi ngay mỗi ngày
+                Rang mới mỗi ngày
               </h3>
               <p className="mt-3 leading-7 text-stone-600">
-                Tông màu ấm, shadow mềm và layout thoáng giúp nội dung không bị
-                “đè” lên nhau.
+                Hạt chọn lọc, rang vừa độ để giữ trọn hương và hậu vị ngọt dịu.
               </p>
             </div>
             <div className="surface-card-soft p-6">
@@ -165,11 +164,10 @@ export default function HomePage() {
                 <Leaf size={28} />
               </div>
               <h3 className="mt-4 text-xl font-bold text-stone-900">
-                Tự nhiên, tinh gọn
+                Vị chuẩn, cân bằng
               </h3>
               <p className="mt-3 leading-7 text-stone-600">
-                Các component được chuẩn hóa để mọi màn hình đều có cùng nhịp
-                điệu thị giác.
+                Cân chỉnh tỉ lệ cà phê và sữa để ly nào cũng đậm đà mà không gắt.
               </p>
             </div>
             <div className="surface-card-soft p-6">
@@ -177,11 +175,10 @@ export default function HomePage() {
                 <Award size={28} />
               </div>
               <h3 className="mt-4 text-xl font-bold text-stone-900">
-                Đúng chuẩn storefront
+                Phục vụ nhanh, đúng gu
               </h3>
               <p className="mt-3 leading-7 text-stone-600">
-                Hình khối bo tròn, CTA rõ, và tiêu đề lớn để tạo cảm giác thương
-                hiệu thực sự.
+                Gợi ý món theo gu của bạn, đặt nhanh và nhận ly nóng hổi.
               </p>
             </div>
           </div>

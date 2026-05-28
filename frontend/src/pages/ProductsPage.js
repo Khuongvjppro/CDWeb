@@ -72,7 +72,7 @@ export default function ProductsPage() {
   }, [products, selectedCategory, searchTerm, sortBy]);
 
   return (
-    <div className="page-shell">
+    <div className="page-shell overflow-visible">
       <div className="page-content section-wrap">
         <div className="mb-8">
           <div className="section-heading mb-0">
@@ -86,7 +86,7 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
+        <div className="mt-8 grid gap-8 lg:grid-cols-[240px_1fr]">
           <aside className="premium-panel h-fit lg:sticky lg:top-24">
             <div className="flex items-center gap-3">
               <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-900">
@@ -122,19 +122,28 @@ export default function ProductsPage() {
               <div className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-stone-400">
                 Danh mục
               </div>
-              <div className="flex flex-wrap gap-3 lg:flex-col">
+              <div className="space-y-3">
                 {categories.map((category) => (
-                  <button
+                  <label
                     key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
                     className={
                       selectedCategory === category.id
-                        ? "filter-chip-active"
-                        : "filter-chip"
+                        ? "flex items-center gap-3 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-900"
+                        : "flex items-center gap-3 rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700"
                     }
                   >
-                    {category.name}
-                  </button>
+                    <input
+                      type="checkbox"
+                      checked={selectedCategory === category.id}
+                      onChange={(e) =>
+                        setSelectedCategory(
+                          e.target.checked ? category.id : "all",
+                        )
+                      }
+                      className="h-4 w-4 rounded border-stone-300 text-amber-700 focus:ring-amber-600"
+                    />
+                    <span>{category.name}</span>
+                  </label>
                 ))}
               </div>
             </div>
@@ -147,7 +156,7 @@ export default function ProductsPage() {
               </div>
             ) : filteredProducts.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {(() => {
                     const totalPages = Math.max(
                       1,
