@@ -137,49 +137,84 @@ export default function HomePage() {
         </section>
 
         <section className="section-wrap pt-0">
-          <div className="section-heading">
-            <span className="eyebrow">Why us</span>
-            <h2 className="title-xl">
-              Tụ điểm cà phê dành cho người yêu vị đậm
-            </h2>
-            <p className="muted-copy">
-              Hạt rang mới mỗi ngày, công thức cân chỉnh thủ công, và trải nghiệm
-              mượt mà từ lần chạm đầu tiên.
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-3">
-            <div className="surface-card-soft p-6">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e7d8c9] text-[#b55239]">
-                <Zap size={28} />
+          <div className="relative overflow-hidden rounded-[2.75rem] border border-[#e7d8c9]/70 bg-[radial-gradient(circle_at_top,#fff6ea_0%,#fffaf5_42%,#f3e6d9_100%)] px-6 py-12 shadow-[0_30px_90px_rgba(90,62,54,0.16)] sm:px-10">
+            <div className="pointer-events-none absolute -right-16 -top-10 h-48 w-48 rounded-full bg-[#b55239]/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-16 left-6 h-56 w-56 rounded-full bg-[#5a3e36]/10 blur-3xl" />
+
+            <div className="relative grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+              <div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="eyebrow">Why us</span>
+                  <span className="rounded-full border border-[#e7d8c9]/80 bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#b55239]">
+                    Signature craft
+                  </span>
+                </div>
+                <h2 className="mt-5 text-4xl font-black tracking-tight text-[#5a3e36] sm:text-5xl">
+                  Tụ điểm cà phê dành cho người yêu vị đậm
+                </h2>
+                <p className="mt-4 text-base leading-7 text-[#7a665f] sm:text-lg">
+                  Hạt rang mới mỗi ngày, công thức cân chỉnh thủ công, và trải nghiệm
+                  mượt mà từ lần chạm đầu tiên.
+                </p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-white/70 bg-white/85 px-4 py-4 text-[#5a3e36] shadow-sm">
+                    <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#b55239]">
+                      Roast cycle
+                    </div>
+                    <div className="mt-2 text-2xl font-black">24h</div>
+                    <div className="mt-1 text-sm text-[#7a665f]">Luôn tươi mỗi ngày</div>
+                  </div>
+                  <div className="rounded-2xl border border-white/70 bg-white/85 px-4 py-4 text-[#5a3e36] shadow-sm">
+                    <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#b55239]">
+                      Service
+                    </div>
+                    <div className="mt-2 text-2xl font-black">5 phút</div>
+                    <div className="mt-1 text-sm text-[#7a665f]">Nhận ly nhanh chóng</div>
+                  </div>
+                </div>
               </div>
-              <h3 className="mt-4 text-xl font-bold text-stone-900">
-                Rang mới mỗi ngày
-              </h3>
-              <p className="mt-3 leading-7 text-stone-600">
-                Hạt chọn lọc, rang vừa độ để giữ trọn hương và hậu vị ngọt dịu.
-              </p>
-            </div>
-            <div className="surface-card-soft p-6">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f3e6d9] text-[#5a3e36]">
-                <Leaf size={28} />
+
+              <div className="grid gap-5">
+                <div className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_20px_60px_rgba(90,62,54,0.12)]">
+                  <div className="flex items-center gap-4">
+                    <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f3e6d9] text-[#b55239]">
+                      <Zap size={28} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-stone-900">Rang mới mỗi ngày</h3>
+                      <p className="mt-1 text-sm leading-6 text-stone-600">
+                        Hạt chọn lọc, rang vừa độ để giữ trọn hương và hậu vị ngọt dịu.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_20px_60px_rgba(90,62,54,0.12)]">
+                  <div className="flex items-center gap-4">
+                    <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f3e6d9] text-[#5a3e36]">
+                      <Leaf size={28} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-stone-900">Vị chuẩn, cân bằng</h3>
+                      <p className="mt-1 text-sm leading-6 text-stone-600">
+                        Cân chỉnh tỉ lệ cà phê và sữa để ly nào cũng đậm đà mà không gắt.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_20px_60px_rgba(90,62,54,0.12)]">
+                  <div className="flex items-center gap-4">
+                    <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f3e6d9] text-[#b55239]">
+                      <Award size={28} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-stone-900">Phục vụ nhanh, đúng gu</h3>
+                      <p className="mt-1 text-sm leading-6 text-stone-600">
+                        Gợi ý món theo gu của bạn, đặt nhanh và nhận ly nóng hổi.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 className="mt-4 text-xl font-bold text-stone-900">
-                Vị chuẩn, cân bằng
-              </h3>
-              <p className="mt-3 leading-7 text-stone-600">
-                Cân chỉnh tỉ lệ cà phê và sữa để ly nào cũng đậm đà mà không gắt.
-              </p>
-            </div>
-            <div className="surface-card-soft p-6">
-              <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#e7d8c9] text-[#b55239]">
-                <Award size={28} />
-              </div>
-              <h3 className="mt-4 text-xl font-bold text-stone-900">
-                Phục vụ nhanh, đúng gu
-              </h3>
-              <p className="mt-3 leading-7 text-stone-600">
-                Gợi ý món theo gu của bạn, đặt nhanh và nhận ly nóng hổi.
-              </p>
             </div>
           </div>
         </section>

@@ -91,15 +91,29 @@ export default function AboutHighlandsPage() {
 
               {/* Right Visual */}
               <div className="relative flex items-center justify-center">
-                <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-[#b55239]/10 blur-3xl" />
-                <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-[#5a3e36]/8 blur-3xl" />
+                <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-[#b55239]/10 blur-3xl" />
+                <div className="absolute -bottom-10 -left-10 h-48 w-48 rounded-full bg-[#5a3e36]/8 blur-3xl" />
 
-                <div className="relative space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="h-56 rounded-3xl bg-gradient-to-br from-[#e7d8c9] to-[#5a3e36]/20 shadow-[0_20px_60px_rgba(0,0,0,0.1)]" />
-                    <div className="mt-8 h-48 rounded-3xl bg-gradient-to-br from-[#f3e6d9] to-[#b55239]/20 shadow-[0_20px_60px_rgba(0,0,0,0.1)]" />
+                <div className="relative w-full max-w-lg">
+                  <div className="aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-[#e7d8c9]/80 bg-white/70 shadow-[0_30px_80px_rgba(0,0,0,0.12)]">
+                    <div className="flex h-full items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.8),_transparent_55%)]">
+                      <div className="text-center">
+                        <div className="text-xs font-semibold uppercase tracking-[0.32em] text-[#b55239]">
+                          Image placeholder
+                        </div>
+                        <div className="mt-2 text-sm text-[#7a665f]">
+                          Thay bang anh ben phai
+                        </div>
+                      </div>
+                    </div>
+                    {/*
+                      <img
+                        src="/images/your-about-image.jpg"
+                        alt="Highlands story"
+                        className="h-full w-full object-cover"
+                      />
+                    */}
                   </div>
-                  <div className="h-40 rounded-3xl bg-gradient-to-br from-[#fdf6f0] to-[#5a3e36]/10 shadow-[0_20px_60px_rgba(0,0,0,0.1)]" />
                 </div>
               </div>
             </div>
