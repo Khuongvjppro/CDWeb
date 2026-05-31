@@ -160,11 +160,9 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setUserMenuOpen((value) => !value)}
-              className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/15"
             >
-              <UserCircle size={20} />
-              <span className="hidden sm:inline">Tài khoản</span>
-              <ChevronDown size={16} />
+              <UserCircle size={24} />
             </button>
 
             {userMenuOpen && (

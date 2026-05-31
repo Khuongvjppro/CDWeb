@@ -91,15 +91,17 @@ export default function AboutHighlandsPage() {
 
               {/* Right Visual */}
               <div className="relative flex items-center justify-center">
-                <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-[#b55239]/10 blur-3xl" />
-                <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-[#5a3e36]/8 blur-3xl" />
+                <div className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-[#b55239]/10 blur-3xl" />
+                <div className="absolute -bottom-10 -left-10 h-48 w-48 rounded-full bg-[#5a3e36]/8 blur-3xl" />
 
-                <div className="relative space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="h-56 rounded-3xl bg-gradient-to-br from-[#e7d8c9] to-[#5a3e36]/20 shadow-[0_20px_60px_rgba(0,0,0,0.1)]" />
-                    <div className="mt-8 h-48 rounded-3xl bg-gradient-to-br from-[#f3e6d9] to-[#b55239]/20 shadow-[0_20px_60px_rgba(0,0,0,0.1)]" />
+                <div className="relative w-full max-w-lg">
+                  <div className="aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-[#e7d8c9]/80 bg-white/70 shadow-[0_30px_80px_rgba(0,0,0,0.12)]">
+                    <img
+                      src={"/banner/STORY%20HIGHLANDS%20STYLE.png"}
+                      alt="Story Highlands Style"
+                      className="h-full w-full object-cover"
+                    />
                   </div>
-                  <div className="h-40 rounded-3xl bg-gradient-to-br from-[#fdf6f0] to-[#5a3e36]/10 shadow-[0_20px_60px_rgba(0,0,0,0.1)]" />
                 </div>
               </div>
             </div>
@@ -108,36 +110,49 @@ export default function AboutHighlandsPage() {
 
         {/* Section 2: Core Values */}
         <section className="section-wrap">
-          <div className="section-heading">
-            <span className="eyebrow">Giá trị cốt lõi</span>
-            <h2 className="title-xl">
-              Những giá trị định hình Highlands
-            </h2>
-            <p className="muted-copy">
-              Mỗi quyết định, mỗi hành động của chúng tôi đều xuất phát từ những 
-              giá trị cốt lõi này — chúng là nền tảng của mọi thứ chúng tôi làm.
-            </p>
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+            <div>
+              <span className="eyebrow">Giá trị cốt lõi</span>
+              <h2 className="mt-4 text-4xl font-black tracking-tight text-[#5a3e36] sm:text-5xl">
+                Những giá trị định hình Highlands
+              </h2>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-[#7a665f] sm:text-lg">
+                Mỗi quyết định, mỗi hành động của chúng tôi đều xuất phát từ những
+                giá trị cốt lõi này — chúng là nền tảng của mọi thứ chúng tôi làm.
+              </p>
+            </div>
+            <div className="rounded-[2rem] border border-[#e7d8c9]/80 bg-white/70 p-5 text-sm text-[#6b5a54] shadow-[0_16px_40px_rgba(90,62,54,0.12)]">
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b55239]">
+                Highlands mindset
+              </div>
+              <p className="mt-2 leading-6">
+                Tập trung vào nguồn gốc, quy trình thủ công và trải nghiệm cộng đồng —
+                ba trụ cột tạo nên vị riêng của Highlands.
+              </p>
+            </div>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {coreValues.map((value, index) => {
               const Icon = value.icon;
               return (
                 <div
                   key={index}
-                  className={`surface-card-soft group relative overflow-hidden p-8 transition-all duration-300 hover:shadow-[0_30px_80px_rgba(0,0,0,0.12)] hover:-translate-y-2 bg-gradient-to-br ${value.color}`}
+                  className={`group relative flex h-full flex-col overflow-hidden rounded-[2.2rem] border border-white/70 bg-gradient-to-br ${value.color} p-7 shadow-[0_20px_60px_rgba(90,62,54,0.12)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_32px_90px_rgba(90,62,54,0.2)]`}
                 >
-                  <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/20 group-hover:scale-125 transition-transform duration-500" />
+                  <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/45 transition-transform duration-500 group-hover:scale-110" />
+                  <div className="absolute -bottom-10 left-6 h-24 w-24 rounded-full bg-white/25" />
                   <div className="relative z-10">
-                    <div className={`inline-flex h-16 w-16 items-center justify-center rounded-2xl ${value.iconBg} ${value.iconColor} transition-transform duration-300 group-hover:scale-110`}>
+                    <div className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/85 ${value.iconColor} shadow-[0_12px_30px_rgba(90,62,54,0.18)] transition-transform duration-300 group-hover:scale-110`}>
                       <Icon size={32} />
                     </div>
-                    <h3 className="mt-6 text-xl font-bold text-stone-900">
+                    <h3 className="mt-5 text-lg font-bold text-[#4b342d]">
                       {value.title}
                     </h3>
-                    <p className="mt-4 leading-7 text-stone-700">
+                    <p className="mt-3 text-sm leading-6 text-[#6b5a54]">
                       {value.description}
                     </p>
+                    <div className="mt-5 h-px w-12 bg-[#b55239]/40" />
                   </div>
                 </div>
               );
