@@ -157,31 +157,62 @@ export default function SupportPage() {
 
         {/* Section 2: FAQs Accordion */}
         <section className="section-wrap">
-          <div className="section-heading">
-            <span className="eyebrow">Câu Hỏi Phổ Biến</span>
-            <h2 className="title-xl">Câu Hỏi Thường Gặp</h2>
-            <p className="muted-copy">
-              Tìm câu trả lời nhanh chóng cho các câu hỏi phổ biến nhất từ khách
-              hàng của chúng tôi.
-            </p>
-          </div>
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-[#e7d8c9]/70 bg-white/70 p-8 shadow-[0_24px_70px_rgba(90,62,54,0.12)] backdrop-blur-xl sm:p-10">
+            <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#b55239]/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-16 left-8 h-48 w-48 rounded-full bg-[#5a3e36]/10 blur-3xl" />
 
-          <div className="space-y-4 max-w-3xl mx-auto">
+            <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+              <div className="lg:sticky lg:top-28">
+                <div className="flex flex-col items-center text-center rounded-[2.5rem] border border-white/60 bg-white/60 p-8 shadow-[0_12px_40px_rgba(90,62,54,0.08)] sm:p-10">
+                  <span className="eyebrow mx-auto">Câu Hỏi Phổ Biến</span>
+                  <h2 className="mt-5 text-3xl font-black tracking-tight text-[#5a3e36] sm:text-4xl">
+                    Câu Hỏi Thường Gặp
+                  </h2>
+                  <p className="mt-4 text-base leading-7 text-[#6b5a54]">
+                    Tìm câu trả lời nhanh chóng cho các câu hỏi phổ biến nhất từ khách
+                    hàng của chúng tôi.
+                  </p>
+                  <div className="mt-8 flex w-full flex-col gap-4 sm:flex-row">
+                    <div className="flex-1 rounded-3xl border border-white/70 bg-white/85 px-4 py-5 text-sm text-[#5a3e36] text-left">
+                      <div className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b55239]">
+                        Phản hồi
+                      </div>
+                      <div className="mt-2 text-3xl font-black">24h</div>
+                      <div className="mt-2 text-sm text-[#7a665f]">Thời gian phản hồi</div>
+                    </div>
+                    <div className="flex-1 rounded-3xl border border-white/70 bg-white/85 px-4 py-5 text-sm text-[#5a3e36] text-left">
+                      <div className="text-xs font-semibold uppercase tracking-[0.2em] text-[#b55239]">
+                        Hỗ trợ
+                      </div>
+                      <div className="mt-2 text-3xl font-black">7 ngày</div>
+                      <div className="mt-2 text-sm text-[#7a665f]">Hoạt động hàng tuần</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative space-y-4">
+                <div className="pointer-events-none absolute left-5 top-4 hidden h-[calc(100%-2rem)] w-px bg-gradient-to-b from-[#b55239]/40 via-[#e7d8c9]/60 to-transparent lg:block" />
             {filteredFAQs.length > 0 ? (
               filteredFAQs.map((faq) => (
                 <div
                   key={faq.id}
-                  className="rounded-2xl border border-stone-200 overflow-hidden transition-all duration-300 hover:border-[#b55239] hover:shadow-[0_20px_60px_rgba(0,0,0,0.08)]"
+                      className="rounded-[1.6rem] border border-white/80 bg-white/92 overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_rgba(90,62,54,0.14)]"
                 >
                   <button
                     onClick={() =>
                       setExpandedFAQ(expandedFAQ === faq.id ? null : faq.id)
                     }
-                    className="w-full px-6 py-5 flex items-center justify-between bg-white hover:bg-[#fdf6f0] transition-colors"
+                    className="w-full px-6 py-5 flex items-center justify-between bg-white/80 hover:bg-white transition-colors"
                   >
-                    <h3 className="text-left font-bold text-stone-900 text-lg leading-7">
-                      {faq.question}
-                    </h3>
+                    <div className="flex items-center gap-4">
+                          <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#f3e6d9] text-sm font-bold text-[#b55239] lg:before:absolute lg:before:-left-[22px] lg:before:top-1/2 lg:before:h-2.5 lg:before:w-2.5 lg:before:-translate-y-1/2 lg:before:rounded-full lg:before:bg-[#b55239]/40">
+                            {faq.id}
+                          </span>
+                      <h3 className="text-left font-bold text-stone-900 text-lg leading-7">
+                        {faq.question}
+                      </h3>
+                    </div>
                     <ChevronDown
                       size={24}
                       className={`text-[#b55239] flex-shrink-0 transition-transform duration-300 ${
@@ -191,7 +222,7 @@ export default function SupportPage() {
                   </button>
 
                   {expandedFAQ === faq.id && (
-                    <div className="px-6 py-5 bg-[#fdf6f0] border-t border-stone-100">
+                    <div className="px-6 py-5 bg-white/95 border-t border-[#f3e6d9]">
                       <p className="text-stone-700 leading-7">{faq.answer}</p>
                     </div>
                   )}
@@ -208,6 +239,8 @@ export default function SupportPage() {
                 </p>
               </div>
             )}
+              </div>
+            </div>
           </div>
         </section>
 
