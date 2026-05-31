@@ -2,10 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Trash2, Plus, Minus, ArrowLeft } from "lucide-react";
 import { useCart } from "../context/CartContext";
+import { getDefaultImageSrc, getProductImageSrc } from "../utils/productImage";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, getTotalAmount, clearCart } =
     useCart();
+  const [imgErrors, setImgErrors] = React.useState({});
+
+  const defaultImage = getDefaultImageSrc();
+
+  const handleImageError = (itemId) => {
+    setImgErrors((prev) => ({ ...prev, [itemId]: true }));
+  };
 
   if (cart.length === 0) {
     return (
@@ -51,8 +59,17 @@ export default function CartPage() {
                 className="premium-panel flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="flex items-center gap-4">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-[radial-gradient(circle_at_top,_rgba(255,247,237,0.95),_rgba(251,191,36,0.16),_rgba(120,53,15,0.08))] text-3xl shadow-inner">
-                    ☕
+                  <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-[radial-gradient(circle_at_top,_rgba(255,247,237,0.95),_rgba(251,191,36,0.16),_rgba(120,53,15,0.08))] shadow-inner">
+                    <img
+                      src={
+                        imgErrors[item.id]
+                          ? defaultImage
+                          : getProductImageSrc(item)
+                      }
+                      alt={item.name}
+                      onError={() => handleImageError(item.id)}
+                      className="h-full w-full object-contain p-1"
+                    />
                   </div>
                   <div>
                     <h3 className="text-lg font-bold text-stone-900">
