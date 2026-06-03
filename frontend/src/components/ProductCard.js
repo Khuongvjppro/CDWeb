@@ -27,7 +27,7 @@ export default function ProductCard({ product, onAddToCart }) {
   );
 
   return (
-    <div 
+    <div
       onClick={handleCardClick}
       className="group surface-card mx-auto w-full max-w-[22rem] cursor-pointer overflow-hidden transition duration-300 hover:-translate-y-2 hover:shadow-[0_28px_90px_rgba(88,46,18,0.18)]"
     >
