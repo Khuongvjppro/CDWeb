@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Filter } from "lucide-react";
+import { Filter, Search, SlidersHorizontal, ChevronDown, Coffee, Leaf, Snowflake, Grid, X, RotateCcw } from "lucide-react";
 import ProductCard from "../components/ProductCard";
 import { useCart } from "../context/CartContext";
 import { productAPI } from "../utils/api";
@@ -10,6 +10,7 @@ export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("newest");
+  const [isSortOpen, setIsSortOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,6 +72,11 @@ export default function ProductsPage() {
     setCurrentPage(1);
   }, [products, selectedCategory, searchTerm, sortBy]);
 
+  const getCategoryCount = (categoryId) => {
+    if (categoryId === "all") return products.length;
+    return products.filter((p) => p.category === categoryId).length;
+  };
+
   return (
     <div className="page-shell overflow-visible">
       <div className="page-content">
@@ -99,65 +105,169 @@ export default function ProductsPage() {
         </div>
 
         <div className="section-wrap">
-          <div className="mt-8 grid gap-8 lg:grid-cols-[240px_1fr]">
-            <aside className="premium-panel h-fit lg:sticky lg:top-24">
-              <div className="flex items-center gap-3">
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-100 text-amber-900">
-                  <Filter size={20} />
+          <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
+            <aside className="h-fit lg:sticky lg:top-24 rounded-3xl border border-white/60 bg-white/40 p-6 shadow-[0_20px_50px_rgba(90,62,54,0.06)] backdrop-blur-md transition-all duration-300 hover:shadow-[0_25px_60px_rgba(90,62,54,0.1)] hover:bg-white/50">
+              <div className="flex items-center justify-between pb-4 border-b border-[#e7d8c9]/40">
+                <div className="flex items-center gap-3">
+                  <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#5a3e36]/5 text-[#5a3e36] transition-transform duration-300 hover:rotate-12">
+                    <Filter size={16} />
+                  </div>
+                  <div>
+                    <h2 className="text-md font-extrabold tracking-tight text-[#5a3e36]">Bộ lọc</h2>
+                    <p className="text-[11px] text-[#5a3e36]/60 font-medium">Danh mục & tìm kiếm</p>
+                  </div>
                 </div>
+                {(selectedCategory !== "all" || searchTerm !== "" || sortBy !== "newest") && (
+                  <button
+                    onClick={() => {
+                      setSelectedCategory("all");
+                      setSearchTerm("");
+                      setSortBy("newest");
+                    }}
+                    className="text-xs font-semibold text-[#b55239] hover:text-[#8f3b2c] flex items-center gap-1 transition-all duration-300 hover:underline"
+                  >
+                    <RotateCcw size={12} />
+                    Đặt lại
+                  </button>
+                )}
+              </div>
+
+              <div className="mt-5 space-y-4">
                 <div>
-                  <h2 className="text-lg font-bold text-stone-900">Bộ lọc</h2>
-                  <p className="text-sm text-stone-500">Danh mục và tìm kiếm</p>
+                  <label className="block text-[11px] font-bold text-[#5a3e36]/50 uppercase tracking-wider mb-2">
+                    Tìm kiếm sản phẩm
+                  </label>
+                  <div className="relative group">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-[#5a3e36]/60 group-focus-within:text-[#b55239] transition-colors duration-300">
+                      <Search size={15} />
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Tìm kiếm cà phê..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full rounded-xl border border-white/80 bg-white/40 pl-10 pr-8 py-2.5 text-sm text-[#5a3e36] placeholder-[#5a3e36]/40 outline-none transition-all duration-300 focus:border-[#b55239] focus:bg-white/85 focus:ring-4 focus:ring-[#b55239]/5"
+                    />
+                    {searchTerm && (
+                      <button
+                        onClick={() => setSearchTerm("")}
+                        className="absolute inset-y-0 right-0 flex items-center pr-2.5 text-stone-400 hover:text-[#b55239] transition-colors"
+                      >
+                        <X size={14} />
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="mt-6 space-y-4">
-                <input
-                  type="text"
-                  placeholder="Tìm kiếm cà phê..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="input-field"
-                />
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="input-field"
-                >
-                  <option value="newest">Mới Nhất</option>
-                  <option value="price-low">Giá Thấp Đến Cao</option>
-                  <option value="price-high">Giá Cao Đến Thấp</option>
-                  <option value="name">Tên (A-Z)</option>
-                </select>
-              </div>
-
-              <div className="mt-6 border-t border-stone-200 pt-6">
-                <div className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-stone-400">
-                  Danh mục
-                </div>
-                <div className="space-y-3">
-                  {categories.map((category) => (
-                    <label
-                      key={category.id}
-                      className={
-                        selectedCategory === category.id
-                          ? "flex items-center gap-3 rounded-full border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-900"
-                          : "flex items-center gap-3 rounded-full border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700"
-                      }
+                <div>
+                  <label className="block text-[11px] font-bold text-[#5a3e36]/50 uppercase tracking-wider mb-2">
+                    Sắp xếp theo
+                  </label>
+                  <div className="relative z-20">
+                    <button
+                      type="button"
+                      onClick={() => setIsSortOpen(!isSortOpen)}
+                      className="w-full flex items-center justify-between rounded-xl border border-white/80 bg-white/40 pl-10 pr-4 py-2.5 text-sm text-[#5a3e36] outline-none transition-all duration-300 hover:bg-white/60 focus:border-[#b55239] focus:ring-4 focus:ring-[#b55239]/5 text-left"
                     >
-                      <input
-                        type="checkbox"
-                        checked={selectedCategory === category.id}
-                        onChange={(e) =>
-                          setSelectedCategory(
-                            e.target.checked ? category.id : "all",
-                          )
-                        }
-                        className="h-4 w-4 rounded border-stone-300 text-amber-700 focus:ring-amber-600"
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-[#5a3e36]/60">
+                        <SlidersHorizontal size={14} />
+                      </span>
+                      <span>
+                        {sortBy === "newest" && "Mới Nhất"}
+                        {sortBy === "price-low" && "Giá Thấp Đến Cao"}
+                        {sortBy === "price-high" && "Giá Cao Đến Thấp"}
+                        {sortBy === "name" && "Tên (A-Z)"}
+                      </span>
+                      <ChevronDown
+                        size={16}
+                        className={`text-[#5a3e36]/60 transition-transform duration-300 ${
+                          isSortOpen ? "rotate-180" : ""
+                        }`}
                       />
-                      <span>{category.name}</span>
-                    </label>
-                  ))}
+                    </button>
+
+                    {isSortOpen && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-10"
+                          onClick={() => setIsSortOpen(false)}
+                        />
+                        <div className="absolute right-0 left-0 mt-2 z-20 rounded-2xl border border-white/80 bg-white/95 p-1.5 shadow-[0_15px_40px_rgba(90,62,54,0.15)] backdrop-blur-md overflow-hidden transition-all duration-300">
+                          {[
+                            { value: "newest", label: "Mới Nhất" },
+                            { value: "price-low", label: "Giá Thấp Đến Cao" },
+                            { value: "price-high", label: "Giá Cao Đến Thấp" },
+                            { value: "name", label: "Tên (A-Z)" },
+                          ].map((option) => (
+                            <button
+                              key={option.value}
+                              type="button"
+                              onClick={() => {
+                                setSortBy(option.value);
+                                setIsSortOpen(false);
+                              }}
+                              className={`w-full text-left rounded-xl px-3 py-2 text-sm transition-all duration-200 ${
+                                sortBy === option.value
+                                  ? "bg-[#b55239] text-white font-bold"
+                                  : "text-[#5a3e36]/80 hover:bg-[#5a3e36]/5 hover:text-[#5a3e36]"
+                              }`}
+                            >
+                              {option.label}
+                            </button>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 border-t border-[#e7d8c9]/40 pt-5">
+                <div className="mb-3 text-[11px] font-bold uppercase tracking-wider text-[#5a3e36]/50">
+                  Danh mục sản phẩm
+                </div>
+                <div className="space-y-1.5">
+                  {categories.map((category) => {
+                    const isActive = selectedCategory === category.id;
+                    let IconComponent = Coffee;
+                    if (category.id === "all") IconComponent = Grid;
+                    else if (category.id === "Trà") IconComponent = Leaf;
+                    else if (category.id === "Freeze") IconComponent = Snowflake;
+
+                    return (
+                      <button
+                        key={category.id}
+                        onClick={() => setSelectedCategory(isActive ? "all" : category.id)}
+                        className={`group relative flex w-full items-center justify-between rounded-xl px-3.5 py-2.5 text-sm transition-all duration-300 ${
+                          isActive
+                            ? "bg-gradient-to-r from-[#b55239] to-[#c2624b] text-white shadow-md shadow-[#b55239]/20 font-bold scale-[1.02]"
+                            : "text-[#5a3e36]/80 hover:bg-white/60 hover:text-stone-900 hover:translate-x-1"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`flex h-8 w-8 items-center justify-center rounded-lg transition-all duration-300 ${
+                              isActive
+                                ? "bg-white/20 text-white"
+                                : "bg-[#5a3e36]/5 text-[#5a3e36]/70 group-hover:bg-[#5a3e36]/10"
+                            }`}
+                          >
+                            <IconComponent size={15} className={`transition-transform duration-300 group-hover:scale-110 ${isActive ? "animate-pulse" : ""}`} />
+                          </div>
+                          <span className="transition-colors duration-300">{category.name}</span>
+                        </div>
+                        <span
+                          className={`text-xs px-2.5 py-0.5 rounded-full transition-all duration-300 ${
+                            isActive
+                              ? "bg-white/20 text-white font-semibold"
+                              : "bg-[#5a3e36]/5 text-[#5a3e36]/60 group-hover:bg-[#5a3e36]/10"
+                          }`}
+                        >
+                          {getCategoryCount(category.id)}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </aside>

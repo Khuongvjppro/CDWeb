@@ -136,86 +136,95 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="section-wrap pt-0">
-          <div className="relative overflow-hidden rounded-[2.75rem] border border-[#e7d8c9]/70 bg-[radial-gradient(circle_at_top,#fff6ea_0%,#fffaf5_42%,#f3e6d9_100%)] px-6 py-12 shadow-[0_30px_90px_rgba(90,62,54,0.16)] sm:px-10">
-            <div className="pointer-events-none absolute -right-16 -top-10 h-48 w-48 rounded-full bg-[#b55239]/10 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-16 left-6 h-56 w-56 rounded-full bg-[#5a3e36]/10 blur-3xl" />
+        <section className="section-wrap">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <span className="eyebrow mx-auto">Hành trình hương vị</span>
+            <h2 className="mt-4 text-4xl font-extrabold tracking-tight text-[#5a3e36] sm:text-5xl leading-tight">
+              Tâm Huyết Trong Từng Giọt Cà Phê
+            </h2>
+            <p className="mt-4 text-base text-[#7a665f] sm:text-lg">
+              Từ nông trại xanh mướt Buôn Ma Thuột đến ly nước ngon lành trên tay bạn, chúng tôi luôn nỗ lực gìn giữ tinh túy tự nhiên tốt lành nhất.
+            </p>
+          </div>
 
-            <div className="relative grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
-              <div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="eyebrow">Why us</span>
-                  <span className="rounded-full border border-[#e7d8c9]/80 bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#b55239]">
-                    Signature craft
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              {
+                step: "01",
+                icon: Leaf,
+                title: "Nguồn Gốc Di Sản",
+                subtitle: "Nông trại nguyên bản",
+                desc: "Hạt cà phê Arabica và Robusta hảo hạng tuyển chọn cẩn thiện từ những vùng đất đỏ bazan cao nguyên lộng gió, dồi dào khoáng chất.",
+                gradient: "from-[#b55239]/10 to-transparent",
+                iconBg: "bg-gradient-to-tr from-[#b55239] to-[#c2624b]"
+              },
+              {
+                step: "02",
+                icon: Zap,
+                title: "Rang Mới Mỗi Ngày",
+                subtitle: "Chu kỳ giữ trọn hương",
+                desc: "Quy trình rang xay hiện đại khép kín hoàn tất trong 24h bởi các chuyên gia lành nghề, đảm bảo hạt cà phê luôn tươi mới và thơm nồng nàn.",
+                gradient: "from-[#5a3e36]/10 to-transparent",
+                iconBg: "bg-gradient-to-tr from-[#5a3e36] to-[#7c564c]"
+              },
+              {
+                step: "03",
+                icon: Award,
+                title: "Trải Nghiệm Trọn Vẹn",
+                subtitle: "Phục vụ nhanh chóng",
+                desc: "Mỗi ly thức uống được pha chế thủ công kỹ lưỡng và giao đến tay bạn trong vòng 5 phút, giữ trọn hương vị nguyên chất nguyên bản nhất.",
+                gradient: "from-[#b55239]/10 via-[#5a3e36]/5 to-transparent",
+                iconBg: "bg-gradient-to-tr from-[#b55239] via-[#8f3b2c] to-[#5a3e36]"
+              }
+            ].map((item, idx) => {
+              const Icon = item.icon;
+              return (
+                <div 
+                  key={idx}
+                  className="relative overflow-hidden rounded-[2.5rem] border border-white/60 bg-white/40 p-8 shadow-[0_20px_50px_rgba(90,62,54,0.04)] backdrop-blur-md"
+                >
+                  <div className={`absolute -right-10 -bottom-10 h-32 w-32 rounded-full bg-gradient-to-br ${item.gradient} opacity-40 blur-2xl`} />
+
+                  <span className="absolute top-6 right-8 text-6xl font-black text-[#5a3e36]/5 select-none">
+                    {item.step}
                   </span>
-                </div>
-                <h2 className="mt-5 text-4xl font-black tracking-tight text-[#5a3e36] sm:text-5xl">
-                  Tụ điểm cà phê dành cho người yêu vị đậm
-                </h2>
-                <p className="mt-4 text-base leading-7 text-[#7a665f] sm:text-lg">
-                  Hạt rang mới mỗi ngày, công thức cân chỉnh thủ công, và trải nghiệm
-                  mượt mà từ lần chạm đầu tiên.
-                </p>
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/70 bg-white/85 px-4 py-4 text-[#5a3e36] shadow-sm">
-                    <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#b55239]">
-                      Roast cycle
-                    </div>
-                    <div className="mt-2 text-2xl font-black">24h</div>
-                    <div className="mt-1 text-sm text-[#7a665f]">Luôn tươi mỗi ngày</div>
-                  </div>
-                  <div className="rounded-2xl border border-white/70 bg-white/85 px-4 py-4 text-[#5a3e36] shadow-sm">
-                    <div className="text-xs font-semibold uppercase tracking-[0.22em] text-[#b55239]">
-                      Service
-                    </div>
-                    <div className="mt-2 text-2xl font-black">5 phút</div>
-                    <div className="mt-1 text-sm text-[#7a665f]">Nhận ly nhanh chóng</div>
-                  </div>
-                </div>
-              </div>
 
-              <div className="grid gap-5">
-                <div className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_20px_60px_rgba(90,62,54,0.12)]">
-                  <div className="flex items-center gap-4">
-                    <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f3e6d9] text-[#b55239]">
-                      <Zap size={28} />
-                    </div>
+                  <div className="relative z-10 flex flex-col h-full justify-between">
                     <div>
-                      <h3 className="text-lg font-bold text-stone-900">Rang mới mỗi ngày</h3>
-                      <p className="mt-1 text-sm leading-6 text-stone-600">
-                        Hạt chọn lọc, rang vừa độ để giữ trọn hương và hậu vị ngọt dịu.
+                      <div className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl ${item.iconBg} text-white shadow-md shadow-[#5a3e36]/10 mb-6`}>
+                        <Icon size={26} />
+                      </div>
+                      
+                      <span className="block text-[10px] font-bold uppercase tracking-widest text-[#b55239] mb-1">
+                        {item.subtitle}
+                      </span>
+                      
+                      <h3 className="text-xl font-extrabold text-stone-900 mb-3">
+                        {item.title}
+                      </h3>
+
+                      <p className="text-sm leading-relaxed text-stone-600">
+                        {item.desc}
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_20px_60px_rgba(90,62,54,0.12)]">
-                  <div className="flex items-center gap-4">
-                    <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f3e6d9] text-[#5a3e36]">
-                      <Leaf size={28} />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-stone-900">Vị chuẩn, cân bằng</h3>
-                      <p className="mt-1 text-sm leading-6 text-stone-600">
-                        Cân chỉnh tỉ lệ cà phê và sữa để ly nào cũng đậm đà mà không gắt.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="rounded-[2rem] border border-white/80 bg-white/90 p-6 shadow-[0_20px_60px_rgba(90,62,54,0.12)]">
-                  <div className="flex items-center gap-4">
-                    <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-[#f3e6d9] text-[#b55239]">
-                      <Award size={28} />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-stone-900">Phục vụ nhanh, đúng gu</h3>
-                      <p className="mt-1 text-sm leading-6 text-stone-600">
-                        Gợi ý món theo gu của bạn, đặt nhanh và nhận ly nóng hổi.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-14 grid grid-cols-2 md:grid-cols-4 gap-6 rounded-3xl border border-white/60 bg-white/30 p-6 shadow-sm backdrop-blur-sm">
+            {[
+              { val: "100%", label: "Cà phê mộc sạch" },
+              { val: "24h", label: "Chu kỳ rang mới" },
+              { val: "5 phút", label: "Thời gian phục vụ" },
+              { val: "98%", label: "Khách hàng hài lòng" }
+            ].map((stat, idx) => (
+              <div key={idx} className="text-center p-3 border-r last:border-r-0 border-[#e7d8c9]/40 last:border-0">
+                <div className="text-3xl font-black bg-gradient-to-r from-[#5a3e36] to-[#b55239] bg-clip-text text-transparent">{stat.val}</div>
+                <div className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider mt-1">{stat.label}</div>
               </div>
-            </div>
+            ))}
           </div>
         </section>
 
