@@ -95,51 +95,61 @@ export default function CartPage() {
   return (
     <div className="page-shell">
       <div className="page-content section-wrap pt-6 sm:pt-8 lg:pt-10">
-        <div className="relative overflow-hidden rounded-[2.25rem] border border-[#d9c2ab] bg-[linear-gradient(180deg,#e5cfb0_0%,#f3e3cc_20%,#f4eadb_100%)] px-4 py-6 shadow-[0_28px_70px_rgba(90,62,54,0.16)] sm:px-6 sm:py-8 lg:px-8 lg:py-10">
-          <div className="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:radial-gradient(circle_at_1px_1px,rgba(123,30,43,0.10)_1px,transparent_0)] [background-size:18px_18px]" />
-          <div className="pointer-events-none absolute -left-10 top-0 h-28 w-28 rounded-full bg-[#7b1e2b]/10 blur-3xl" />
-          <div className="pointer-events-none absolute right-2 top-16 h-3 w-3 rounded-full bg-[#7b1e2b]/40 shadow-[0_0_0_14px_rgba(123,30,43,0.06)]" />
-          <div className="pointer-events-none absolute -right-6 bottom-16 h-12 w-12 rounded-full bg-[#b55239]/20 blur-xl" />
-          <div className="pointer-events-none absolute left-[20%] top-8 h-2 w-2 rounded-full bg-[#7b1e2b]/30 shadow-[0_0_0_10px_rgba(123,30,43,0.05)]" />
+        <section className="relative overflow-hidden rounded-[2.25rem] border border-[#d9c2ab] bg-[linear-gradient(145deg,#ead7bb_0%,#f7eddf_48%,#f2e2ce_100%)] px-5 py-10 shadow-[0_28px_70px_rgba(90,62,54,0.14)] sm:px-8 sm:py-12 lg:px-12 lg:py-14">
+          <div className="pointer-events-none absolute inset-0 opacity-[0.28] [background-image:radial-gradient(circle_at_1px_1px,rgba(123,30,43,0.13)_1px,transparent_0)] [background-size:20px_20px]" />
+          <div className="pointer-events-none absolute -left-20 -top-24 h-64 w-64 rounded-full bg-white/60 blur-3xl" />
+          <div className="pointer-events-none absolute -right-24 -top-16 h-64 w-64 rounded-full bg-[#7b1e2b]/10 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-32 left-[38%] h-72 w-72 rounded-full bg-[#b55239]/10 blur-3xl" />
+          <div className="pointer-events-none absolute left-[20%] top-8 h-2.5 w-2.5 rounded-full bg-[#7b1e2b]/25 shadow-[0_0_0_11px_rgba(123,30,43,0.05)]" />
+          <div className="pointer-events-none absolute right-7 top-14 h-3 w-3 rounded-full bg-[#7b1e2b]/35 shadow-[0_0_0_15px_rgba(123,30,43,0.06)]" />
 
-          <div className="mx-auto max-w-6xl">
-            <div className="text-center">
-              <h1 className="mt-4 text-3xl font-black tracking-tight text-[#5a3e36] sm:text-4xl lg:text-5xl">
-                Giỏ hàng của bạn
-              </h1>
-              <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[#6a584d] sm:text-base lg:text-lg">
-                Xem nhanh danh sách món đã chọn, điều chỉnh số lượng và kiểm tra
-                tổng tiền trước khi thanh toán. Mọi thay đổi đều cập nhật ngay.
-              </p>
-              <div className="mx-auto mt-4 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#7b1e2b]">
-                <span className="rounded-full border border-[#e0c9b2] bg-white/70 px-4 py-2 shadow-[0_8px_18px_rgba(90,62,54,0.08)]">
-                  Giao hang mien phi
-                </span>
-                <span className="rounded-full border border-[#e0c9b2] bg-white/70 px-4 py-2 shadow-[0_8px_18px_rgba(90,62,54,0.08)]">
-                  Thanh toan an toan
-                </span>
-                <span className="rounded-full border border-[#e0c9b2] bg-white/70 px-4 py-2 shadow-[0_8px_18px_rgba(90,62,54,0.08)]">
-                  Ho tro 24/7
-                </span>
+          <div className="relative mx-auto max-w-5xl text-center">
+            <h1 className="text-4xl font-black tracking-[-0.045em] text-[#5a3e36] sm:text-5xl lg:leading-none">
+              Giỏ hàng của bạn
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#715e53] sm:text-base">
+              Xem nhanh danh sách món đã chọn, điều chỉnh số lượng và kiểm tra tổng tiền
+              trước khi thanh toán. Mọi thay đổi đều cập nhật ngay.
+            </p>
+
+            <div className="mx-auto mt-6 flex w-fit max-w-full items-center rounded-[1.4rem] border border-[#d8c0a7] bg-white/70 p-2 shadow-[0_12px_30px_rgba(90,62,54,0.10)] backdrop-blur">
+              {["Giao hàng miễn phí", "Thanh toán an toàn", "Hỗ trợ 24/7"].map(
+                (label, index) => (
+                  <React.Fragment key={label}>
+                    <div className="flex items-center gap-2 px-1.5 sm:px-2">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7b1e2b] text-sm font-bold text-white shadow-[0_8px_18px_rgba(123,30,43,0.22)]">
+                        {index + 1}
+                      </span>
+                      <span className="whitespace-nowrap text-[10px] font-bold text-[#7b1e2b] sm:text-xs">
+                        {label}
+                      </span>
+                    </div>
+                    {index < 2 && (
+                      <span className="h-px w-4 shrink-0 bg-[#d4baa0] sm:w-8" />
+                    )}
+                  </React.Fragment>
+                )
+              )}
+            </div>
+
+            <div className="mt-7 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-[1.5rem] border border-white/70 bg-white/65 px-6 py-5 text-center shadow-[0_14px_32px_rgba(90,62,54,0.09)] backdrop-blur-sm">
+                <p className="text-sm font-medium text-[#5a3e36]">Sản phẩm</p>
+                <p key={cart.length} className="mt-2 animate-[cartMetric_.35s_ease-out] text-3xl font-black tracking-tight text-[#5a3e36]">{cart.length}</p>
               </div>
-
-              <div className="mt-7 grid gap-4 sm:grid-cols-3 lg:mx-auto lg:max-w-4xl">
-                <div className="rounded-[1.25rem] border border-[#eadac5] bg-[#f8f2e7] px-4 py-4 shadow-[0_10px_24px_rgba(90,62,54,0.14)]">
-                  <div className="text-sm font-medium text-[#5a3e36]">Sản phẩm</div>
-                  <div className="mt-2 text-3xl font-black text-[#5a3e36]">{cart.length}</div>
-                </div>
-                <div className="rounded-[1.25rem] border border-[#eadac5] bg-[#f8f2e7] px-4 py-4 shadow-[0_10px_24px_rgba(90,62,54,0.14)]">
-                  <div className="text-sm font-medium text-[#5a3e36]">Số lượng</div>
-                  <div className="mt-2 text-3xl font-black text-[#5a3e36]">{totalItems}</div>
-                </div>
-                <div className="rounded-[1.25rem] border border-[#eadac5] bg-[#f8f2e7] px-4 py-4 shadow-[0_10px_24px_rgba(90,62,54,0.14)]">
-                  <div className="text-sm font-medium text-[#5a3e36]">Tạm tính</div>
-                  <div className="mt-2 text-3xl font-black text-[#7b1e2b]">{totalAmount.toLocaleString("vi-VN")}₫</div>
-                </div>
+              <div className="rounded-[1.5rem] border border-white/70 bg-white/65 px-6 py-5 text-center shadow-[0_14px_32px_rgba(90,62,54,0.09)] backdrop-blur-sm">
+                <p className="text-sm font-medium text-[#5a3e36]">Số lượng</p>
+                <p key={totalItems} className="mt-2 animate-[cartMetric_.35s_ease-out] text-3xl font-black tracking-tight text-[#5a3e36]">{totalItems}</p>
+              </div>
+              <div className="rounded-[1.5rem] border border-white/70 bg-white/65 px-6 py-5 text-center shadow-[0_14px_32px_rgba(90,62,54,0.09)] backdrop-blur-sm">
+                <p className="text-sm font-medium text-[#5a3e36]">Tạm tính</p>
+                <p key={totalAmount} className="mt-2 animate-[cartMetric_.35s_ease-out] text-3xl font-black tracking-tight text-[#7b1e2b]">
+                  {totalAmount.toLocaleString("vi-VN")}₫
+                </p>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-[1.55fr_0.95fr] lg:items-start">
           <div className="grid gap-4 lg:grid-cols-2">
