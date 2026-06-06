@@ -115,10 +115,23 @@ exports.createOrder = async (req, res) => {
       return res.status(400).json({ error: "Order items are required" });
     }
 
+    const normalizedItems = items.map((item) => ({
+      productId: item.productId || item.id,
+      quantity: Number(item.quantity) || 1,
+      price: Number(item.price) || 0,
+    }));
+
+    const invalidItem = normalizedItems.find((item) => !item.productId);
+    if (invalidItem) {
+      return res.status(400).json({
+        error: "Each order item must include a product id",
+      });
+    }
+
     // Create order
     const orderResult = await Order.createOrder({
       userId: req.user.id,
-      totalAmount,
+      totalAmount: Number(totalAmount) || 0,
       status: "pending",
       shippingAddress,
       paymentMethod,
@@ -128,7 +141,7 @@ exports.createOrder = async (req, res) => {
     const orderId = orderResult.insertId;
 
     // Add items to order
-    for (const item of items) {
+    for (const item of normalizedItems) {
       await Order.addOrderItem(
         orderId,
         item.productId,

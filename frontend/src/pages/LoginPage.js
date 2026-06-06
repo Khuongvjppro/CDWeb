@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { useNavigate, Link, Navigate } from "react-router-dom";
+import { useNavigate, Link, Navigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Mail, Lock } from "lucide-react";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
+  const [searchParams] = useSearchParams();
+  const expired = searchParams.get("expired");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(
+    expired ? "Phiên đăng nhập đã hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại." : ""
+  );
   const [formData, setFormData] = useState({
     email: "",
     password: "",

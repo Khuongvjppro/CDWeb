@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { getDefaultImageSrc, getProductImageSrc } from "../utils/productImage";
 
 export default function ProductCard({ product, onAddToCart }) {
@@ -19,24 +19,21 @@ export default function ProductCard({ product, onAddToCart }) {
   const imageSrc = getProductImageSrc(product);
   const displayImageSrc = imgError ? getDefaultImageSrc() : imageSrc;
 
-  const displayDescription =
-    product.description ||
-    "Hương vị cân bằng, hậu vị mượt và phù hợp cho mọi thời điểm trong ngày.";
   const displayPrice = (product.sale_price || product.price).toLocaleString(
     "vi-VN",
   );
 
   return (
-    <div 
+    <div
       onClick={handleCardClick}
-      className="group surface-card aspect-[9/11] flex flex-col cursor-pointer overflow-hidden transition duration-300 hover:-translate-y-2 hover:shadow-[0_28px_90px_rgba(88,46,18,0.18)]"
+      className="group mx-auto w-full max-w-[22rem] cursor-pointer overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(88,46,18,0.16)] rounded-[2.25rem] border border-[#e7d8c9]/50 bg-[#faf7f2]/30 backdrop-blur-sm"
     >
-      <div className="relative flex h-1/2 items-center justify-center overflow-hidden bg-[linear-gradient(160deg,rgba(255,250,244,0.98),rgba(251,191,36,0.2),rgba(120,53,15,0.12))]">
-        <div className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-amber-900 shadow-sm">
+      <div className="relative flex h-56 items-center justify-center overflow-hidden bg-gradient-to-br from-[#fffdf6] via-[#faf2e0] to-[#eaddca]">
+        <div className="absolute left-5 top-5 rounded-full bg-white/95 px-4 py-1.5 text-[12px] font-semibold font-serif tracking-wide text-[#85533f] shadow-sm">
           {product.is_new ? "New" : "Best Seller"}
         </div>
         {product.sale_price && (
-          <div className="absolute right-3 top-3 rounded-full bg-amber-600 px-2.5 py-1 text-[11px] font-semibold text-white shadow-sm">
+          <div className="absolute right-5 top-5 rounded-full bg-[#b55239] px-4 py-1.5 text-[11px] font-semibold font-serif tracking-wide text-white shadow-sm">
             -Ưu đãi
           </div>
         )}
@@ -44,60 +41,36 @@ export default function ProductCard({ product, onAddToCart }) {
           src={displayImageSrc}
           alt={product.name || "product"}
           onError={() => setImgError(true)}
-          className="max-w-[80%] max-h-[140px] object-contain transition duration-500 group-hover:scale-110 drop-shadow-[0_10px_20px_rgba(88,46,18,0.15)]"
+          className="max-w-[75%] max-h-[145px] object-contain transition duration-700 ease-out group-hover:scale-105 drop-shadow-[0_12px_24px_rgba(88,46,18,0.15)]"
         />
       </div>
 
-      <div className="flex h-1/2 flex-col p-3">
-        <div className="mb-1.5 flex items-center justify-between gap-2">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-amber-700">
+      <div className="p-6 pt-5 pb-6 bg-[#fcfaf7] flex items-center justify-between gap-4">
+        <div className="flex flex-col min-w-0">
+          <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#b55239] font-serif mb-1">
             {product.category}
           </span>
-          <span className="rounded-full bg-stone-100 px-2 py-0.5 text-[10px] font-medium text-stone-600">
-            {product.stock > 0 ? `${product.stock} còn lại` : "Hết hàng"}
-          </span>
-        </div>
-
-        <h3 className="mb-1 line-clamp-1 text-base font-bold text-stone-900">
-          {product.name}
-        </h3>
-        <p className="mb-2 min-h-[28px] line-clamp-2 text-[12px] leading-4 text-stone-600">
-          {displayDescription}
-        </p>
-
-        <div className="mb-2 flex items-center">
-          {[...Array(5)].map((_, i) => (
-            <Star
-              key={i}
-              size={12}
-              className={
-                i < 4 ? "fill-amber-400 text-amber-400" : "text-stone-300"
-              }
-            />
-          ))}
-          <span className="ml-2 text-[11px] text-stone-500">(4/5)</span>
-        </div>
-
-        <div className="mt-auto flex items-end justify-between gap-3">
-          <div>
-            <div className="mt-1 flex items-center gap-2">
-              <span className="text-lg font-extrabold text-stone-900">
-                {displayPrice}₫
+          <h3 className="text-[1.25rem] font-bold leading-snug text-[#2c221e] font-serif tracking-tight">
+            {product.name}
+          </h3>
+          <div className="mt-0.5 flex items-baseline gap-2">
+            <span className="text-3xl font-extrabold text-[#2c221e] font-serif tracking-tight leading-none">
+              {displayPrice}
+            </span>
+            {product.sale_price && (
+              <span className="text-sm text-stone-400 line-through leading-none font-serif ml-1.5">
+                {product.price.toLocaleString("vi-VN")}
               </span>
-              {product.sale_price && (
-                <span className="text-[11px] text-stone-400 line-through">
-                  {product.price.toLocaleString("vi-VN")}₫
-                </span>
-              )}
-            </div>
+            )}
           </div>
-          <button
-            onClick={handleAddToCart}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-stone-950 text-white shadow-lg shadow-stone-900/15 transition hover:-translate-y-0.5 hover:bg-amber-700"
-          >
-            <ShoppingCart size={16} />
-          </button>
         </div>
+
+        <button
+          onClick={handleAddToCart}
+          className="inline-flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-[#110f0e] text-white shadow-lg shadow-[#110f0e]/10 transition duration-300 hover:-translate-y-1 hover:bg-[#b55239] active:scale-95"
+        >
+          <ShoppingCart size={20} />
+        </button>
       </div>
     </div>
   );
