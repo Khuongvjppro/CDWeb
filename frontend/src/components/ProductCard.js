@@ -48,44 +48,36 @@ export default function ProductCard({ product, onAddToCart }) {
         />
       </div>
 
-      <div className="p-5">
-        <div className="mb-2.5 flex items-center justify-between gap-2.5">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-700">
+      <div className="p-4 pb-3 flex items-end justify-between gap-3">
+        <div className="flex flex-col min-w-0">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-amber-700 mb-0.5">
             {product.category}
           </span>
-          <span className="rounded-full bg-stone-100 px-3 py-1 text-[11px] font-medium text-stone-600">
-            {product.stock > 0 ? `${product.stock} còn lại` : "Hết hàng"}
-          </span>
-        </div>
-
-        <h3 className="mb-1.5 text-[1.1rem] font-bold leading-tight text-stone-900">
-          {product.name}
-        </h3>
-        <p className="mb-3 line-clamp-2 text-[13px] leading-5 text-stone-600">
-          {displayDescription}
-        </p>
-
-        <div className="mt-auto flex items-end justify-between gap-3">
-          <div>
-            <div className="mt-0.5 flex items-center gap-1.5">
-              <span className="text-[1.75rem] font-extrabold leading-none text-stone-900">
-                {displayPrice}₫
+          <h3 className="text-[1.1rem] font-bold leading-tight text-stone-900 font-serif">
+            {product.name}
+          </h3>
+          <div className="mt-1 flex items-center gap-1.5">
+            <span className="text-[1.65rem] font-extrabold leading-none text-stone-900">
+              {displayPrice}₫
+            </span>
+            {product.sale_price && (
+              <span className="text-[13px] text-stone-400 line-through">
+                {product.price.toLocaleString("vi-VN")}₫
               </span>
-              {product.sale_price && (
-                <span className="text-[13px] text-stone-400 line-through">
-                  {product.price.toLocaleString("vi-VN")}₫
-                </span>
-              )}
-            </div>
+            )}
           </div>
-          <button
-            onClick={handleAddToCart}
-            className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-stone-950 text-white shadow-lg shadow-stone-900/15 transition hover:-translate-y-0.5 hover:bg-amber-700"
-          >
-            <ShoppingCart size={18} />
-          </button>
         </div>
+
+        <button
+          onClick={handleAddToCart}
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-stone-950 text-white shadow-lg shadow-stone-900/15 transition hover:-translate-y-0.5 hover:bg-amber-700"
+        >
+          <ShoppingCart size={18} />
+        </button>
       </div>
+
+
+
     </div>
   );
 }
