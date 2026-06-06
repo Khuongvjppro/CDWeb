@@ -1,10 +1,21 @@
 const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
 
 const VNPAY_VERSION = "2.1.0";
 const VNPAY_COMMAND = "pay";
 const VNPAY_CURRENCY = "VND";
 const VNPAY_LOCALE = "vn";
 const VNPAY_ORDER_TYPE = "other";
+
+function removeAccents(str) {
+  if (typeof str !== "string") return str;
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
+}
 
 function sortObject(obj) {
   const sorted = {};
@@ -35,16 +46,21 @@ function formatDate(date) {
 
 function getClientIp(req) {
   const forwarded = req.headers["x-forwarded-for"];
+  let ip = "127.0.0.1";
 
   if (typeof forwarded === "string" && forwarded.length > 0) {
-    return forwarded.split(",")[0].trim();
+    ip = forwarded.split(",")[0].trim();
+  } else if (req.ip) {
+    ip = req.ip.replace("::ffff:", "");
+  } else if (req.socket?.remoteAddress) {
+    ip = req.socket.remoteAddress.replace("::ffff:", "");
   }
 
-  if (req.ip) {
-    return req.ip.replace("::ffff:", "");
+  if (ip === "::1" || ip === "localhost") {
+    ip = "127.0.0.1";
   }
 
-  return req.socket?.remoteAddress?.replace("::ffff:", "") || "127.0.0.1";
+  return ip;
 }
 
 function buildPaymentUrl({
@@ -75,7 +91,7 @@ function buildPaymentUrl({
     vnp_CurrCode: VNPAY_CURRENCY,
     vnp_IpAddr: getClientIp(req),
     vnp_Locale: VNPAY_LOCALE,
-    vnp_OrderInfo: orderInfo || `Thanh toan don hang ${orderId}`,
+    vnp_OrderInfo: removeAccents(orderInfo || `Thanh toan don hang ${orderId}`),
     vnp_OrderType: VNPAY_ORDER_TYPE,
     vnp_ReturnUrl: returnUrl,
     vnp_TmnCode: tmnCode,
@@ -88,10 +104,6 @@ function buildPaymentUrl({
     vnpParams.vnp_BankCode = bankCode;
   }
 
-  if (ipnUrl) {
-    vnpParams.vnp_IpnUrl = ipnUrl;
-  }
-
   const sortedParams = sortObject(vnpParams);
   const queryString = Object.entries(sortedParams)
     .map(([key, value]) => `${key}=${value}`)
@@ -101,6 +113,23 @@ function buildPaymentUrl({
     .createHmac("sha512", hashSecret)
     .update(Buffer.from(queryString, "utf-8"))
     .digest("hex");
+
+  const logData = `
+=================== VNPAY DEBUG ===================
+Date: ${new Date().toISOString()}
+tmnCode: ${tmnCode}
+hashSecret: ${hashSecret}
+vnpParams: ${JSON.stringify(vnpParams, null, 2)}
+sortedParams: ${JSON.stringify(sortedParams, null, 2)}
+queryString: ${queryString}
+secureHash: ${secureHash}
+====================================================
+`;
+  try {
+    fs.appendFileSync(path.join(__dirname, "../../vnpay-debug.log"), logData);
+  } catch (err) {
+    console.error("Failed to write vnpay debug log:", err);
+  }
 
   return `${vnpUrl}?${queryString}&vnp_SecureHash=${secureHash}`;
 }

@@ -63,7 +63,7 @@ export default function CheckoutPage() {
       clearCart();
       navigate("/orders");
     } catch (error) {
-      alert("Lỗi khi đặt hàng: " + error.message);
+      alert("Lỗi khi đặt hàng: " + (error.response?.data?.error || error.message));
     } finally {
       setLoading(false);
     }
