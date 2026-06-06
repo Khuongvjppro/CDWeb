@@ -79,7 +79,7 @@ export default function ShippingForm({ formData, onChange, shippingInfo }) {
           <div>
             <p className="font-bold">Phí giao hàng được cập nhật theo khu vực</p>
             <p className="mt-1 text-[#8b6d3e]">
-              {shippingInfo.note} · {shippingInfo.fee.toLocaleString("vi-VN")}₫
+              {shippingInfo.note} · {shippingInfo.fee.toLocaleString("vi-VN")}
             </p>
           </div>
         </div>

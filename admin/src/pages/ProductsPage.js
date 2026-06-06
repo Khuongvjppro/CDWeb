@@ -446,7 +446,7 @@ export default function ProductsPage() {
                     {product.category || "-"}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900 font-semibold">
-                    {Number(product.price || 0).toLocaleString("vi-VN")}₫
+                    {Number(product.price || 0).toLocaleString("vi-VN")}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {product.stock}

@@ -121,7 +121,7 @@ export default function OrdersPage() {
 
                   <div className="text-right">
                     <p className="font-black text-stone-950">
-                      {order.totalAmount.toLocaleString("vi-VN")}₫
+                      {order.totalAmount.toLocaleString("vi-VN")}
                     </p>
                     <span className="mt-1 inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-900">
                       {getStatusLabel(order.status)}
@@ -157,7 +157,7 @@ export default function OrdersPage() {
                         Tổng tiền
                       </p>
                       <p className="mt-2 text-2xl font-black text-amber-300">
-                        {order.totalAmount.toLocaleString("vi-VN")}₫
+                        {order.totalAmount.toLocaleString("vi-VN")}
                       </p>
                     </div>
                   </div>

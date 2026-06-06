@@ -5,7 +5,7 @@ import { authAPI, orderAPI, productAPI } from "../utils/api";
 const currencyFormatter = new Intl.NumberFormat("vi-VN");
 
 const formatCurrency = (value) =>
-  `${currencyFormatter.format(Number(value) || 0)}₫`;
+  `${currencyFormatter.format(Number(value) || 0)}`;
 
 const formatDate = (value) =>
   new Date(value || Date.now()).toLocaleDateString("vi-VN");
@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
                 value={
                   orders.length
                     ? formatCurrency(totalRevenue / orders.length)
-                    : "0₫"
+                    : "0"
                 }
                 accent="#d59a00"
                 hint="Mức chi tiêu trung bình của một order"

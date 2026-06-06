@@ -13,7 +13,7 @@ import { authAPI, orderAPI, productAPI } from "../utils/api";
 const currencyFormatter = new Intl.NumberFormat("vi-VN");
 
 const formatCurrency = (value) =>
-  `${currencyFormatter.format(Number(value) || 0)}₫`;
+  `${currencyFormatter.format(Number(value) || 0)}`;
 
 const getOrderDate = (order) =>
   order.createdAt || order.created_at || order.date || Date.now();
@@ -163,7 +163,7 @@ export default function DashboardPage() {
               value={
                 orders.length
                   ? formatCurrency(totalRevenue / orders.length)
-                  : "0₫"
+                  : "0"
               }
               color="bg-yellow-600"
               to="/orders"

@@ -50,15 +50,15 @@ export default function OrderSummary({
                 <p className="mt-1 text-xs text-[#927d6f]">Số lượng: {item.quantity}</p>
               </div>
               <p className="shrink-0 text-sm font-black text-[#7b1e2b]">
-                {(item.price * item.quantity).toLocaleString("vi-VN")}₫
+                {(item.price * item.quantity).toLocaleString("vi-VN")}
               </p>
             </div>
           ))}
         </div>
 
         <div className="mt-4 space-y-3 rounded-2xl border border-[#e5d3bf] bg-[#f7eddf] p-4 text-sm text-[#725f53]">
-          <div className="flex justify-between gap-4"><span>Tạm tính</span><strong className="text-[#5a3e36]">{subtotal.toLocaleString("vi-VN")}₫</strong></div>
-          <div className="flex justify-between gap-4"><span>Phí vận chuyển</span><strong className="text-[#5a3e36]">{shippingFee.toLocaleString("vi-VN")}₫</strong></div>
+          <div className="flex justify-between gap-4"><span>Tạm tính</span><strong className="text-[#5a3e36]">{subtotal.toLocaleString("vi-VN")}</strong></div>
+          <div className="flex justify-between gap-4"><span>Phí vận chuyển</span><strong className="text-[#5a3e36]">{shippingFee.toLocaleString("vi-VN")}</strong></div>
           <div className="flex items-start gap-2 border-t border-[#dec9b2] pt-3 text-xs leading-5 text-[#806b5e]">
             <MapPin size={15} className="mt-0.5 shrink-0 text-[#7b1e2b]" />
             <span>{province}, Việt Nam · {shippingInfo.label}</span>
@@ -70,7 +70,7 @@ export default function OrderSummary({
             <p className="text-[10px] font-bold uppercase tracking-[0.24em] text-white/55">Tổng thanh toán</p>
             <p className="mt-1 text-xs text-white/60">Đã gồm phí giao hàng</p>
           </div>
-          <p className="text-2xl font-black text-[#f4d39a]">{totalAmount.toLocaleString("vi-VN")}₫</p>
+          <p className="text-2xl font-black text-[#f4d39a]">{totalAmount.toLocaleString("vi-VN")}</p>
         </div>
 
         <button
