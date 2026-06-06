@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+=======
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
+>>>>>>> origin
 
 * {
   margin: 0;
@@ -17,17 +21,17 @@ html {
 }
 
 body {
+<<<<<<< HEAD
+  font-family: "Inter", sans-serif;
+=======
   font-family: "Lora", serif;
+>>>>>>> origin
   background:
-    radial-gradient(circle at top, rgba(231, 216, 201, 0.95), transparent 30%),
-    radial-gradient(
-      circle at 12% 14%,
-      rgba(181, 82, 57, 0.14),
-      transparent 18%
-    ),
-    radial-gradient(circle at 88% 8%, rgba(90, 62, 54, 0.16), transparent 22%),
-    linear-gradient(180deg, #fff8f2 0%, #f3e6d9 45%, #e7d8c9 100%);
-  color: #5a3e36;
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.9), transparent 28%),
+    radial-gradient(circle at 10% 15%, rgba(122, 21, 35, 0.08), transparent 18%),
+    radial-gradient(circle at 90% 8%, rgba(90, 62, 54, 0.08), transparent 20%),
+    linear-gradient(180deg, #f9f6f0 0%, #f6f1e8 48%, #f2eadf 100%);
+  color: #3f2f29;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   font-kerning: normal;
@@ -39,8 +43,13 @@ h3,
 h4,
 h5,
 h6 {
+<<<<<<< HEAD
+  font-family: "Inter", sans-serif;
+  letter-spacing: -0.03em;
+=======
   font-family: "Playfair Display", serif;
   letter-spacing: -0.01em;
+>>>>>>> origin
 }
 
 #root {
@@ -67,6 +76,17 @@ h6 {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #b55239;
+}
+
+@keyframes cartMetric {
+  0% {
+    opacity: 0.45;
+    transform: translateY(5px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @layer components {
@@ -135,7 +155,7 @@ h6 {
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#b55239] via-[#a34733] to-[#5a3e36] px-6 py-3 font-semibold text-white shadow-lg shadow-[#5a3e36]/20 transition duration-300 hover:-translate-y-0.5 hover:from-[#a34733] hover:via-[#8f3b2c] hover:to-[#4e352f];
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-[#7A1523] px-6 py-3 font-semibold text-white shadow-[0_14px_30px_rgba(122,21,35,0.22)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
   }
 
   .btn-secondary {
@@ -147,7 +167,7 @@ h6 {
   }
 
   .input-field {
-    @apply w-full rounded-2xl border border-[#e7d8c9] bg-white/90 px-4 py-3 text-[#5a3e36] outline-none transition placeholder:text-[#9b887f] focus:border-[#b55239] focus:ring-4 focus:ring-[#e7d8c9]/80;
+    @apply w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-gray-800 outline-none transition placeholder:text-gray-400 focus:border-[#7A1523] focus:ring-1 focus:ring-[#7A1523];
   }
 
   .input-field-dark {
