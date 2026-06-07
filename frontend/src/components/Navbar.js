@@ -29,17 +29,21 @@ export default function Navbar() {
 
   const authLinks = useMemo(() => {
     if (isAuthenticated()) {
-      return [
+      const links = [
         { label: "Đơn hàng", to: "/orders" },
         { label: "Giỏ hàng", to: "/cart" },
       ];
+      if (user?.role === "admin") {
+        links.unshift({ label: "Trang quản trị (Admin)", to: "/admin/dashboard" });
+      }
+      return links;
     }
 
     return [
       { label: "Đăng nhập", to: "/login" },
       { label: "Đăng ký", to: "/register" },
     ];
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user]);
 
   const renderUserDropdown = () => {
     if (isAuthenticated()) {

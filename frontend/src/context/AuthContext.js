@@ -3,6 +3,8 @@ import axios from "axios";
 
 const AuthContext = createContext();
 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
@@ -16,7 +18,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${API_URL}/auth/login`,
         {
           email,
           password,
@@ -38,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${API_URL}/auth/register`,
         userData,
       );
       return response.data;

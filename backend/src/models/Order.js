@@ -93,7 +93,7 @@ class Order {
 
   static async getOrderItems(orderId) {
     const query =
-      "SELECT oi.*, p.name, p.image FROM order_items oi JOIN products p ON oi.productId = p.id WHERE oi.orderId = ?";
+      "SELECT oi.*, p.name, p.image_url AS image FROM order_items oi JOIN products p ON oi.productId = p.id WHERE oi.orderId = ?";
     const result = await pool.execute(query, [orderId]);
     return result[0];
   }

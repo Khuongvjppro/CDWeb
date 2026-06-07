@@ -4,12 +4,14 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import AdminNavbar from "./components/AdminNavbar";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -27,12 +29,14 @@ import SupportPage from "./pages/SupportPage";
 
 function AppContent() {
   const { user, isAuthenticated } = useAuth();
+  const location = useLocation();
   const isAdmin = isAuthenticated() && user?.role === "admin";
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <CartProvider>
       <div className="flex flex-col min-h-screen">
-        <Navbar />
+        {isAdminRoute ? <AdminNavbar /> : <Navbar />}
         <main className="flex-grow">
           <Routes>
             <Route
@@ -84,7 +88,7 @@ function AppContent() {
             />
           </Routes>
         </main>
-        <Footer />
+        {!isAdminRoute && <Footer />}
       </div>
     </CartProvider>
   );

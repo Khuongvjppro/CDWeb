@@ -16,19 +16,12 @@ CDWeb/
 │   │   └── middleware/   # Auth middleware
 │   └── package.json
 │
-├── frontend/             # React App (User)
+├── frontend/             # React App (Tích hợp cả User & Admin Dashboard)
 │   ├── src/
-│   │   ├── pages/        # Pages (Home, Products, Cart, etc)
+│   │   ├── pages/        # Các trang của Khách Hàng & Quản Trị Viên (Admin)
 │   │   ├── components/   # Reusable components
 │   │   ├── context/      # Cart & Auth context
 │   │   └── utils/        # API utilities
-│   └── package.json
-│
-├── admin/                # React Admin Dashboard
-│   ├── src/
-│   │   ├── pages/        # Dashboard, Products, Orders, Users
-│   │   ├── components/   # Sidebar
-│   │   └── context/      # Auth context
 │   └── package.json
 │
 └── database/             # MySQL Database
@@ -56,22 +49,14 @@ npm run dev
 # Server chạy tại http://localhost:5000
 ```
 
-### 3. Chạy Frontend (User)
+### 3. Chạy Frontend & Admin Dashboard
 
 ```bash
 cd frontend
 npm install
 npm start
 # Mở http://localhost:3000
-```
-
-### 4. Chạy Admin Dashboard
-
-```bash
-cd admin
-npm install
-npm start
-# Mở http://localhost:3001
+# Đăng nhập bằng tài khoản admin (admin@coffeeshop.com / admin123) để vào trang quản trị
 ```
 
 ## 🔐 Tài Khoản Demo
