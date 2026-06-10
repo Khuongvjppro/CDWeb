@@ -4,6 +4,7 @@ import { ShoppingCart, Star, ArrowLeft, Minus, Plus } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { productAPI } from "../utils/api";
 import { getDefaultImageSrc, getProductImageSrc } from "../utils/productImage";
+import ReviewSection from "../components/ReviewSection";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -198,6 +199,8 @@ export default function ProductDetailPage() {
             </div>
           </div>
         </div>
+
+        <ReviewSection productId={product.id} />
       </div>
     </div>
   );
