@@ -7,7 +7,8 @@ import {
   ShoppingBag, 
   Users, 
   LogOut, 
-  Store 
+  Store,
+  Folder
 } from "lucide-react";
 
 export default function AdminNavbar() {
@@ -22,6 +23,7 @@ export default function AdminNavbar() {
 
   const menuItems = [
     { label: "Dashboard", to: "/admin/dashboard", icon: <LayoutDashboard size={16} /> },
+    { label: "Danh mục", to: "/admin/categories", icon: <Folder size={16} /> },
     { label: "Sản phẩm", to: "/admin/products", icon: <Coffee size={16} /> },
     { label: "Đơn hàng", to: "/admin/orders", icon: <ShoppingBag size={16} /> },
     { label: "Khách hàng", to: "/admin/users", icon: <Users size={16} /> },
