@@ -4,7 +4,7 @@ import { reviewAPI } from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
-export default function ReviewSection({ productId }) {
+export default function ReviewSection({ productId, onStatsLoad }) {
   const [reviews, setReviews] = useState([]);
   const [stats, setStats] = useState({ averageRating: 0, reviewCount: 0 });
   const [rating, setRating] = useState(5);
@@ -21,6 +21,9 @@ export default function ReviewSection({ productId }) {
       const response = await reviewAPI.getByProduct(productId);
       setReviews(response.data.reviews);
       setStats(response.data.stats);
+      if (onStatsLoad) {
+        onStatsLoad(response.data.stats);
+      }
     } catch (err) {
       console.error("Failed to load reviews:", err);
     } finally {

@@ -14,6 +14,7 @@ export default function ProductDetailPage() {
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
   const [imgError, setImgError] = useState(false);
+  const [productStats, setProductStats] = useState(null);
   const categoryLabels = {
     "Ca phe sua": "Cà Phê Sữa",
     Espresso: "Espresso",
@@ -117,10 +118,20 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="p-6 sm:p-8 lg:p-10">
-              <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-900">
-                <Star size={16} className="fill-amber-400 text-amber-400" />
-                4.0 / 5.0
-              </div>
+              {productStats && productStats.reviewCount > 0 ? (
+                <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-900">
+                  <Star size={16} className="fill-amber-400 text-amber-400" />
+                  {Number(productStats.averageRating).toFixed(1)} / 5.0
+                </div>
+              ) : productStats && productStats.reviewCount === 0 ? (
+                <div className="inline-flex items-center gap-2 rounded-full bg-stone-50 px-4 py-2 text-sm font-semibold text-stone-500">
+                  <Star size={16} className="text-stone-300" />
+                  Chưa có đánh giá
+                </div>
+              ) : (
+                <div className="inline-flex h-9 w-24 items-center gap-2 rounded-full bg-stone-100 animate-pulse">
+                </div>
+              )}
 
               <h1 className="mt-5 text-4xl font-black tracking-tight text-stone-950 sm:text-5xl">
                 {product.name}
@@ -200,7 +211,7 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        <ReviewSection productId={product.id} />
+        <ReviewSection productId={product.id} onStatsLoad={setProductStats} />
       </div>
     </div>
   );
