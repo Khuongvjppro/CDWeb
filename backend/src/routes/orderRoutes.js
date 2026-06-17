@@ -5,6 +5,7 @@ const { authenticateToken, authorizeAdmin } = require("../middleware/auth");
 
 router.get("/vnpay/return", orderController.vnpayReturn);
 router.get("/vnpay/ipn", orderController.vnpayIpn);
+router.get("/stats/dashboard", authenticateToken, authorizeAdmin, orderController.getDashboardStats);
 
 // User routes
 router.post("/", authenticateToken, orderController.createOrder);
