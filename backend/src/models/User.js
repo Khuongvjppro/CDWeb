@@ -41,9 +41,21 @@ class User {
     return result[0];
   }
 
+  static async updateUserRole(id, role) {
+    const query = "UPDATE users SET role = ? WHERE id = ?";
+    const result = await pool.execute(query, [role, id]);
+    return result[0];
+  }
+
+  static async updateUserBlockStatus(id, isBlocked) {
+    const query = "UPDATE users SET is_blocked = ? WHERE id = ?";
+    const result = await pool.execute(query, [isBlocked ? 1 : 0, id]);
+    return result[0];
+  }
+
   static async getAllUsers() {
     const query =
-      "SELECT id, email, fullName, phone, role, createdAt FROM users";
+      "SELECT id, email, fullName, phone, role, is_blocked, createdAt FROM users";
     const result = await pool.execute(query);
     return result[0];
   }

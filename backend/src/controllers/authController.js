@@ -39,6 +39,11 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
+    // Check if user is blocked
+    if (user.is_blocked) {
+      return res.status(403).json({ error: "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên!" });
+    }
+
     // Check password
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
@@ -203,6 +208,42 @@ exports.resetPassword = async (req, res) => {
     await User.updatePassword(user.id, hashedPassword);
 
     res.json({ message: "Đặt lại mật khẩu thành công! Bạn có thể đăng nhập bằng mật khẩu mới." });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.updateUserRole = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role } = req.body;
+
+    if (!role || (role !== "user" && role !== "admin")) {
+      return res.status(400).json({ error: "Vai trò không hợp lệ" });
+    }
+
+    if (String(req.user.id) === String(id)) {
+      return res.status(400).json({ error: "Bạn không thể tự thay đổi vai trò của chính mình!" });
+    }
+
+    await User.updateUserRole(id, role);
+    res.json({ message: "Cập nhật vai trò người dùng thành công" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.toggleUserBlock = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { isBlocked } = req.body;
+
+    if (String(req.user.id) === String(id)) {
+      return res.status(400).json({ error: "Bạn không thể tự khóa tài khoản của chính mình!" });
+    }
+
+    await User.updateUserBlockStatus(id, isBlocked);
+    res.json({ message: isBlocked ? "Khóa tài khoản thành công" : "Mở khóa tài khoản thành công" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

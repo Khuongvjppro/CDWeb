@@ -15,5 +15,17 @@ router.get(
   authorizeAdmin,
   authController.getAllUsers,
 );
+router.put(
+  "/users/:id/role",
+  authenticateToken,
+  authorizeAdmin,
+  authController.updateUserRole,
+);
+router.put(
+  "/users/:id/block",
+  authenticateToken,
+  authorizeAdmin,
+  authController.toggleUserBlock,
+);
 
 module.exports = router;
