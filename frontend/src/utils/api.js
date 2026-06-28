@@ -43,6 +43,8 @@ export const authAPI = {
   forgotPassword: (email) => api.post("/auth/forgot-password", { email }),
   resetPassword: (data) => api.post("/auth/reset-password", data),
   getUsers: () => api.get("/auth/users"),
+  updateUserRole: (id, role) => api.put(`/auth/users/${id}/role`, { role }),
+  toggleUserBlock: (id, isBlocked) => api.put(`/auth/users/${id}/block`, { isBlocked }),
 };
 
 export const productAPI = {
@@ -61,6 +63,15 @@ export const orderAPI = {
   getUserOrders: () => api.get("/orders/user"),
   getById: (id) => api.get(`/orders/details/${id}`),
   updateStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
+  getDashboardStats: () => api.get("/orders/stats/dashboard"),
+};
+
+export const categoryAPI = {
+  getAll: () => api.get("/categories"),
+  getById: (id) => api.get(`/categories/${id}`),
+  create: (data) => api.post("/categories", data),
+  update: (id, data) => api.put(`/categories/${id}`, data),
+  delete: (id) => api.delete(`/categories/${id}`),
 };
 
 export const aiAPI = {

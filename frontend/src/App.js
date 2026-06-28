@@ -24,6 +24,7 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 import AdminProductsPage from "./pages/AdminProductsPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
+import AdminCategoriesPage from "./pages/AdminCategoriesPage";
 import AboutHighlandsPage from "./pages/AboutHighlandsPage";
 import NewsPage from "./pages/NewsPage";
 import SupportPage from "./pages/SupportPage";
@@ -89,6 +90,10 @@ function AppContent() {
             <Route
               path="/admin/users"
               element={isAdmin ? <AdminUsersPage /> : <AuthPage />}
+            />
+            <Route
+              path="/admin/categories"
+              element={isAdmin ? <AdminCategoriesPage /> : <AuthPage />}
             />
           </Routes>
         </main>
