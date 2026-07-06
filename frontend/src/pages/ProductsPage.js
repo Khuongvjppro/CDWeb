@@ -91,12 +91,12 @@ export default function ProductsPage() {
             </div>
             <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#b55239]/12 blur-2xl" />
             <div className="pointer-events-none absolute -bottom-10 left-6 h-36 w-36 rounded-full bg-[#5a3e36]/10 blur-3xl" />
-            <div className="relative max-w-3xl">
-              <span className="eyebrow">Thực đơn</span>
-              <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-[#5a3e36] sm:text-4xl">
+            <div className="relative max-w-2xl rounded-[1.5rem] border border-white/50 bg-white/40 p-4 shadow-[0_8px_30px_rgb(0,0,0,0.05)] backdrop-blur-md sm:p-5">
+              <span className="eyebrow bg-white/80">Thực đơn</span>
+              <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-[#5a3e36] sm:text-4xl">
                 Chọn món yêu thích của bạn
               </h1>
-              <p className="mt-3 text-base leading-7 text-[#4b342d]">
+              <p className="mt-2 text-base leading-7 text-[#4b342d]">
                 Từ cà phê rang đậm đến trà thanh nhẹ và thức uống mát lạnh, mọi
                 lựa chọn đều được pha chế tươi mới để bạn thưởng thức trọn vẹn.
               </p>

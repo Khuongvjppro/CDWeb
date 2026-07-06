@@ -13,8 +13,8 @@ export default function Footer() {
   return (
     <footer className="mt-10 border-t border-white/10 bg-[linear-gradient(180deg,#7b1e2b,#5a3e36)] text-white">
       <div className="section-wrap py-6 sm:py-8">
-        <div className="flex flex-col gap-8 md:flex-row md:justify-between lg:gap-12">
-          <div className="p-4 md:w-5/12">
+        <div className="flex flex-col justify-between gap-8 md:flex-row lg:gap-12">
+          <div className="p-4 md:max-w-[400px]">
             <div className="brand-badge-soft w-fit bg-white/10 text-white">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e7d8c9] text-[#7b1e2b]">
                 ☕
