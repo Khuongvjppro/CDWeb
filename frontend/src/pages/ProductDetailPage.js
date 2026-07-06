@@ -135,7 +135,7 @@ export default function ProductDetailPage() {
                     Giá hiện tại
                   </div>
                   <div className="mt-1 text-4xl font-black text-stone-950">
-                    {product.price.toLocaleString("vi-VN")}₫
+                    {product.price.toLocaleString("vi-VN")}
                   </div>
                 </div>
                 <div className="rounded-2xl bg-stone-100 px-4 py-3 text-sm font-medium text-stone-600">

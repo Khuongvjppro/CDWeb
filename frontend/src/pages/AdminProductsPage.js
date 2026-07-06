@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus, Edit, Trash2, Search, ArrowLeft, RefreshCw } from "lucide-react";
-import { productAPI } from "../utils/api";
+import { productAPI, categoryAPI } from "../utils/api";
 
 const formatCurrency = (value) =>
-  `${new Intl.NumberFormat("vi-VN").format(Number(value) || 0)}₫`;
+  `${new Intl.NumberFormat("vi-VN").format(Number(value) || 0)}`;
 
 const initialForm = {
   name: "",
@@ -31,17 +31,21 @@ export default function AdminProductsPage() {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(initialForm);
 
-  const categories = ["Cà phê", "Trà", "Freeze"];
+  const [categories, setCategories] = useState([]);
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
       setError("");
-      const response = await productAPI.getAll();
-      setProducts(response.data || []);
+      const [productsResponse, categoriesResponse] = await Promise.all([
+        productAPI.getAll(),
+        categoryAPI.getAll(),
+      ]);
+      setProducts(productsResponse.data || []);
+      setCategories(categoriesResponse.data || []);
     } catch (fetchError) {
       setError(
-        fetchError.response?.data?.error || "Không thể tải danh sách sản phẩm",
+        fetchError.response?.data?.error || "Không thể tải danh sách sản phẩm hoặc danh mục",
       );
     } finally {
       setLoading(false);
@@ -254,9 +258,9 @@ export default function AdminProductsPage() {
                 onChange={handleChange}
                 className="input-field"
               >
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
+                {categories.map((cat) => (
+                  <option key={cat.id || cat.name} value={cat.name}>
+                    {cat.name}
                   </option>
                 ))}
               </select>

@@ -65,6 +65,7 @@ cp .env.example .env
 # MYSQL_USER=root
 # MYSQL_PASSWORD=    (để trống nếu chưa set password)
 # MYSQL_DATABASE=coffee_shop
+# GEMINI_API_KEY=    (khoá API Google Gemini lấy từ Google AI Studio để chạy trợ lý ảo)
 ```
 
 ### 2.4 Chạy Backend Server
@@ -124,32 +125,15 @@ Password: 123456
 
 ---
 
-## BƯỚC 4: Cài Đặt & Chạy ADMIN (Terminal mới)
+## BƯỚC 4: Truy Cập Trang Quản Trị (ADMIN)
 
-### 4.1 Vào Thư Mục Admin
+Phân hệ Admin đã được tích hợp trực tiếp vào dự án **Frontend**. Bạn không cần mở thêm terminal hay cài đặt gì khác ngoài Frontend.
 
-```bash
-cd admin
-```
+### 4.1 Cách truy cập
+- Mở trình duyệt và truy cập: **[http://localhost:3000/admin](http://localhost:3000/admin)** (hoặc click nút chuyển sang trang Admin từ giao diện nếu có).
 
-### 4.2 Cài Đặt Dependencies
-
-```bash
-npm install
-```
-
-### 4.3 Chạy Admin
-
-```bash
-npm start
-
-# Mở browser http://localhost:3001
-# ✓ Thấy trang login admin là OK
-```
-
-### 4.4 Đăng Nhập Admin
-
-```
+### 4.2 Đăng Nhập Admin
+```text
 Email: admin@coffeeshop.com
 Password: admin123
 ```
@@ -160,10 +144,9 @@ Password: admin123
 
 Nếu tất cả chạy thành công, sẽ thấy:
 
-```
+```text
 ✓ Backend:  http://localhost:5000  ← API Server
-✓ Frontend: http://localhost:3000  ← User Website
-✓ Admin:    http://localhost:3001  ← Admin Panel
+✓ Frontend: http://localhost:3000  ← Khách hàng & Quản trị (Admin)
 ✓ Database: MySQL Running
 ```
 

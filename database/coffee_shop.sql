@@ -112,3 +112,8 @@ INSERT INTO products (category_id, name, slug, description, brand, size, product
 -- Create indexes for better performance
 CREATE INDEX idx_user_email ON users(email);
 CREATE INDEX idx_order_status ON orders(status);
+
+-- Insert sample users (passwords are hashed with bcrypt: 'admin123' and '123456')
+INSERT INTO users (email, password, fullName, phone, role) VALUES
+('admin@coffeeshop.com', '$2a$10$Kqomo6T.MRMeOPCgsEtJXufNNBW1U61cTKcIyrRyzoJWBpFoRjaOS', 'Admin CoffeeShop', '0123456789', 'admin'),
+('user@example.com', '$2a$10$GkYDyaYC9TIfRohFdmXAmegeZJ2tulBXXzOZF5lBDI4lKOK8/lC4y', 'Nguyen Van A', '0987654321', 'user');

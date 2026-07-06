@@ -24,60 +24,59 @@ export const CartProvider = ({ children }) => {
     return "cart_guest";
   }, [user?.id, user?.email]);
 
-  const isInitialLoad = useRef(true);
   const [cart, setCart] = useState([]);
 
+  // Load cart when storageKey changes
   useEffect(() => {
     const savedCart = localStorage.getItem(storageKey);
-    const nextCart = savedCart ? JSON.parse(savedCart) : [];
-
-    isInitialLoad.current = true;
-    setCart(nextCart);
+    setCart(savedCart ? JSON.parse(savedCart) : []);
   }, [storageKey]);
 
-  useEffect(() => {
-    if (isInitialLoad.current) {
-      isInitialLoad.current = false;
-      return;
-    }
-
-    localStorage.setItem(storageKey, JSON.stringify(cart));
-  }, [cart, storageKey]);
-
   const addToCart = (product) => {
-    const existingItem = cart.find((item) => item.id === product.id);
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === product.id);
+      let newCart;
 
-    if (existingItem) {
-      setCart(
-        cart.map((item) =>
+      if (existingItem) {
+        newCart = prevCart.map((item) =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + (product.quantity || 1) }
             : item,
-        ),
-      );
-    } else {
-      setCart([...cart, { ...product, quantity: product.quantity || 1 }]);
-    }
+        );
+      } else {
+        newCart = [...prevCart, { ...product, quantity: product.quantity || 1 }];
+      }
+      localStorage.setItem(storageKey, JSON.stringify(newCart));
+      return newCart;
+    });
   };
 
   const removeFromCart = (productId) => {
-    setCart(cart.filter((item) => item.id !== productId));
+    setCart((prevCart) => {
+      const newCart = prevCart.filter((item) => item.id !== productId);
+      localStorage.setItem(storageKey, JSON.stringify(newCart));
+      return newCart;
+    });
   };
 
   const updateQuantity = (productId, quantity) => {
-    if (quantity <= 0) {
-      removeFromCart(productId);
-    } else {
-      setCart(
-        cart.map((item) =>
+    setCart((prevCart) => {
+      let newCart;
+      if (quantity <= 0) {
+        newCart = prevCart.filter((item) => item.id !== productId);
+      } else {
+        newCart = prevCart.map((item) =>
           item.id === productId ? { ...item, quantity } : item,
-        ),
-      );
-    }
+        );
+      }
+      localStorage.setItem(storageKey, JSON.stringify(newCart));
+      return newCart;
+    });
   };
 
   const clearCart = () => {
     setCart([]);
+    localStorage.setItem(storageKey, JSON.stringify([]));
   };
 
   const getTotalAmount = () => {

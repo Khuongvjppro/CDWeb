@@ -5,7 +5,7 @@ import { authAPI, orderAPI, productAPI } from "../utils/api";
 const currencyFormatter = new Intl.NumberFormat("vi-VN");
 
 const formatCurrency = (value) =>
-  `${currencyFormatter.format(Number(value) || 0)}₫`;
+  `${currencyFormatter.format(Number(value) || 0)}`;
 
 const formatDate = (value) =>
   new Date(value || Date.now()).toLocaleDateString("vi-VN");
@@ -17,6 +17,7 @@ export default function AdminDashboardPage() {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
+  const [stats, setStats] = useState({ categoriesRevenue: [], topProducts: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -26,16 +27,18 @@ export default function AdminDashboardPage() {
         setLoading(true);
         setError("");
 
-        const [productsResponse, ordersResponse, usersResponse] =
+        const [productsResponse, ordersResponse, usersResponse, statsResponse] =
           await Promise.all([
             productAPI.getAll(),
             orderAPI.getAll(),
             authAPI.getUsers(),
+            orderAPI.getDashboardStats(),
           ]);
 
         setProducts(productsResponse.data || []);
         setOrders(ordersResponse.data || []);
         setUsers(usersResponse.data || []);
+        setStats(statsResponse.data || { categoriesRevenue: [], topProducts: [] });
       } catch (fetchError) {
         setError(
           fetchError.response?.data?.error ||
@@ -181,7 +184,7 @@ export default function AdminDashboardPage() {
                 value={
                   orders.length
                     ? formatCurrency(totalRevenue / orders.length)
-                    : "0₫"
+                    : "0"
                 }
                 accent="#d59a00"
                 hint="Mức chi tiêu trung bình của một order"
@@ -305,6 +308,72 @@ export default function AdminDashboardPage() {
                           <p className="text-sm font-medium text-amber-800">
                             {order.status}
                           </p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Advanced Analytics Section */}
+            <div className="mt-8 grid gap-6 lg:grid-cols-2">
+              {/* Category Revenue Breakdown */}
+              <div className="admin-panel p-6">
+                <h2 className="mb-4 text-lg font-bold text-stone-950">
+                  Cơ cấu doanh thu theo Danh mục
+                </h2>
+                <div className="space-y-4">
+                  {!stats.categoriesRevenue || stats.categoriesRevenue.length === 0 ? (
+                    <p className="text-sm text-stone-500">Chưa có dữ liệu thống kê.</p>
+                  ) : (
+                    stats.categoriesRevenue.map((cat, idx) => {
+                      const revenueVal = Number(cat.revenue) || 0;
+                      const percentage = totalRevenue > 0 ? (revenueVal / totalRevenue) * 100 : 0;
+                      return (
+                        <div key={idx} className="space-y-1.5">
+                          <div className="flex justify-between text-sm">
+                            <span className="font-semibold text-stone-700">{cat.categoryName}</span>
+                            <span className="font-bold text-stone-900">
+                              {formatCurrency(revenueVal)} VNĐ ({percentage.toFixed(1)}%)
+                            </span>
+                          </div>
+                          <div className="h-3 w-full bg-stone-100 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full rounded-full bg-gradient-to-r from-amber-500 to-[#b55239]" 
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+
+              {/* Top Selling Products */}
+              <div className="admin-panel p-6">
+                <h2 className="mb-4 text-lg font-bold text-[#2c221e]">
+                  Top 5 sản phẩm bán chạy nhất
+                </h2>
+                <div className="space-y-3.5">
+                  {!stats.topProducts || stats.topProducts.length === 0 ? (
+                    <p className="text-sm text-stone-500">Chưa có dữ liệu thống kê.</p>
+                  ) : (
+                    stats.topProducts.map((prod, idx) => (
+                      <div key={idx} className="flex items-center justify-between rounded-2xl border border-stone-200 bg-white/70 px-4 py-3.5 shadow-sm">
+                        <div className="flex items-center gap-3">
+                          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber-50 text-xs font-bold text-[#b55239] border border-amber-100">
+                            #{idx + 1}
+                          </span>
+                          <div>
+                            <p className="font-bold text-stone-900 text-sm">{prod.name}</p>
+                            <p className="text-xs text-stone-500 mt-0.5">Danh mục: {prod.category || "Cà phê"}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-extrabold text-[#7A1523] text-sm">{formatCurrency(prod.totalRevenue)} VNĐ</p>
+                          <p className="text-xs text-[#b55239] mt-0.5 font-bold">Đã bán: {prod.totalQty} ly</p>
                         </div>
                       </div>
                     ))

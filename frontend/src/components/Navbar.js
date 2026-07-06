@@ -29,17 +29,22 @@ export default function Navbar() {
 
   const authLinks = useMemo(() => {
     if (isAuthenticated()) {
-      return [
+      const links = [
+        { label: "Thông tin cá nhân", to: "/profile" },
         { label: "Đơn hàng", to: "/orders" },
         { label: "Giỏ hàng", to: "/cart" },
       ];
+      if (user?.role === "admin") {
+        links.unshift({ label: "Trang quản trị (Admin)", to: "/admin/dashboard" });
+      }
+      return links;
     }
 
     return [
       { label: "Đăng nhập", to: "/login" },
       { label: "Đăng ký", to: "/register" },
     ];
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user]);
 
   const renderUserDropdown = () => {
     if (isAuthenticated()) {
@@ -216,10 +221,26 @@ export default function Navbar() {
                 Giỏ Hàng ({getTotalItems()})
               </Link>
               {isAuthenticated() ? (
-                <button onClick={handleLogout} className="btn-primary mt-2 w-full">
-                  <LogOut size={16} />
-                  <span>Đăng Xuất</span>
-                </button>
+                <>
+                  <Link
+                    to="/profile"
+                    className="block rounded-2xl px-4 py-3 text-white transition hover:bg-white/10"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Thông tin cá nhân
+                  </Link>
+                  <Link
+                    to="/orders"
+                    className="block rounded-2xl px-4 py-3 text-white transition hover:bg-white/10"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Đơn hàng của tôi
+                  </Link>
+                  <button onClick={handleLogout} className="btn-primary mt-2 w-full">
+                    <LogOut size={16} />
+                    <span>Đăng xuất</span>
+                  </button>
+                </>
               ) : (
                 <div className="mt-3 grid grid-cols-2 gap-3">
                   <Link

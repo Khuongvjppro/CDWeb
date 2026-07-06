@@ -2,8 +2,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, RefreshCw, Search } from "lucide-react";
 import { authAPI } from "../utils/api";
+import { useAuth } from "../context/AuthContext";
 
 export default function AdminUsersPage() {
+  const { user: currentUser } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -12,6 +14,56 @@ export default function AdminUsersPage() {
   const [roleFilter, setRoleFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+  const handleRoleToggle = async (targetUser) => {
+    if (String(currentUser?.id) === String(targetUser.id)) {
+      alert("Bạn không thể tự thay đổi vai trò của chính mình!");
+      return;
+    }
+
+    const nextRole = targetUser.role === "admin" ? "user" : "admin";
+    if (!window.confirm(`Thay đổi vai trò của ${targetUser.fullName} thành ${nextRole.toUpperCase()}?`)) {
+      return;
+    }
+
+    try {
+      setError("");
+      await authAPI.updateUserRole(targetUser.id, nextRole);
+      setUsers((prev) =>
+        prev.map((u) => (u.id === targetUser.id ? { ...u, role: nextRole } : u))
+      );
+    } catch (err) {
+      setError(err.response?.data?.error || "Không thể cập nhật vai trò");
+    }
+  };
+
+  const handleBlockToggle = async (targetUser) => {
+    if (String(currentUser?.id) === String(targetUser.id)) {
+      alert("Bạn không thể tự khóa tài khoản của chính mình!");
+      return;
+    }
+
+    const nextBlockState = !targetUser.is_blocked;
+    if (
+      !window.confirm(
+        `${nextBlockState ? "Khóa" : "Mở khóa"} tài khoản của ${targetUser.fullName}?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      setError("");
+      await authAPI.toggleUserBlock(targetUser.id, nextBlockState);
+      setUsers((prev) =>
+        prev.map((u) =>
+          u.id === targetUser.id ? { ...u, is_blocked: nextBlockState ? 1 : 0 } : u
+        )
+      );
+    } catch (err) {
+      setError(err.response?.data?.error || "Không thể thay đổi trạng thái tài khoản");
+    }
+  };
 
   const fetchUsers = async () => {
     try {
@@ -166,6 +218,12 @@ export default function AdminUsersPage() {
                   <th className="px-6 py-4 text-left text-sm font-bold text-stone-700">
                     Ngày tham gia
                   </th>
+                  <th className="px-6 py-4 text-left text-sm font-bold text-stone-700">
+                    Trạng thái
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-bold text-stone-700">
+                    Hành động
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -200,6 +258,35 @@ export default function AdminUsersPage() {
                         {user.createdAt
                           ? new Date(user.createdAt).toLocaleDateString("vi-VN")
                           : "-"}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-bold border ${user.is_blocked ? "bg-red-50 text-red-800 border-red-200" : "bg-emerald-50 text-emerald-800 border-emerald-200"}`}>
+                          {user.is_blocked ? "Đã khóa" : "Hoạt động"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            disabled={String(currentUser?.id) === String(user.id)}
+                            onClick={() => handleRoleToggle(user)}
+                            className="inline-flex items-center gap-1 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-semibold text-stone-700 transition hover:bg-stone-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                          >
+                            Đổi vai trò
+                          </button>
+                          <button
+                            type="button"
+                            disabled={String(currentUser?.id) === String(user.id)}
+                            onClick={() => handleBlockToggle(user)}
+                            className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-bold transition disabled:opacity-40 disabled:cursor-not-allowed ${
+                              user.is_blocked
+                                ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                                : "border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
+                            }`}
+                          >
+                            {user.is_blocked ? "Mở khóa" : "Khóa"}
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))

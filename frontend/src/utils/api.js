@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -39,7 +39,12 @@ export const authAPI = {
   login: (email, password) => api.post("/auth/login", { email, password }),
   register: (data) => api.post("/auth/register", data),
   getProfile: () => api.get("/auth/profile"),
+  updateProfile: (data) => api.put("/auth/profile", data),
+  forgotPassword: (email) => api.post("/auth/forgot-password", { email }),
+  resetPassword: (data) => api.post("/auth/reset-password", data),
   getUsers: () => api.get("/auth/users"),
+  updateUserRole: (id, role) => api.put(`/auth/users/${id}/role`, { role }),
+  toggleUserBlock: (id, isBlocked) => api.put(`/auth/users/${id}/block`, { isBlocked }),
 };
 
 export const productAPI = {
@@ -58,6 +63,19 @@ export const orderAPI = {
   getUserOrders: () => api.get("/orders/user"),
   getById: (id) => api.get(`/orders/details/${id}`),
   updateStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
+  getDashboardStats: () => api.get("/orders/stats/dashboard"),
+};
+
+export const categoryAPI = {
+  getAll: () => api.get("/categories"),
+  getById: (id) => api.get(`/categories/${id}`),
+  create: (data) => api.post("/categories", data),
+  update: (id, data) => api.put(`/categories/${id}`, data),
+  delete: (id) => api.delete(`/categories/${id}`),
+};
+
+export const aiAPI = {
+  chat: (message, history) => api.post("/ai/chat", { message, history }),
 };
 
 export default api;

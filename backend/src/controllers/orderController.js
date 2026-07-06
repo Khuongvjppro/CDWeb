@@ -1,6 +1,7 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 const { buildPaymentUrl, verifySignature } = require("../utils/vnpay");
+const pool = require("../config/database");
 
 function buildReturnUrl(req) {
   return (
@@ -56,6 +57,17 @@ async function handleVnpayCallback(req, res, shouldRedirect) {
         .json({ RspCode: "01", Message: "Order not found" });
     }
 
+    // Nếu đơn hàng đã được xác nhận hoặc hủy trước đó, bỏ qua để tránh trùng lặp
+    if (order.status !== "pending") {
+      if (shouldRedirect) {
+        const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+        return res.redirect(
+          `${frontendUrl}/orders?payment=${order.status === "processing" ? "success" : "failed"}&orderId=${orderId}`,
+        );
+      }
+      return res.json({ RspCode: "02", Message: "Order already confirmed" });
+    }
+
     if (Number(order.totalAmount) !== Number(amount)) {
       if (shouldRedirect) {
         return res.redirect(
@@ -69,6 +81,14 @@ async function handleVnpayCallback(req, res, shouldRedirect) {
     const isSuccess = responseCode === "00" && transactionStatus === "00";
     const nextStatus = isSuccess ? "processing" : "cancelled";
     const nextPaymentStatus = isSuccess ? "paid" : "failed";
+
+    // Nếu thanh toán thất bại, hoàn trả tồn kho cho các sản phẩm trong đơn hàng
+    if (!isSuccess) {
+      const items = await Order.getOrderItems(orderId);
+      for (const item of items) {
+        await Product.incrementStock(item.productId, item.quantity);
+      }
+    }
 
     await Order.updatePaymentInfo(orderId, {
       status: nextStatus,
@@ -102,6 +122,7 @@ async function handleVnpayCallback(req, res, shouldRedirect) {
 }
 
 exports.createOrder = async (req, res) => {
+  const connection = await pool.getConnection();
   try {
     const {
       items,
@@ -112,6 +133,7 @@ exports.createOrder = async (req, res) => {
     } = req.body;
 
     if (!Array.isArray(items) || items.length === 0) {
+      connection.release();
       return res.status(400).json({ error: "Order items are required" });
     }
 
@@ -123,12 +145,21 @@ exports.createOrder = async (req, res) => {
 
     const invalidItem = normalizedItems.find((item) => !item.productId);
     if (invalidItem) {
+      connection.release();
       return res.status(400).json({
         error: "Each order item must include a product id",
       });
     }
 
-    // Create order
+    // Bắt đầu database transaction
+    await connection.beginTransaction();
+
+    // 1. Kiểm tra tồn kho và trừ kho (có khóa dòng FOR UPDATE)
+    for (const item of normalizedItems) {
+      await Product.checkAndDecrementStock(item.productId, item.quantity, connection);
+    }
+
+    // 2. Tạo đơn hàng (dùng connection của transaction)
     const orderResult = await Order.createOrder({
       userId: req.user.id,
       totalAmount: Number(totalAmount) || 0,
@@ -136,19 +167,24 @@ exports.createOrder = async (req, res) => {
       shippingAddress,
       paymentMethod,
       paymentStatus: "pending",
-    });
+    }, connection);
 
     const orderId = orderResult.insertId;
 
-    // Add items to order
+    // 3. Tạo chi tiết đơn hàng (dùng connection của transaction)
     for (const item of normalizedItems) {
       await Order.addOrderItem(
         orderId,
         item.productId,
         item.quantity,
         item.price,
+        connection
       );
     }
+
+    // Commit transaction nếu mọi thứ thành công
+    await connection.commit();
+    connection.release();
 
     if (paymentMethod === "vnpay") {
       const paymentUrl = buildPaymentUrl({
@@ -181,6 +217,8 @@ exports.createOrder = async (req, res) => {
 
     res.status(201).json({ message: "Order created", orderId });
   } catch (error) {
+    await connection.rollback();
+    connection.release();
     res.status(500).json({ error: error.message });
   }
 };
@@ -220,7 +258,23 @@ exports.getAllOrders = async (req, res) => {
 exports.updateOrderStatus = async (req, res) => {
   try {
     const { status } = req.body;
-    await Order.updateOrderStatus(req.params.id, status);
+    const orderId = req.params.id;
+
+    // Lấy thông tin đơn hàng hiện tại
+    const order = await Order.getOrderById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // Nếu đơn hàng chuyển sang 'cancelled' từ trạng thái khác, hoàn trả tồn kho
+    if (status === "cancelled" && order.status !== "cancelled") {
+      const items = await Order.getOrderItems(orderId);
+      for (const item of items) {
+        await Product.incrementStock(item.productId, item.quantity);
+      }
+    }
+
+    await Order.updateOrderStatus(orderId, status);
     res.json({ message: "Order status updated" });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -233,4 +287,42 @@ exports.vnpayReturn = async (req, res) => {
 
 exports.vnpayIpn = async (req, res) => {
   return handleVnpayCallback(req, res, false);
+};
+
+exports.getDashboardStats = async (req, res) => {
+  try {
+    // 1. Doanh thu theo danh mục
+    const categoryQuery = `
+      SELECT c.name as categoryName, SUM(oi.price * oi.quantity) as revenue
+      FROM order_items oi
+      JOIN products p ON oi.productId = p.id
+      JOIN categories c ON p.category_id = c.id
+      JOIN orders o ON oi.orderId = o.id
+      WHERE o.status != 'cancelled'
+      GROUP BY c.name
+    `;
+    const [categoriesRevenue] = await pool.execute(categoryQuery);
+
+    // 2. Top 5 sản phẩm bán chạy nhất
+    const topSellersQuery = `
+      SELECT p.id, p.name, p.image_url as image, c.name as category, 
+             SUM(oi.quantity) as totalQty, SUM(oi.price * oi.quantity) as totalRevenue
+      FROM order_items oi
+      JOIN products p ON oi.productId = p.id
+      LEFT JOIN categories c ON p.category_id = c.id
+      JOIN orders o ON oi.orderId = o.id
+      WHERE o.status != 'cancelled'
+      GROUP BY p.id, p.name, p.image_url, c.name
+      ORDER BY totalQty DESC
+      LIMIT 5
+    `;
+    const [topProducts] = await pool.execute(topSellersQuery);
+
+    res.json({
+      categoriesRevenue,
+      topProducts,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
