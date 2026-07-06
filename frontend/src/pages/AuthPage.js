@@ -85,14 +85,13 @@ export default function AuthPage() {
               <div className="relative flex h-full flex-col justify-between">
                 <div>
                   <span className="eyebrow border-white/10 bg-white/10 text-amber-100">
-                    Highlands-inspired access
+                    Thành viên CoffeeShop
                   </span>
                   <h2 className="mt-5 text-4xl font-black leading-tight">
-                    Một trang, hai lựa chọn. Đăng nhập hoặc đăng ký thật gọn.
+                    Thưởng thức trọn vẹn hương vị cà phê đích thực.
                   </h2>
                   <p className="mt-4 max-w-md text-stone-200/90 leading-7">
-                    Tông nâu - vàng ấm, khối bo lớn, và cảm giác cao cấp giống
-                    các trang bán lẻ cà phê hiện đại.
+                    Đăng nhập hoặc đăng ký ngay để nhận các ưu đãi hấp dẫn, tích điểm đổi quà và tận hưởng những ly cà phê đậm đà bản sắc.
                   </p>
                 </div>
 
@@ -100,13 +99,13 @@ export default function AuthPage() {
                   <div className="hero-stat">
                     <div className="text-3xl">☕</div>
                     <p className="mt-3 text-sm text-stone-200">
-                      Đăng nhập nhanh, tiếp tục mua sắm ngay.
+                      Đăng nhập nhanh chóng, đặt món dễ dàng.
                     </p>
                   </div>
                   <div className="hero-stat">
                     <div className="text-3xl">🧾</div>
                     <p className="mt-3 text-sm text-stone-200">
-                      Đăng ký để lưu thông tin và theo dõi đơn.
+                      Đăng ký để nhận ưu đãi và theo dõi đơn hàng.
                     </p>
                   </div>
                 </div>

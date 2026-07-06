@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   MapPin,
   Phone,
@@ -12,8 +13,8 @@ export default function Footer() {
   return (
     <footer className="mt-10 border-t border-white/10 bg-[linear-gradient(180deg,#7b1e2b,#5a3e36)] text-white">
       <div className="section-wrap py-6 sm:py-8">
-        <div className="grid gap-4 lg:grid-cols-3">
-          <div className="p-4">
+        <div className="flex flex-col gap-8 md:flex-row md:justify-between lg:gap-12">
+          <div className="p-4 md:w-5/12">
             <div className="brand-badge-soft w-fit bg-white/10 text-white">
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e7d8c9] text-[#7b1e2b]">
                 ☕
@@ -25,9 +26,8 @@ export default function Footer() {
                 <div className="text-lg font-extrabold">CoffeeShop</div>
               </div>
             </div>
-            <p className="mt-3 max-w-md leading-6 text-[#f3e6d9]/90">
-              Giao diện theo cảm hứng Highlands: ấm, sang, nhiều khoảng thở và
-              tập trung vào trải nghiệm thưởng thức cà phê.
+            <p className="mt-4 max-w-md leading-6 text-[#f3e6d9]/90">
+              Khơi dậy niềm đam mê với những hạt cà phê rang xay nguyên chất. Chúng tôi cam kết mang đến những tách cà phê đậm đà bản sắc và một không gian thưởng thức khó quên.
             </p>
             <div className="mt-3 flex gap-3">
               <button type="button" className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-[#f3e6d9] transition hover:bg-white/15">
@@ -46,11 +46,11 @@ export default function Footer() {
             <h3 className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-100/70">
               Liên Kết
             </h3>
-            <ul className="mt-3 space-y-2 text-[#f3e6d9]">
-              <li>Về Chúng Tôi</li>
-              <li>Điều Khoản</li>
-              <li>Chính Sách Bảo Mật</li>
-              <li>Liên Hệ</li>
+            <ul className="mt-3 space-y-3 text-[#f3e6d9]">
+              <li><Link to="/about-highlands" className="transition hover:text-white hover:underline">Về Chúng Tôi</Link></li>
+              <li><Link to="/terms" className="transition hover:text-white hover:underline">Điều Khoản</Link></li>
+              <li><Link to="/privacy" className="transition hover:text-white hover:underline">Chính Sách Bảo Mật</Link></li>
+              <li><Link to="/support" className="transition hover:text-white hover:underline">Liên Hệ</Link></li>
             </ul>
           </div>
 
