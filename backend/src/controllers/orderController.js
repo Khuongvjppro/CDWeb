@@ -288,3 +288,41 @@ exports.vnpayReturn = async (req, res) => {
 exports.vnpayIpn = async (req, res) => {
   return handleVnpayCallback(req, res, false);
 };
+
+exports.getDashboardStats = async (req, res) => {
+  try {
+    // 1. Doanh thu theo danh mục
+    const categoryQuery = `
+      SELECT c.name as categoryName, SUM(oi.price * oi.quantity) as revenue
+      FROM order_items oi
+      JOIN products p ON oi.productId = p.id
+      JOIN categories c ON p.category_id = c.id
+      JOIN orders o ON oi.orderId = o.id
+      WHERE o.status != 'cancelled'
+      GROUP BY c.name
+    `;
+    const [categoriesRevenue] = await pool.execute(categoryQuery);
+
+    // 2. Top 5 sản phẩm bán chạy nhất
+    const topSellersQuery = `
+      SELECT p.id, p.name, p.image_url as image, c.name as category, 
+             SUM(oi.quantity) as totalQty, SUM(oi.price * oi.quantity) as totalRevenue
+      FROM order_items oi
+      JOIN products p ON oi.productId = p.id
+      LEFT JOIN categories c ON p.category_id = c.id
+      JOIN orders o ON oi.orderId = o.id
+      WHERE o.status != 'cancelled'
+      GROUP BY p.id, p.name, p.image_url, c.name
+      ORDER BY totalQty DESC
+      LIMIT 5
+    `;
+    const [topProducts] = await pool.execute(topSellersQuery);
+
+    res.json({
+      categoriesRevenue,
+      topProducts,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
