@@ -123,3 +123,42 @@ export const getShippingInfoByProvince = (province) => {
     note: "Áp dụng cho các khu vực xa trung tâm",
   };
 };
+
+export const VN_HIERARCHY = {
+  "Hà Nội": {
+    "Quận Hoàn Kiếm": ["Phường Hàng Bạc", "Phường Hàng Đào", "Phường Tràng Tiền", "Phường Lý Thái Tổ"],
+    "Quận Ba Đình": ["Phường Trúc Bạch", "Phường Cống Vị", "Phường Kim Mã", "Phường Giảng Võ"],
+    "Quận Tây Hồ": ["Phường Quảng An", "Phường Bưởi", "Phường Nhật Tân", "Phường Thuỵ Khuê"],
+    "Quận Cầu Giấy": ["Phường Dịch Vọng", "Phường Quan Hoa", "Phường Nghĩa Tân", "Phường Mai Dịch"],
+    "Quận Đống Đa": ["Phường Láng Hạ", "Phường Cát Linh", "Phường Văn Miếu", "Phường Khương Thượng"]
+  },
+  "TP. Hồ Chí Minh": {
+    "Quận 1": ["Phường Bến Nghé", "Phường Bến Thành", "Phường Phạm Ngũ Lão", "Phường Đa Kao"],
+    "Quận 3": ["Phường Võ Thị Sáu", "Phường 1", "Phường 2", "Phường 3"],
+    "Quận 5": ["Phường 1", "Phường 2", "Phường 3", "Phường 4"],
+    "Quận Bình Thạnh": ["Phường 15", "Phường 25", "Phường 26", "Phường 27"],
+    "Thành phố Thủ Đức": ["Phường Thảo Điền", "Phường An Phú", "Phường Bình An", "Phường Thủ Thiêm"]
+  },
+  "Đà Nẵng": {
+    "Quận Hải Châu": ["Phường Thạch Thang", "Phường Hải Châu I", "Phường Hải Châu II", "Phường Hòa Thuận Tây"],
+    "Quận Thanh Khê": ["Phường Vĩnh Trung", "Phường Tân Chính", "Phường Thạc Gián", "Phường Chính Gián"],
+    "Quận Sơn Trà": ["Phường An Hải Tây", "Phường An Hải Bắc", "Phường Phước Mỹ", "Phường Thọ Quang"],
+    "Quận Ngũ Hành Sơn": ["Phường Mỹ An", "Phường Khuê Mỹ", "Phường Hòa Hải", "Phường Hòa Quý"]
+  }
+};
+
+export const getDistrictsByProvince = (province) => {
+  if (VN_HIERARCHY[province]) {
+    return Object.keys(VN_HIERARCHY[province]);
+  }
+  // Fallback cho các tỉnh khác để giao diện vẫn hoạt động mượt mà
+  return [`Thành phố ${province}`, `Huyện/Thị xã thuộc ${province}`];
+};
+
+export const getWardsByDistrict = (province, district) => {
+  if (VN_HIERARCHY[province] && VN_HIERARCHY[province][district]) {
+    return VN_HIERARCHY[province][district];
+  }
+  // Fallback cho các tỉnh khác để giao diện vẫn hoạt động mượt mà
+  return ["Phường Trung tâm", "Xã Trung tâm", "Phường/Xã khác"];
+};

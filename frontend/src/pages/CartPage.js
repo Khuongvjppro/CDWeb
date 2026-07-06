@@ -144,7 +144,7 @@ export default function CartPage() {
               <div className="rounded-[1.5rem] border border-white/70 bg-white/65 px-6 py-5 text-center shadow-[0_14px_32px_rgba(90,62,54,0.09)] backdrop-blur-sm">
                 <p className="text-sm font-medium text-[#5a3e36]">Tạm tính</p>
                 <p key={totalAmount} className="mt-2 animate-[cartMetric_.35s_ease-out] text-3xl font-black tracking-tight text-[#7b1e2b]">
-                  {totalAmount.toLocaleString("vi-VN")}₫
+                  {totalAmount.toLocaleString("vi-VN")}
                 </p>
               </div>
             </div>
@@ -185,7 +185,7 @@ export default function CartPage() {
                       {item.name}
                     </h3>
                     <p className="mt-1 text-sm text-[#7b6a5e]">
-                      {item.price.toLocaleString("vi-VN")}₫ / sản phẩm
+                      {item.price.toLocaleString("vi-VN")} / sản phẩm
                     </p>
 
                     <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -208,7 +208,7 @@ export default function CartPage() {
                       </div>
 
                       <div className="text-lg font-black text-[#5a3e36]">
-                        {(item.price * item.quantity).toLocaleString("vi-VN")}₫
+                        {(item.price * item.quantity).toLocaleString("vi-VN")}
                       </div>
                     </div>
                   </div>
@@ -232,7 +232,7 @@ export default function CartPage() {
               <div className="mt-5 space-y-3 text-sm text-[#5f4e45]">
                 <div className="flex items-center justify-between gap-4">
                   <span>Tạm tính</span>
-                  <span className="font-semibold">{totalAmount.toLocaleString("vi-VN")}₫</span>
+                  <span className="font-semibold">{totalAmount.toLocaleString("vi-VN")}</span>
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <span>Phí vận chuyển</span>
@@ -240,14 +240,14 @@ export default function CartPage() {
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <span>Giảm giá</span>
-                  <span className="font-semibold">0₫</span>
+                  <span className="font-semibold">0</span>
                 </div>
               </div>
 
               <div className="mt-4 border-t border-[#e2cfb8] pt-4">
                 <div className="flex items-center justify-between text-base font-bold text-[#5a3e36]">
                   <span>Tổng cộng</span>
-                  <span>{totalAmount.toLocaleString("vi-VN")}₫</span>
+                  <span>{totalAmount.toLocaleString("vi-VN")}</span>
                 </div>
               </div>
 

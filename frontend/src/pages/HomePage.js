@@ -28,7 +28,7 @@ export default function HomePage() {
     <div className="page-shell">
       <div className="page-content">
         <section className="pt-0">
-          <div className="relative w-full h-[260px] sm:h-[380px] md:h-[440px] lg:h-[640px] overflow-hidden bg-[#5a3e36]/5">
+          <div className="relative w-full h-[260px] sm:h-[380px] md:h-[440px] lg:h-[740px] overflow-hidden bg-[#5a3e36]/5">
             <img
               src="/Image/B2.png"
               alt="Banner"

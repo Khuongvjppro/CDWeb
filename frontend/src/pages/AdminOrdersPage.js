@@ -11,7 +11,7 @@ import {
 import { authAPI, orderAPI } from "../utils/api";
 
 const formatCurrency = (value) =>
-  `${new Intl.NumberFormat("vi-VN").format(Number(value) || 0)}₫`;
+  `${new Intl.NumberFormat("vi-VN").format(Number(value) || 0)}`;
 
 const formatDate = (value) =>
   new Date(value || Date.now()).toLocaleDateString("vi-VN");

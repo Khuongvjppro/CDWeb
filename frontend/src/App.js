@@ -4,12 +4,15 @@ import {
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import AdminNavbar from "./components/AdminNavbar";
+import AIChatWidget from "./components/AIChatWidget";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -24,15 +27,19 @@ import AdminUsersPage from "./pages/AdminUsersPage";
 import AboutHighlandsPage from "./pages/AboutHighlandsPage";
 import NewsPage from "./pages/NewsPage";
 import SupportPage from "./pages/SupportPage";
+import ProfilePage from "./pages/ProfilePage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function AppContent() {
   const { user, isAuthenticated } = useAuth();
+  const location = useLocation();
   const isAdmin = isAuthenticated() && user?.role === "admin";
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <CartProvider>
       <div className="flex flex-col min-h-screen">
-        <Navbar />
+        {isAdminRoute ? <AdminNavbar /> : <Navbar />}
         <main className="flex-grow">
           <Routes>
             <Route
@@ -55,7 +62,6 @@ function AppContent() {
                 )
               }
             />
-            <Route path="/" element={<HomePage />} />
             <Route path="/about-highlands" element={<AboutHighlandsPage />} />
             <Route path="/news" element={<NewsPage />} />
             <Route path="/support" element={<SupportPage />} />
@@ -64,8 +70,10 @@ function AppContent() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/profile" element={isAuthenticated() ? <ProfilePage /> : <AuthPage />} />
             <Route path="/login" element={<AuthPage />} />
             <Route path="/register" element={<AuthPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route
               path="/admin/dashboard"
               element={isAdmin ? <AdminDashboardPage /> : <AuthPage />}
@@ -84,7 +92,8 @@ function AppContent() {
             />
           </Routes>
         </main>
-        <Footer />
+        {!isAdminRoute && <Footer />}
+        {!isAdminRoute && <AIChatWidget />}
       </div>
     </CartProvider>
   );

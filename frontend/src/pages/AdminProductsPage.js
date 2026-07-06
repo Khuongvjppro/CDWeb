@@ -4,7 +4,7 @@ import { Plus, Edit, Trash2, Search, ArrowLeft, RefreshCw } from "lucide-react";
 import { productAPI } from "../utils/api";
 
 const formatCurrency = (value) =>
-  `${new Intl.NumberFormat("vi-VN").format(Number(value) || 0)}₫`;
+  `${new Intl.NumberFormat("vi-VN").format(Number(value) || 0)}`;
 
 const initialForm = {
   name: "",

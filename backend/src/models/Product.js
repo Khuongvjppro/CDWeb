@@ -269,6 +269,25 @@ class Product {
     ]);
     return result[0].map(Product.formatProduct);
   }
+
+  static async checkAndDecrementStock(productId, quantity, connection = pool) {
+    const query = "SELECT stock, name FROM products WHERE id = ? FOR UPDATE";
+    const [rows] = await connection.execute(query, [productId]);
+    const product = rows[0];
+    if (!product) {
+      throw new Error(`Sản phẩm với ID ${productId} không tồn tại`);
+    }
+    if (product.stock < quantity) {
+      throw new Error(`Sản phẩm "${product.name}" đã hết hàng hoặc không đủ số lượng trong kho (Còn lại: ${product.stock})`);
+    }
+    const updateQuery = "UPDATE products SET stock = stock - ? WHERE id = ?";
+    await connection.execute(updateQuery, [quantity, productId]);
+  }
+
+  static async incrementStock(productId, quantity, connection = pool) {
+    const query = "UPDATE products SET stock = stock + ? WHERE id = ?";
+    await connection.execute(query, [quantity, productId]);
+  }
 }
 
 module.exports = Product;
