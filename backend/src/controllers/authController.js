@@ -170,7 +170,7 @@ exports.forgotPassword = async (req, res) => {
       console.log("==================================================\n");
     }
 
-    res.json({ message: "Đường liên kết đặt lại mật khẩu đã được gửi đến email của bạn!" });
+    res.json({ message: "Đường liên kết đặt lại mật khẩu đã được gửi nếu email tồn tại trên hệ thống!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
