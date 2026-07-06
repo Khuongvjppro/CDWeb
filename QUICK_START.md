@@ -26,22 +26,13 @@ npm run dev
 # Set FRONTEND_URL if you deploy frontend elsewhere
 ```
 
-### 3️⃣ Frontend (Terminal mới)
+### 3️⃣ Frontend & Admin Dashboard (Terminal mới)
 
 ```bash
 cd frontend
 npm install
 npm start
-# ✓ http://localhost:3000
-```
-
-### 4️⃣ Admin (Terminal mới)
-
-```bash
-cd admin
-npm install
-npm start
-# ✓ http://localhost:3001
+# ✓ http://localhost:3000 (Tài khoản Admin đăng nhập sẽ tự chuyển hướng vào trang quản trị)
 ```
 
 ---
