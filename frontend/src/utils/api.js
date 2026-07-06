@@ -60,4 +60,8 @@ export const orderAPI = {
   updateStatus: (id, status) => api.put(`/orders/${id}/status`, { status }),
 };
 
+export const aiAPI = {
+  chat: (message, history) => api.post("/ai/chat", { message, history }),
+};
+
 export default api;

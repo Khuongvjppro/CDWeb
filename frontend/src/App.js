@@ -12,6 +12,7 @@ import { useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import AdminNavbar from "./components/AdminNavbar";
+import AIChatWidget from "./components/AIChatWidget";
 import HomePage from "./pages/HomePage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -59,7 +60,6 @@ function AppContent() {
                 )
               }
             />
-            <Route path="/" element={<HomePage />} />
             <Route path="/about-highlands" element={<AboutHighlandsPage />} />
             <Route path="/news" element={<NewsPage />} />
             <Route path="/support" element={<SupportPage />} />
@@ -89,6 +89,7 @@ function AppContent() {
           </Routes>
         </main>
         {!isAdminRoute && <Footer />}
+        {!isAdminRoute && <AIChatWidget />}
       </div>
     </CartProvider>
   );

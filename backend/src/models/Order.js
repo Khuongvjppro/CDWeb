@@ -1,7 +1,7 @@
 const pool = require("../config/database");
 
 class Order {
-  static async createOrder(orderData) {
+  static async createOrder(orderData, connection = pool) {
     const {
       userId,
       totalAmount,
@@ -16,7 +16,7 @@ class Order {
     } = orderData;
     const query =
       "INSERT INTO orders (userId, totalAmount, status, shippingAddress, paymentMethod, paymentStatus, vnpTxnRef, vnpTransactionNo, vnpResponseCode, vnpPayDate, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
-    const result = await pool.execute(query, [
+    const result = await connection.execute(query, [
       userId,
       totalAmount,
       status,
@@ -79,10 +79,10 @@ class Order {
     return result[0];
   }
 
-  static async addOrderItem(orderId, productId, quantity, price) {
+  static async addOrderItem(orderId, productId, quantity, price, connection = pool) {
     const query =
       "INSERT INTO order_items (orderId, productId, quantity, price) VALUES (?, ?, ?, ?)";
-    const result = await pool.execute(query, [
+    const result = await connection.execute(query, [
       orderId,
       productId,
       quantity,
