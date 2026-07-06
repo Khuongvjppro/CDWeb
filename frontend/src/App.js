@@ -28,6 +28,7 @@ import AboutHighlandsPage from "./pages/AboutHighlandsPage";
 import NewsPage from "./pages/NewsPage";
 import SupportPage from "./pages/SupportPage";
 import ProfilePage from "./pages/ProfilePage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function AppContent() {
   const { user, isAuthenticated } = useAuth();
@@ -72,6 +73,7 @@ function AppContent() {
             <Route path="/profile" element={isAuthenticated() ? <ProfilePage /> : <AuthPage />} />
             <Route path="/login" element={<AuthPage />} />
             <Route path="/register" element={<AuthPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
             <Route
               path="/admin/dashboard"
               element={isAdmin ? <AdminDashboardPage /> : <AuthPage />}
