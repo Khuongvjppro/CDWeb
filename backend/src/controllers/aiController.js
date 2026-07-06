@@ -1,4 +1,5 @@
 const Product = require("../models/Product");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 exports.chat = async (req, res) => {
   try {
@@ -37,7 +38,6 @@ Hãy tuân thủ các quy tắc sau:
 4. Trả lời ngắn gọn, súc tích, định dạng văn bản dễ đọc (sử dụng các gạch đầu dòng, in đậm tên món ăn/thức uống).
 5. Tránh bàn luận về các chủ đề nhạy cảm hoặc không liên quan đến quán cà phê, đồ uống, hoặc thực đơn của quán.`;
 
-    const { GoogleGenerativeAI } = require("@google/generative-ai");
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-flash-latest",

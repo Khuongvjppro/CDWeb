@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { authAPI } from "../utils/api";
 
 const AuthContext = createContext();
@@ -12,6 +12,27 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => {
     return localStorage.getItem("token") || null;
   });
+
+  useEffect(() => {
+    const loadFreshProfile = async () => {
+      if (token) {
+        try {
+          const response = await authAPI.getProfile();
+          setUser(response.data);
+          localStorage.setItem("user", JSON.stringify(response.data));
+        } catch (error) {
+          console.error("Failed to load profile on mount:", error);
+          if (error.response?.status === 401) {
+            setUser(null);
+            setToken(null);
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+          }
+        }
+      }
+    };
+    loadFreshProfile();
+  }, [token]);
 
   const login = async (email, password) => {
     try {
@@ -49,6 +70,11 @@ export const AuthProvider = ({ children }) => {
     return !!token && !!user;
   };
 
+  const updateUserInState = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -58,6 +84,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         isAuthenticated,
+        updateUserInState,
       }}
     >
       {children}

@@ -27,6 +27,7 @@ import AdminUsersPage from "./pages/AdminUsersPage";
 import AboutHighlandsPage from "./pages/AboutHighlandsPage";
 import NewsPage from "./pages/NewsPage";
 import SupportPage from "./pages/SupportPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function AppContent() {
   const { user, isAuthenticated } = useAuth();
@@ -68,6 +69,7 @@ function AppContent() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/orders" element={<OrdersPage />} />
+            <Route path="/profile" element={isAuthenticated() ? <ProfilePage /> : <AuthPage />} />
             <Route path="/login" element={<AuthPage />} />
             <Route path="/register" element={<AuthPage />} />
             <Route
