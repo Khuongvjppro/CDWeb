@@ -8,6 +8,8 @@ const orderRoutes = require("./routes/orderRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 
+const reviewRoutes = require("./routes/reviewRoutes");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -27,6 +29,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -37,3 +40,4 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+// trigger restart

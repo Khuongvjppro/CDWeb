@@ -91,12 +91,19 @@ export default function ProductsPage() {
             </div>
             <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#b55239]/12 blur-2xl" />
             <div className="pointer-events-none absolute -bottom-10 left-6 h-36 w-36 rounded-full bg-[#5a3e36]/10 blur-3xl" />
-            <div className="relative max-w-3xl">
-              <span className="eyebrow">Thực đơn</span>
-              <h1 className="mt-4 text-3xl font-extrabold tracking-tight text-[#5a3e36] sm:text-4xl">
+            <div className="relative max-w-2xl rounded-[1.5rem] border border-white/60 bg-gradient-to-br from-white/70 to-white/30 p-4 shadow-xl backdrop-blur-md sm:p-5">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#7b1e2b] to-[#b55239] px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white shadow-sm">
+                  ☕ Thực Đơn
+                </span>
+                <div className="h-px w-12 bg-gradient-to-r from-[#7b1e2b]/40 to-transparent"></div>
+              </div>
+              
+              <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[#3f2f29] via-[#5a3e36] to-[#b55239] sm:text-4xl">
                 Chọn món yêu thích của bạn
               </h1>
-              <p className="mt-3 text-base leading-7 text-[#4b342d]">
+              
+              <p className="mt-2 text-base font-medium leading-relaxed text-[#5a3e36]/90">
                 Từ cà phê rang đậm đến trà thanh nhẹ và thức uống mát lạnh, mọi
                 lựa chọn đều được pha chế tươi mới để bạn thưởng thức trọn vẹn.
               </p>

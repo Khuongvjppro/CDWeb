@@ -50,21 +50,7 @@ export default function Navbar() {
     if (isAuthenticated()) {
       return (
         <div className="min-w-[240px] rounded-[1.5rem] border border-white/10 bg-[#5a3e36] p-3 text-white shadow-[0_24px_60px_rgba(20,12,8,0.3)]">
-          <div className="rounded-2xl bg-white/5 px-4 py-3">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#e7d8c9] text-[#5a3e36]">
-                <UserCircle size={22} />
-              </div>
-              <div>
-                <div className="text-xs uppercase tracking-[0.24em] text-[#e7d8c9]/80">
-                  Xin chào
-                </div>
-                <div className="font-semibold">{user?.fullName}</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-3 space-y-1">
+          <div className="space-y-1">
             {authLinks.map((item) => (
               <Link
                 key={item.to}
