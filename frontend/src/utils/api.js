@@ -78,4 +78,9 @@ export const aiAPI = {
   chat: (message, history) => api.post("/ai/chat", { message, history }),
 };
 
+export const reviewAPI = {
+  getByProduct: (productId) => api.get(`/reviews/product/${productId}`),
+  create: (data) => api.post("/reviews", data),
+};
+
 export default api;
