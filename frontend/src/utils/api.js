@@ -81,6 +81,8 @@ export const aiAPI = {
 export const reviewAPI = {
   getByProduct: (productId) => api.get(`/reviews/product/${productId}`),
   create: (data) => api.post("/reviews", data),
+  getAllAdmin: () => api.get("/reviews/admin"),
+  deleteAdmin: (id) => api.delete(`/reviews/admin/${id}`),
 };
 
 export default api;

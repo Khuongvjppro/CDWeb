@@ -6,16 +6,13 @@ exports.register = async (req, res) => {
   try {
     const { email, password, fullName, phone } = req.body;
 
-    // Check if user exists
     const existingUser = await User.getUserByEmail(email);
     if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
     await User.createUser({
       email,
       password: hashedPassword,
@@ -33,24 +30,20 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user
     const user = await User.getUserByEmail(email);
     if (!user) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    // Check if user is blocked
     if (user.is_blocked) {
       return res.status(403).json({ error: "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên!" });
     }
 
-    // Check password
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    // Generate token
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       process.env.JWT_SECRET || "secret",
@@ -112,11 +105,9 @@ exports.forgotPassword = async (req, res) => {
 
     const user = await User.getUserByEmail(email);
     if (!user) {
-      // Để tránh thu thập email, vẫn báo thành công
       return res.json({ message: "Đường liên kết đặt lại mật khẩu đã được gửi nếu email tồn tại trên hệ thống!" });
     }
 
-    // Tạo mã token ngắn hạn (15 phút) bằng cách kết hợp mật khẩu hiện tại làm một phần của khóa bí mật
     const secret = (process.env.JWT_SECRET || "secret") + user.password;
     const token = jwt.sign(
       { id: user.id, email: user.email },
@@ -124,14 +115,12 @@ exports.forgotPassword = async (req, res) => {
       { expiresIn: "15m" }
     );
 
-    // Đường dẫn reset mật khẩu ở Frontend (cổng 3001)
     const resetUrl = `http://localhost:3001/reset-password?token=${token}&email=${encodeURIComponent(user.email)}`;
 
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
 
     if (emailUser && emailPass) {
-      // Gửi email thật qua Gmail
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -167,7 +156,6 @@ exports.forgotPassword = async (req, res) => {
 
       await transporter.sendMail(mailOptions);
     } else {
-      // Chế độ phát triển cục bộ: Log liên kết ra terminal
       console.log("\n==================================================");
       console.log("🛠️ CHẾ ĐỘ PHÁT TRIỂN: LINK KHÔI PHỤC MẬT KHẨU");
       console.log(`Email nhận: ${user.email}`);
@@ -193,7 +181,6 @@ exports.resetPassword = async (req, res) => {
       return res.status(400).json({ error: "Người dùng không tồn tại" });
     }
 
-    // Xác thực token bằng chính khóa bí mật động (chứa password hash cũ)
     const secret = (process.env.JWT_SECRET || "secret") + user.password;
     try {
       jwt.verify(token, secret);
@@ -201,7 +188,6 @@ exports.resetPassword = async (req, res) => {
       return res.status(400).json({ error: "Mã khôi phục không hợp lệ hoặc đã hết hạn!" });
     }
 
-    // Mã hóa mật khẩu mới
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     // Cập nhật mật khẩu trong database

@@ -122,7 +122,7 @@ export default function OrdersPage() {
     <div className="page-shell">
       <div className="page-content section-wrap max-w-4xl">
         {/* Banner Section */}
-        <div className="hero-panel-soft mb-8 p-6 sm:p-8 rounded-[2rem] border border-white/60 bg-gradient-to-r from-amber-50/50 to-orange-50/20 shadow-md">
+        <div className="mb-8 px-2">
           <div className="flex items-center justify-between gap-4">
             <div>
               <span className="eyebrow bg-white/90 border-[#e7d8c9] text-[#b55239]">Lịch sử đơn hàng</span>

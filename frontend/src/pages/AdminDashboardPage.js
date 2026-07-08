@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { authAPI, orderAPI, productAPI } from "../utils/api";
+import { authAPI, orderAPI, productAPI, reviewAPI } from "../utils/api";
 
 const currencyFormatter = new Intl.NumberFormat("vi-VN");
 
@@ -17,9 +17,11 @@ export default function AdminDashboardPage() {
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [users, setUsers] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [stats, setStats] = useState({ categoriesRevenue: [], topProducts: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [hoveredPoint, setHoveredPoint] = useState(null);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -27,18 +29,20 @@ export default function AdminDashboardPage() {
         setLoading(true);
         setError("");
 
-        const [productsResponse, ordersResponse, usersResponse, statsResponse] =
+        const [productsResponse, ordersResponse, usersResponse, statsResponse, reviewsResponse] =
           await Promise.all([
             productAPI.getAll(),
             orderAPI.getAll(),
             authAPI.getUsers(),
             orderAPI.getDashboardStats(),
+            reviewAPI.getAllAdmin(),
           ]);
 
         setProducts(productsResponse.data || []);
         setOrders(ordersResponse.data || []);
         setUsers(usersResponse.data || []);
         setStats(statsResponse.data || { categoriesRevenue: [], topProducts: [] });
+        setReviews(reviewsResponse.data || []);
       } catch (fetchError) {
         setError(
           fetchError.response?.data?.error ||
@@ -65,39 +69,71 @@ export default function AdminDashboardPage() {
     .sort((a, b) => new Date(getOrderDate(b)) - new Date(getOrderDate(a)))
     .slice(0, 4);
 
-  const monthlyRevenue = Array.from({ length: 6 }, (_, index) => {
-    const monthIndex = new Date().getMonth() - (5 - index);
-    const normalizedMonth = (monthIndex + 12) % 12;
+  const last6MonthsData = Array.from({ length: 6 }, (_, index) => {
+    const d = new Date();
+    d.setDate(1);
+    d.setMonth(d.getMonth() - (5 - index));
+    const targetMonth = d.getMonth();
+    const targetYear = d.getFullYear();
+
     const monthOrders = orders.filter((order) => {
-      const date = new Date(getOrderDate(order));
-      return date.getMonth() === normalizedMonth;
+      const orderDate = new Date(getOrderDate(order));
+      return orderDate.getMonth() === targetMonth && orderDate.getFullYear() === targetYear;
     });
 
-    return monthOrders.reduce(
+    const revenue = monthOrders.reduce(
       (sum, order) => sum + (Number(order.totalAmount) || 0),
       0,
     );
+
+    return {
+      monthLabel: `Tháng ${targetMonth + 1}/${targetYear}`,
+      shortLabel: `T${targetMonth + 1}`,
+      revenue,
+      orderCount: monthOrders.length,
+    };
   });
 
-  const chartMax = Math.max(...monthlyRevenue, 1);
-  const chartWidth = 540;
-  const chartHeight = 220;
-  const chartPadding = 18;
-  const chartStep = chartWidth / (monthlyRevenue.length - 1 || 1);
-  const chartPoints = monthlyRevenue.map((value, index) => {
-    const x = chartPadding + index * chartStep;
+  const formatShortCurrency = (val) => {
+    if (val === 0) return "0đ";
+    if (val >= 1000000) {
+      const formatted = (val / 1000000).toFixed(1);
+      return `${formatted.endsWith(".0") ? formatted.slice(0, -2) : formatted} tr`;
+    }
+    if (val >= 1000) {
+      return `${(val / 1000).toFixed(0)}k`;
+    }
+    return `${val}đ`;
+  };
+
+  const chartMax = Math.max(...last6MonthsData.map(d => d.revenue), 100000);
+  const chartWidth = 560;
+  const chartHeight = 260;
+  const chartLeftPadding = 65;
+  const chartRightPadding = 25;
+  const chartTopPadding = 35;
+  const chartBottomPadding = 35;
+
+  const usableWidth = chartWidth - chartLeftPadding - chartRightPadding;
+  const usableHeight = chartHeight - chartTopPadding - chartBottomPadding;
+
+  const chartStep = usableWidth / (last6MonthsData.length - 1 || 1);
+  const chartPoints = last6MonthsData.map((data, index) => {
+    const x = chartLeftPadding + index * chartStep;
     const y =
       chartHeight -
-      chartPadding -
-      (value / chartMax) * (chartHeight - chartPadding * 2);
-    return { x, y };
+      chartBottomPadding -
+      (data.revenue / chartMax) * usableHeight;
+    return { x, y, ...data };
   });
 
   const chartLinePath = chartPoints
     .map((point, index) => `${index === 0 ? "M" : "L"}${point.x},${point.y}`)
     .join(" ");
 
-  const chartAreaPath = `${chartLinePath} L ${chartPoints[chartPoints.length - 1]?.x || chartWidth},${chartHeight - chartPadding} L ${chartPoints[0]?.x || chartPadding},${chartHeight - chartPadding} Z`;
+  const chartAreaPath = chartPoints.length > 0 
+    ? `${chartLinePath} L ${chartPoints[chartPoints.length - 1].x},${chartHeight - chartBottomPadding} L ${chartPoints[0].x},${chartHeight - chartBottomPadding} Z`
+    : "";
 
   const StatCard = ({ label, value, to, accent = "#b55239", hint }) => {
     const content = (
@@ -119,16 +155,22 @@ export default function AdminDashboardPage() {
   return (
     <div className="page-shell admin-shell">
       <div className="page-content section-wrap py-10">
-        <div className="admin-panel-soft mb-8 p-6 sm:p-8">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              <span className="section-kicker">Coffee Shop Admin</span>
-              <h1 className="title-xl">The Coffee Shop</h1>
-              <p className="muted-copy mt-2 max-w-2xl">
-                Số liệu vận hành được lấy trực tiếp từ database
-              </p>
+        
+        {/* Welcome Status Banner */}
+        <div className="mb-8 pt-2">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+              <span className="h-2.5 w-2.5 rounded-full bg-[#11b44a] animate-pulse" />
+              <span className="text-xs font-bold uppercase tracking-wider text-[#b55239] font-sans">
+                Trạng thái vận hành quán
+              </span>
             </div>
-            <div className="flex flex-wrap gap-3"></div>
+            <h1 className="text-3xl font-black text-stone-900 tracking-tight mt-1.5">
+              Tổng quan hôm nay
+            </h1>
+            <p className="text-sm text-stone-500">
+              Số liệu thống kê tự động cập nhật thời gian thực từ cơ sở dữ liệu.
+            </p>
           </div>
         </div>
 
@@ -180,14 +222,11 @@ export default function AdminDashboardPage() {
                 hint="Cần được barista xử lý"
               />
               <StatCard
-                label="Giá trị mỗi hóa đơn"
-                value={
-                  orders.length
-                    ? formatCurrency(totalRevenue / orders.length)
-                    : "0"
-                }
+                label="Đánh giá từ khách"
+                value={reviews.length}
                 accent="#d59a00"
-                hint="Mức chi tiêu trung bình của một order"
+                to="/admin/reviews"
+                hint="Ý kiến phản hồi từ người mua"
               />
             </div>
 
@@ -199,7 +238,7 @@ export default function AdminDashboardPage() {
                 <div className="rounded-[1.5rem] border border-amber-100 bg-gradient-to-b from-amber-50/80 to-white p-4">
                   <svg
                     viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-                    className="h-64 w-full"
+                    className="h-64 w-full overflow-visible"
                   >
                     <defs>
                       <linearGradient
@@ -224,27 +263,58 @@ export default function AdminDashboardPage() {
                       </linearGradient>
                     </defs>
 
+                    {/* Y-Axis Grid Lines */}
                     {[0.25, 0.5, 0.75, 1].map((ratio) => (
                       <line
                         key={ratio}
-                        x1={chartPadding}
-                        y1={
-                          chartHeight -
-                          chartPadding -
-                          (chartHeight - chartPadding * 2) * ratio
-                        }
-                        x2={chartWidth - chartPadding}
-                        y2={
-                          chartHeight -
-                          chartPadding -
-                          (chartHeight - chartPadding * 2) * ratio
-                        }
+                        x1={chartLeftPadding}
+                        y1={chartHeight - chartBottomPadding - usableHeight * ratio}
+                        x2={chartWidth - chartRightPadding}
+                        y2={chartHeight - chartBottomPadding - usableHeight * ratio}
                         stroke="rgba(181,82,57,0.10)"
                         strokeDasharray="4 6"
                       />
                     ))}
 
+                    {/* Y-Axis Labels */}
+                    {[0, 0.25, 0.5, 0.75, 1].map((ratio) => {
+                      const val = ratio * chartMax;
+                      const y = chartHeight - chartBottomPadding - usableHeight * ratio;
+                      return (
+                        <text
+                          key={`y-label-${ratio}`}
+                          x={chartLeftPadding - 10}
+                          y={y + 4}
+                          textAnchor="end"
+                          className="fill-stone-400 text-[10px] font-semibold"
+                        >
+                          {formatShortCurrency(val)}
+                        </text>
+                      );
+                    })}
+
+                    {/* Axis Lines */}
+                    <line
+                      x1={chartLeftPadding}
+                      y1={chartHeight - chartBottomPadding}
+                      x2={chartWidth - chartRightPadding}
+                      y2={chartHeight - chartBottomPadding}
+                      stroke="rgba(181,82,57,0.15)"
+                      strokeWidth="1.5"
+                    />
+                    <line
+                      x1={chartLeftPadding}
+                      y1={chartTopPadding}
+                      x2={chartLeftPadding}
+                      y2={chartHeight - chartBottomPadding}
+                      stroke="rgba(181,82,57,0.15)"
+                      strokeWidth="1.5"
+                    />
+
+                    {/* Area under curve */}
                     <path d={chartAreaPath} fill="url(#revenueArea)" />
+
+                    {/* Line curve */}
                     <path
                       d={chartLinePath}
                       fill="none"
@@ -254,26 +324,117 @@ export default function AdminDashboardPage() {
                       strokeLinejoin="round"
                     />
 
+                    {/* Points & Labels */}
                     {chartPoints.map((point, index) => (
                       <g key={index}>
                         <circle
                           cx={point.x}
                           cy={point.y}
-                          r="5.5"
+                          r={hoveredPoint === index ? 7.5 : 5.5}
                           fill="#fff"
-                          stroke="#b55239"
-                          strokeWidth="4"
+                          stroke={hoveredPoint === index ? "#b55239" : "#d59a00"}
+                          strokeWidth={hoveredPoint === index ? 5 : 4}
+                          className="transition-all duration-150 ease-out"
                         />
+                        {/* Short Value Text Label above point */}
+                        {hoveredPoint !== index && (
+                          <text
+                            x={point.x}
+                            y={point.y - 12}
+                            textAnchor="middle"
+                            className="fill-stone-600 text-[10px] font-bold"
+                          >
+                            {formatShortCurrency(point.revenue)}
+                          </text>
+                        )}
+                        {/* X-Axis Month Label */}
                         <text
                           x={point.x}
-                          y={chartHeight - 2}
+                          y={chartHeight - 12}
                           textAnchor="middle"
-                          className="fill-stone-500 text-[12px] font-semibold"
+                          className="fill-stone-500 text-[11px] font-bold"
                         >
-                          T{index + 1}
+                          {point.shortLabel}
                         </text>
                       </g>
                     ))}
+
+                    {/* Invisible hover zones for easy interactivity */}
+                    {chartPoints.map((point, index) => {
+                      const rectWidth = chartStep;
+                      const rectX = point.x - rectWidth / 2;
+                      return (
+                        <rect
+                          key={`hover-${index}`}
+                          x={rectX}
+                          y={chartTopPadding}
+                          width={rectWidth}
+                          height={usableHeight}
+                          fill="transparent"
+                          className="cursor-pointer"
+                          onMouseEnter={() => setHoveredPoint(index)}
+                          onMouseLeave={() => setHoveredPoint(null)}
+                        />
+                      );
+                    })}
+
+                    {/* Interactive Tooltip */}
+                    {hoveredPoint !== null && (() => {
+                      const point = chartPoints[hoveredPoint];
+                      const showTooltipBelow = point.y - 65 < 5;
+                      const tooltipY = showTooltipBelow ? point.y + 15 : point.y - 65;
+                      const trianglePoints = showTooltipBelow
+                        ? `${point.x - 6},${point.y + 15} ${point.x + 6},${point.y + 15} ${point.x},${point.y + 8}`
+                        : `${point.x - 6},${point.y - 15} ${point.x + 6},${point.y - 15} ${point.x},${point.y - 8}`;
+                      return (
+                        <g className="pointer-events-none transition-all duration-150">
+                          {/* Tooltip Card */}
+                          <rect
+                            x={point.x - 75}
+                            y={tooltipY}
+                            width="150"
+                            height="50"
+                            rx="8"
+                            fill="#2c221e"
+                            stroke="#b55239"
+                            strokeWidth="1.5"
+                            className="shadow-lg"
+                          />
+                          {/* Triangle pointer */}
+                          <polygon
+                            points={trianglePoints}
+                            fill="#2c221e"
+                            stroke="#b55239"
+                            strokeWidth="1.5"
+                          />
+                          <polygon
+                            points={trianglePoints}
+                            fill="#2c221e"
+                          />
+                          {/* Tooltip Contents */}
+                          <text
+                            x={point.x}
+                            y={tooltipY + 18}
+                            textAnchor="middle"
+                            fill="#f3b498"
+                            fontSize="10px"
+                            fontWeight="bold"
+                          >
+                            {point.monthLabel}
+                          </text>
+                          <text
+                            x={point.x}
+                            y={tooltipY + 36}
+                            textAnchor="middle"
+                            fill="#fff"
+                            fontSize="11px"
+                            fontWeight="extrabold"
+                          >
+                            {formatCurrency(point.revenue)}đ ({point.orderCount} đơn)
+                          </text>
+                        </g>
+                      );
+                    })()}
                   </svg>
                 </div>
               </div>

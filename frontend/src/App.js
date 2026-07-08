@@ -25,6 +25,7 @@ import AdminProductsPage from "./pages/AdminProductsPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
 import AdminCategoriesPage from "./pages/AdminCategoriesPage";
+import AdminReviewsPage from "./pages/AdminReviewsPage";
 import AboutHighlandsPage from "./pages/AboutHighlandsPage";
 import NewsPage from "./pages/NewsPage";
 import SupportPage from "./pages/SupportPage";
@@ -94,6 +95,10 @@ function AppContent() {
             <Route
               path="/admin/categories"
               element={isAdmin ? <AdminCategoriesPage /> : <AuthPage />}
+            />
+            <Route
+              path="/admin/reviews"
+              element={isAdmin ? <AdminReviewsPage /> : <AuthPage />}
             />
           </Routes>
         </main>

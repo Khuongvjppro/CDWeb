@@ -1,8 +1,11 @@
 -- Coffee Shop E-commerce Database
 -- Import this file into phpMyAdmin
 
-CREATE DATABASE IF NOT EXISTS coffee_shop;
+CREATE DATABASE IF NOT EXISTS coffee_shop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE coffee_shop;
+
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
 
 -- Users Table
 CREATE TABLE IF NOT EXISTS users (

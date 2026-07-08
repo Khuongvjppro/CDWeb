@@ -1,43 +1,147 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Trash2, Plus, Minus, ArrowLeft, Loader2 } from "lucide-react";
+import { Trash2, Plus, Minus, ArrowLeft, Loader2, ShoppingCart } from "lucide-react";
 import { useCart } from "../context/CartContext";
 import { getDefaultImageSrc, getProductImageSrc } from "../utils/productImage";
+import { productAPI } from "../utils/api";
 
-const EMPTY_STATE_IMAGE = `data:image/svg+xml,${encodeURIComponent(`
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" fill="none">
-    <defs>
-      <linearGradient id="g1" x1="96" y1="56" x2="548" y2="356" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#FFF8F2"/>
-        <stop offset="1" stop-color="#F3E6D9"/>
-      </linearGradient>
-      <linearGradient id="g2" x1="172" y1="106" x2="460" y2="304" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#7B1E2B"/>
-        <stop offset="1" stop-color="#B55239"/>
-      </linearGradient>
-    </defs>
-    <rect x="24" y="24" width="592" height="372" rx="36" fill="url(#g1)"/>
-    <circle cx="514" cy="108" r="54" fill="#E7D8C9" opacity="0.55"/>
-    <circle cx="112" cy="306" r="70" fill="#B55239" opacity="0.08"/>
-    <path d="M187 150h61l32 120a18 18 0 0 0 17 13h149a18 18 0 0 0 17-13l22-83H255" stroke="#7B1E2B" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M232 150l-20-43a12 12 0 0 0-11-7h-36" stroke="#7B1E2B" stroke-width="10" stroke-linecap="round"/>
-    <circle cx="282" cy="310" r="18" fill="#7B1E2B"/>
-    <circle cx="422" cy="310" r="18" fill="#7B1E2B"/>
-    <path d="M310 150c0-27 22-49 49-49s49 22 49 49" stroke="url(#g2)" stroke-width="12" stroke-linecap="round"/>
-    <path d="M330 155h57" stroke="#B55239" stroke-width="8" stroke-linecap="round"/>
-    <text x="320" y="250" text-anchor="middle" font-size="28" font-weight="700" fill="#5A3E36">Your cart is empty</text>
-  </svg>
-`)}`;
+
+
+const steamStyles = `
+  @keyframes steam {
+    0% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+      transform: translateY(10px) scaleX(0.85);
+    }
+    15% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 0.8;
+      transform: translateY(0px) scaleX(1.1);
+    }
+    100% {
+      stroke-dashoffset: -20;
+      opacity: 0;
+      transform: translateY(-15px) scaleX(0.85);
+    }
+  }
+  .steam-line-1 {
+    animation: steam 4s infinite linear;
+    stroke-dasharray: 10 15;
+    transform-origin: bottom center;
+  }
+  .steam-line-2 {
+    animation: steam 3s infinite linear;
+    animation-delay: 1.2s;
+    stroke-dasharray: 10 15;
+    transform-origin: bottom center;
+  }
+  .steam-line-3 {
+    animation: steam 3.5s infinite linear;
+    animation-delay: 2.2s;
+    stroke-dasharray: 10 15;
+    transform-origin: bottom center;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  .floating-cup {
+    animation: float 5s ease-in-out infinite;
+  }
+  
+  @keyframes ripple {
+    0% { transform: scale(0.95); opacity: 0.2; }
+    50% { transform: scale(1.05); opacity: 0.4; }
+    100% { transform: scale(0.95); opacity: 0.2; }
+  }
+  .shadow-ripple {
+    animation: ripple 5s ease-in-out infinite;
+  }
+`;
+
+const EmptyCartIllustration = () => (
+  <div className="relative flex flex-col items-center justify-center py-6">
+    <style dangerouslySetInnerHTML={{ __html: steamStyles }} />
+    
+    <div className="relative h-44 w-44 flex items-center justify-center">
+      <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#7b1e2b]/10 to-[#b55239]/5 blur-xl shadow-ripple" />
+      
+      <svg className="relative w-36 h-36 floating-cup" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity="0.8">
+          <path className="steam-line-1" d="M85 70 Q90 50 82 35 T88 15" stroke="#b55239" strokeWidth="4" strokeLinecap="round"/>
+          <path className="steam-line-2" d="M100 70 Q105 50 97 35 T103 15" stroke="#b55239" strokeWidth="4" strokeLinecap="round"/>
+          <path className="steam-line-3" d="M115 70 Q120 50 112 35 T118 15" stroke="#b55239" strokeWidth="4" strokeLinecap="round"/>
+        </g>
+        
+        <defs>
+          <linearGradient id="cupGrad" x1="50" y1="80" x2="150" y2="150" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#9e2e3c" />
+            <stop offset="100%" stopColor="#69141f" />
+          </linearGradient>
+          <linearGradient id="plateGrad" x1="30" y1="150" x2="170" y2="170" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#d5beaa" />
+            <stop offset="100%" stopColor="#a98c73" />
+          </linearGradient>
+        </defs>
+        
+        <path d="M142 95 C165 95 168 128 142 133" stroke="url(#cupGrad)" strokeWidth="10" strokeLinecap="round"/>
+        <path d="M58 85 L142 85 C142 125 120 148 100 148 C80 148 58 125 58 85 Z" fill="url(#cupGrad)"/>
+        <ellipse cx="100" cy="85" rx="42" ry="7" fill="#b55239"/>
+        <ellipse cx="100" cy="85" rx="38" ry="4" fill="#3d0b11"/>
+        <path d="M40 152 L160 152 C160 162 145 167 100 167 C55 167 40 162 40 152 Z" fill="url(#plateGrad)"/>
+        <ellipse cx="100" cy="152" rx="60" ry="5" fill="#fdfcfb" opacity="0.3"/>
+        <circle cx="45" cy="40" r="3" fill="#b55239" className="animate-pulse" />
+        <circle cx="160" cy="70" r="4" fill="#b55239" className="animate-pulse [animation-delay:1.5s]" />
+      </svg>
+    </div>
+  </div>
+);
 
 export default function CartPage() {
   const navigate = useNavigate();
-  const { cart, removeFromCart, updateQuantity, getTotalAmount } = useCart();
+  const { cart, addToCart, removeFromCart, updateQuantity, getTotalAmount } = useCart();
   const [imgErrors, setImgErrors] = React.useState({});
   const [isProcessing, setIsProcessing] = React.useState(false);
+
+  // Recommendations state
+  const [recommendedProducts, setRecommendedProducts] = React.useState([]);
+  const [loadingRecommendations, setLoadingRecommendations] = React.useState(true);
+  const [imgErrorsRecommendations, setImgErrorsRecommendations] = React.useState({});
+  const [toast, setToast] = React.useState(null);
 
   const defaultImage = getDefaultImageSrc();
   const totalAmount = getTotalAmount();
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  React.useEffect(() => {
+    let active = true;
+    const fetchRecommendations = async () => {
+      try {
+        setLoadingRecommendations(true);
+        const response = await productAPI.getAll();
+        if (active && response.data) {
+          // Select 3 random products to display as recommendations
+          const shuffled = [...response.data].sort(() => 0.5 - Math.random());
+          setRecommendedProducts(shuffled.slice(0, 3));
+        }
+      } catch (error) {
+        console.error("Error fetching recommended products:", error);
+      } finally {
+        if (active) setLoadingRecommendations(false);
+      }
+    };
+
+    if (cart.length === 0) {
+      fetchRecommendations();
+    }
+    return () => {
+      active = false;
+    };
+  }, [cart.length]);
 
   const handleImageError = (itemId) => {
     setImgErrors((prev) => ({ ...prev, [itemId]: true }));
@@ -58,18 +162,35 @@ export default function CartPage() {
             <div className="hero-panel-soft relative overflow-hidden px-6 py-10 sm:px-8 sm:py-12">
               <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#b55239]/10 blur-3xl animate-pulse" />
               <div className="pointer-events-none absolute -bottom-8 left-0 h-28 w-28 rounded-full bg-[#5a3e36]/10 blur-3xl animate-pulse [animation-delay:900ms]" />
-              <span className="section-kicker">Premium Cart</span>
-              <h1 className="mt-4 text-4xl font-black tracking-tight text-[#5a3e36] sm:text-5xl">
-                Giỏ hàng
-              </h1>
-              <div className="mt-8 rounded-[1.75rem] border border-[#e7d8c9] bg-white/90 px-6 py-8 text-center shadow-[0_18px_60px_rgba(90,62,54,0.08)]">
-                <div className="mx-auto max-w-sm overflow-hidden rounded-[1.5rem] border border-[#f0e2d7] bg-[#fffaf6] shadow-[0_14px_40px_rgba(90,62,54,0.10)]">
-                  <img
-                    src={EMPTY_STATE_IMAGE}
-                    alt="Giỏ hàng trống"
-                    className="h-auto w-full transition-transform duration-300 ease-in-out hover:scale-105"
-                  />
+              
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-[#e7d8c9]/70">
+                <div>
+                  <span className="section-kicker">Premium Cart</span>
+                  <h1 className="mt-2 text-4xl font-black tracking-tight text-[#5a3e36] sm:text-5xl">
+                    Giỏ hàng
+                  </h1>
                 </div>
+                <div className="flex items-center rounded-[1.4rem] border border-[#d8c0a7] bg-white/70 p-2 shadow-sm backdrop-blur">
+                  <div className="flex items-center gap-2 px-2">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#7b1e2b] text-xs font-bold text-white">1</div>
+                    <span className="text-xs font-bold text-[#7b1e2b]">Giỏ hàng</span>
+                  </div>
+                  <span className="h-px w-4 bg-[#d4baa0]" />
+                  <div className="flex items-center gap-2 px-2 opacity-50">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full border border-[#dcc8b1] bg-[#f5eadc] text-xs font-bold text-[#8a7568]">2</div>
+                    <span className="text-xs font-bold text-[#8a7568] hidden sm:inline">Giao hàng</span>
+                  </div>
+                  <span className="h-px w-4 bg-[#d4baa0]" />
+                  <div className="flex items-center gap-2 px-2 opacity-50">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full border border-[#dcc8b1] bg-[#f5eadc] text-xs font-bold text-[#8a7568]">3</div>
+                    <span className="text-xs font-bold text-[#8a7568] hidden sm:inline">Hoàn tất</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 rounded-[1.75rem] border border-[#e7d8c9] bg-white/90 px-6 py-8 text-center shadow-[0_18px_60px_rgba(90,62,54,0.08)]">
+                <EmptyCartIllustration />
+                
                 <p className="mt-6 text-3xl font-black tracking-tight text-[#5a3e36] sm:text-4xl">
                   Giỏ hàng của bạn đang trống
                 </p>
@@ -85,12 +206,90 @@ export default function CartPage() {
                   <ArrowLeft size={18} className="rotate-180" />
                 </Link>
               </div>
+
+              {/* Recommended products block */}
+              <div className="mt-12">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#e7d8c9]" />
+                  <h3 className="text-xl font-bold text-[#5a3e36] shrink-0 font-serif">Gợi ý đồ uống cho bạn</h3>
+                  <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#e7d8c9]" />
+                </div>
+
+                {loadingRecommendations ? (
+                  <div className="flex justify-center py-8">
+                    <Loader2 className="animate-spin text-[#7b1e2b]" size={28} />
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+                    {recommendedProducts.map((product) => {
+                      const isSale = !!product.sale_price;
+                      const displayPrice = (product.sale_price || product.price).toLocaleString("vi-VN");
+                      const originalPrice = product.price.toLocaleString("vi-VN");
+                      const imgErr = imgErrorsRecommendations[product.id];
+                      const imageSrc = imgErr ? defaultImage : getProductImageSrc(product);
+
+                      return (
+                        <div key={product.id} className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-[#e7d8c9]/70 bg-[#faf7f2]/30 p-4 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:bg-white/80">
+                          {/* Badge */}
+                          <div className="absolute left-3 top-3 z-10 rounded-full bg-[#fbf4ea]/90 px-2.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider text-[#b55239]">
+                            {product.category}
+                          </div>
+                          
+                          {/* Image container */}
+                          <div className="relative flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-b from-[#faf8f5] to-[#f4eee6] p-2 mt-2">
+                            <img
+                              src={imageSrc}
+                              alt={product.name}
+                              onError={() => setImgErrorsRecommendations(prev => ({ ...prev, [product.id]: true }))}
+                              className="h-full max-h-[80px] object-contain transition duration-500 group-hover:scale-105 drop-shadow-[0_6px_12px_rgba(90,62,54,0.12)]"
+                            />
+                          </div>
+
+                          {/* Info */}
+                          <div className="mt-3 flex-grow flex flex-col justify-between">
+                            <div>
+                              <h4 className="text-sm font-bold text-[#5a3e36] line-clamp-1">{product.name}</h4>
+                              <div className="mt-1 flex items-baseline gap-1.5">
+                                <span className="text-base font-extrabold text-[#7b1e2b]">{displayPrice}₫</span>
+                                {isSale && <span className="text-xs text-stone-400 line-through">{originalPrice}₫</span>}
+                              </div>
+                            </div>
+
+                            {/* Add to cart btn */}
+                            <button
+                              onClick={() => {
+                                addToCart(product);
+                                setToast({ message: `Đã thêm ${product.name} vào giỏ hàng!` });
+                                setTimeout(() => setToast(null), 2500);
+                              }}
+                              className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl bg-[#7b1e2b] py-2 text-xs font-bold text-white transition-all duration-200 hover:bg-[#922a36] active:scale-[0.97]"
+                            >
+                              <ShoppingCart size={13} />
+                              <span>Thêm nhanh</span>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
+        
+        {toast && (
+          <div className="fixed bottom-6 left-1/2 z-[110] -translate-x-1/2 rounded-full bg-stone-900/95 px-6 py-3.5 text-sm font-bold text-white shadow-2xl backdrop-blur animate-bounce">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white font-extrabold">✓</span>
+              <span>{toast.message}</span>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
+
 
   return (
     <div className="page-shell">

@@ -56,3 +56,24 @@ exports.getProductReviews = async (req, res) => {
     res.status(500).json({ message: "Có lỗi xảy ra khi lấy danh sách đánh giá." });
   }
 };
+
+exports.getAllReviews = async (req, res) => {
+  try {
+    const reviews = await Review.getAllReviews();
+    res.status(200).json(reviews);
+  } catch (error) {
+    console.error("Lỗi khi lấy tất cả đánh giá:", error);
+    res.status(500).json({ message: "Có lỗi xảy ra khi lấy danh sách đánh giá." });
+  }
+};
+
+exports.deleteReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Review.deleteReview(id);
+    res.status(200).json({ message: "Đã xóa đánh giá thành công." });
+  } catch (error) {
+    console.error("Lỗi khi xóa đánh giá:", error);
+    res.status(500).json({ message: "Có lỗi xảy ra khi xóa đánh giá." });
+  }
+};

@@ -105,7 +105,7 @@ export default function AuthPage() {
         <div className="grid lg:grid-cols-[0.95fr_1.05fr]">
           
           {/* Left Hero Panel */}
-          <div className="relative hidden overflow-hidden bg-gradient-to-br from-[#2b1612] via-[#52291e] to-[#7c3d2f] p-10 text-white lg:flex lg:flex-col lg:justify-between">
+          <div className="relative hidden overflow-hidden bg-gradient-to-br from-[#2b1612] via-[#52291e] to-[#7c3d2f] p-10 text-white lg:flex lg:flex-col lg:justify-center">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(243,180,152,0.18),_transparent_60%)]" />
             <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/5 blur-2xl" />
             <div className="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-[#b55239]/10 blur-3xl" />
@@ -116,32 +116,11 @@ export default function AuthPage() {
                 <span>Highlands-inspired Access</span>
               </div>
               <h2 className="mt-8 text-4xl font-black leading-tight tracking-tight">
-                Một trang,<br/>Hai lựa chọn.<br/>Đăng nhập & Đăng ký thật gọn.
+                Hương vị đậm đà,<br/>Khơi nguồn cảm hứng.<br/>Tách cà phê trọn vị mỗi ngày.
               </h2>
               <p className="mt-5 max-w-md text-stone-200/80 leading-relaxed text-sm">
-                Trải nghiệm mua sắm cà phê thượng hạng với giao diện trực quan, lưu trữ thông tin giao hàng mặc định và theo dõi tiến độ đơn hàng nhanh chóng.
+                Khám phá những hạt cà phê thượng hạng được chọn lọc thủ công từ những vùng đất nổi tiếng. Đăng nhập hoặc đăng ký tài khoản để bắt đầu hành trình thưởng thức trọn vẹn hương vị yêu thích của bạn.
               </p>
-            </div>
-
-            <div className="relative space-y-4 border-t border-white/10 pt-8 mt-12">
-              <div className="flex items-start gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 text-amber-200 border border-white/10">
-                  ⚡
-                </span>
-                <div>
-                  <h4 className="text-sm font-bold text-white">Đăng nhập nhanh chóng</h4>
-                  <p className="mt-1 text-xs text-stone-300">Khôi phục nhanh giỏ hàng cũ của bạn và đặt đồ uống yêu thích.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 text-amber-200 border border-white/10">
-                  📋
-                </span>
-                <div>
-                  <h4 className="text-sm font-bold text-white">Quản lý tài khoản chi tiết</h4>
-                  <p className="mt-1 text-xs text-stone-300">Lưu trữ địa chỉ giao nhận theo phân cấp tỉnh/huyện/xã tự động.</p>
-                </div>
-              </div>
             </div>
           </div>
 
